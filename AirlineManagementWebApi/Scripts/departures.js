@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    console.log("document loaded");
+    console.log("document loaded successfully");
   
     fetchdata();
     setInterval(fetchdata, 60000);
