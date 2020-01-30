@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{06774E26-0C4B-466F-AEFA-D01BBF2662D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AirlineManagement</RootNamespace>
+    <AssemblyName>AirlineManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net46\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.2.0\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.6.0.325, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.2.6.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism, Version=7.2.0.1367, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.2.0.1367\lib\net45\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Wpf, Version=7.2.0.1367, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.7.2.0.1367\lib\net45\Prism.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Wpf.7.2.0.1367\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\TicketAlreadyExistException.cs" />
+    <Compile Include="Exceptions\AdministratorAlreadyExistException.cs" />
+    <Compile Include="DAO\AdministratorDAOMSSQL.cs" />
+    <Compile Include="Exceptions\AirlineCompanyDoesNotExistException.cs" />
+    <Compile Include="Exceptions\CountryAlreadyExistException.cs" />
+    <Compile Include="Exceptions\CustomerAlreadyExistException.cs" />
+    <Compile Include="Exceptions\AirlineCompanyAlreadyExistException.cs" />
+    <Compile Include="Exceptions\AdministratorDeleteErrorException.cs" />
+    <Compile Include="Exceptions\AdministratorUpdateErrorException.cs" />
+    <Compile Include="DAO\Interfaces\IAdministratorDAO.cs" />
+    <Compile Include="Exceptions\FlightUpdateErrorException.cs" />
+    <Compile Include="Exceptions\CountryUpdateErrorException.cs" />
+    <Compile Include="Exceptions\TicketUpdateErrorException.cs" />
+    <Compile Include="Exceptions\TicketDeleteErrorException.cs" />
+    <Compile Include="Exceptions\CountryDeleteErrorException.cs" />
+    <Compile Include="Exceptions\FlightDeleteErrorException.cs" />
+    <Compile Include="Exceptions\AirlineCompanyDeleteErrorException.cs" />
+    <Compile Include="Exceptions\AirlineCompanyUpdateErrorException.cs" />
+    <Compile Include="Exceptions\CustomerDeleteErrorException.cs" />
+    <Compile Include="Exceptions\CustomerUpdateErrorException.cs" />
+    <Compile Include="Exceptions\WrongUserNamePasswordException.cs" />
+    <Compile Include="Exceptions\NotValidPasswordException.cs" />
+    <Compile Include="Exceptions\FlightAlreadyExistException.cs" />
+    <Compile Include="Exceptions\NoTicketsException.cs" />
+    <Compile Include="Exceptions\InvalidTokenException.cs" />
+    <Compile Include="FlyingCenterSystem.cs" />
+    <Compile Include="Facade\Interfaces\IFacade.cs" />
+    <Compile Include="Login\ILoginToken.cs" />
+    <Compile Include="POCO\Administrator.cs" />
+    <Compile Include="POCO\AirlineCompany.cs" />
+    <Compile Include="DAO\AirlineDAOMSSQL.cs" />
+    <Compile Include="Facade\AnonymousUserFacade.cs" />
+    <Compile Include="POCO\Country.cs" />
+    <Compile Include="DAO\CountryDAOMSSQL.cs" />
+    <Compile Include="POCO\Customer.cs" />
+    <Compile Include="DAO\CustomerDAOMSSQL.cs" />
+    <Compile Include="Facade\FacadeBase.cs" />
+    <Compile Include="POCO\Flight.cs" />
+    <Compile Include="FlightCenterConfig.cs" />
+    <Compile Include="DAO\FlightDAOMSSQL.cs" />
+    <Compile Include="DAO\Interfaces\IAirlineDAO.cs" />
+    <Compile Include="Facade\Interfaces\IAnonymousUserFacade.cs" />
+    <Compile Include="DAO\Interfaces\IBasicDB.cs" />
+    <Compile Include="DAO\Interfaces\ICountryDAO.cs" />
+    <Compile Include="DAO\Interfaces\ICustomerDAO.cs" />
+    <Compile Include="DAO\Interfaces\IFlightDAO.cs" />
+    <Compile Include="Facade\Interfaces\ILoggedInAdministratorFacade.cs" />
+    <Compile Include="Facade\Interfaces\ILoggedInAirlineFacade.cs" />
+    <Compile Include="Facade\Interfaces\ILoggedInCustomerFacade.cs" />
+    <Compile Include="Login\ILoginService.cs" />
+    <Compile Include="POCO\Interfaces\IPoco.cs" />
+    <Compile Include="DAO\Interfaces\ITicketDAO.cs" />
+    <Compile Include="POCO\Interfaces\IUser.cs" />
+    <Compile Include="Facade\LoggedInAdministratorFacade.cs" />
+    <Compile Include="Facade\LoggedInCustomerFacade.cs" />
+    <Compile Include="Facade\LoggedsInAirlineFacade.cs" />
+    <Compile Include="Login\LoginService.cs" />
+    <Compile Include="Login\LoginToken.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DAO\SqlDAO.cs" />
+    <Compile Include="POCO\Ticket.cs" />
+    <Compile Include="DAO\TicketDAOMSSQL.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Exceptions\WrongPasswordException.cs" />
+    <Compile Include="TestResource.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

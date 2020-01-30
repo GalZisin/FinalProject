@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+    <!--<!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" />
+  
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+
+    <link rel="stylesheet" href="../../Content/search.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/myStyles.css" />
+    <link rel="stylesheet" type="text/css" href="../../Content/bootstarp-iconpicker.min.css" />
+    <title>SearchFlights</title>
+    <!--<meta http-equiv="refresh" content="60">-->
+</head>
+<body>
+    <script src="../../Scripts/landings.js"></script>
+    <script src="../../Scripts/dateFormat.js"></script>
+    <!--Icons search, arraivles, departures-->
+    <script src="../../Scripts/bootstrap-iconpicker.bundle.min.js"></script>
+    <!--Table pagination-->
+    <script src="../../Scripts/js.js"></script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #ddeeff;">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand" style="margin-bottom:13px;">
+                            <img class="logo" src="../../Content/logo.png" alt="Logo" height="70">
+                        </a>
+                    </div>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <div class="navbar-nav">
+                            <button class="btn btn-outline-white nav-link navFontZise" type="button">Home</button>
+                            <button onclick="location.href='http://localhost:57588/page/GetDepartureFlights'" class="btn btn-outline-white nav-link navFontZise" type="button">Departures</button>
+                            <button onclick="location.href='http://localhost:57588/Page/SearchFlights'" class="btn btn-outline-white nav-link navFontZise" type="button">Search</button>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="navbar1">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h1 class="departurefont">ARRIVALS</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="searchBar">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <form>
+                                <div class="form-group row">
+                                    <label for="multiSelectFieldFlightIds" class="col-xs-4 col-form-label flightLbl">Flight ID:</label>
+                                    <div class="col-sm-8">
+                                        <select id="multiSelectFieldFlightIds" class="form-control bbb"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="multiSelectFieldCompanies" class="col-xs-4 col-form-label flightLbl">Airline:</label>
+                                    <div class="col-sm-8">
+                                        <select id="multiSelectFieldCompanies" class="form-control bbb"> </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="multiSelectFieldCountries" class="col-xs-4 col-form-label flightLbl">Dep. from:</label>
+                                    <div class="col-sm-8">
+                                        <select id="multiSelectFieldCountries" class="form-control bbb"> </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-pull-4">
+                            <div style="margin-top:130px; margin-left:17px">
+                                <button onclick="getFlightsJQ('2','Arrivals')" class="searchBtn"><i class="fa fa-search"></i>Search</button>
+                                <button style="margin:30px 0px 0px 0px" onclick="Clear()" class="searchBtn ">Clear</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <form>
+                    <div class="form-group row">
+                        <label for="maxRows" class="col-sm-3 col-form-label pageLbl">Page size:</label>
+                        <div class="col-sm-6">
+                            <select class="form-control pageSize" name="state" id="maxRows">
+                                <option value="5000">Show ALL Rows</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="70">70</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="time"></div>
+        <div class="row">
+            <div class="col-md-8">
+                <table id="flights"></table>
+            </div>
+        </div>
+        <div class="row">
+            <div style="margin-left:80px">
+                <nav>
+                    <ul class="pagination">
+                        <li data-page="prev" style="width:50px;height:50px">
+                            <span style="margin-right:60px;"><i class='fas fa-caret-square-left' id="arrow2"></i><span class="sr-only">(current)</span></span>
+                        </li>
+                        <li data-page="next" id="prev" style="width:50px;height:50px">
+                            <span class="pageControl"><i class='fas fa-caret-square-right' id="arrow1"></i><span class="sr-only">(current)</span></span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

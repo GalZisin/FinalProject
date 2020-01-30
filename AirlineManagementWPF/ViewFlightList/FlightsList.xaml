@@ -1,0 +1,48 @@
+﻿<Window x:Class="AirlineManagementWPF.FlightsList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AirlineManagementWPF"
+        mc:Ignorable="d"
+        Title="FlightsList" Height="551.481" Width="844.677">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="246"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <ComboBox x:Name="FlightsComboBox" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="20,5,0,0" VerticalAlignment="Top" Width="214" Height="49">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ID ,StringFormat=FlightID:  {0}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.ID, StringFormat=ID:  {0}}" Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.AIRLINECOMPANY_ID, StringFormat=AIRLINECOMPANY_ID:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.ORIGIN_COUNTRY_CODE, StringFormat=ORIGIN_COUNTRY_CODE:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="4" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.DESTINATION_COUNTRY_CODE, StringFormat=DESTINATION_COUNTRY_CODE:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="5" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.DEPARTURE_TIME, StringFormat=DEPARTURE_TIME:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="6" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.LANDING_TIME, StringFormat=LANDING_TIME:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="7" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.REMANING_TICKETS, StringFormat=REMANING_TICKETS:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="8" FontSize="23"  Text="{Binding ElementName=FlightsComboBox, Path=SelectedItem.TOTAL_TICKETS, StringFormat=TOTAL_TICKETS:  {0}}"  Margin="85,10,65,10" RenderTransformOrigin="0.5,0.5"/>
+        
+        <Button Content="Next" HorizontalAlignment="Left" Margin="65,18,0,0" Grid.Row="7" VerticalAlignment="Top" Width="128" Height="33" Click="Button_Click"/>
+        
+    </Grid>
+</Window>

@@ -1,0 +1,58 @@
+﻿<Window x:Class="AirlineManagementWPF.FindFlight"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AirlineManagementWPF"
+        mc:Ignorable="d"
+        Title="FindFlight" Height="582" Width="800">
+    <StackPanel x:Name="grid1" Orientation="Vertical" Margin="0,10,0,30">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="40">
+            <Label Content="Flight ID:" Height="40" Margin="40,0,0,0" FontSize="16"/>
+            <TextBox Text="{Binding MyFlight.ID, Mode=TwoWay}" VerticalAlignment="Top" FontSize="16"
+               x:Name="FlightIdTxtBox" Margin="40,0,0,0" Height="40" Width="200"
+               />
+        </StackPanel>
+        
+        
+        <Button Content="Find flight" HorizontalAlignment="Center" 
+                Margin="0,30,0,0" VerticalAlignment="Top" Width="149" Height="40" Click="Button_Click" FontSize="16">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Foreground" Value="Blue"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding MyFlight.ID}" Value=" ">
+                            <Setter Property="Foreground" Value="Red"/>
+                            <Setter Property="FontWeight" Value="ExtraBold"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Label Content="{Binding MyFlight.ID, Mode=OneWay}" ContentStringFormat="ID: {0}" VerticalAlignment="Top"
+               x:Name="IDlbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.AIRLINECOMPANY_ID , Mode=OneWay}" ContentStringFormat="Airline Company ID: {0}" VerticalAlignment="Top"
+               x:Name="AIRLINECOMPANY_IDlbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.ORIGIN_COUNTRY_CODE , Mode=OneWay}" ContentStringFormat="Origin Country Code: {0}" VerticalAlignment="Top"
+               x:Name="ORIGIN_COUNTRY_CODElbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.DESTINATION_COUNTRY_CODE , Mode=OneWay}" ContentStringFormat="Destination Country Code: {0}" VerticalAlignment="Top"
+               x:Name="DESTINATION_COUNTRY_CODElbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.DEPARTURE_TIME , Mode=OneWay}" ContentStringFormat="Departure Time: {0}" VerticalAlignment="Top"
+               x:Name="DEPARTURE_TIMElbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.LANDING_TIME , Mode=OneWay}" ContentStringFormat="Landing Time: {0}" VerticalAlignment="Top"
+               x:Name="LANDING_TIMElbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.REMANING_TICKETS , Mode=OneWay}" ContentStringFormat="Remainig Tickets: {0}" VerticalAlignment="Top"
+               x:Name="REMANING_TICKETSlbl" Height="26" Margin="100,20,100,0"
+               />
+        <Label Content="{Binding MyFlight.TOTAL_TICKETS , Mode=OneWay}" ContentStringFormat="Total Tickets: {0}" VerticalAlignment="Top"
+               x:Name="TOTAL_TICKETSlbl" Height="26" Margin="100,20,100,0"
+               />
+    </StackPanel>
+</Window>
+
