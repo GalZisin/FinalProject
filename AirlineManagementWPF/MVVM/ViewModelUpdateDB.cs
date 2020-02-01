@@ -172,7 +172,7 @@ namespace AirlineManagementWPF
             ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(token) as ILoggedInAdministratorFacade;
 
             AddDBCommand = new DelegateCommand(() => {
-                Log.logger.Debug("Start AddDBCommand");
+         
                 progressCounter = 0;
                 LogMessage = "";
                 totalResources = NumOfCountries + NumOfCustomers + NumOfAirlineCompanies + NumOfFlights + NumOfAdministrators;
@@ -243,7 +243,7 @@ namespace AirlineManagementWPF
 
                     for (int i = 0; i < NumOfAirlineCompanies; i++)
                     {
-                        Log.logger.Debug($"Before InsertAirlineCompanyToDb i = {i} from {NumOfAirlineCompanies}");
+                    
                         InsertAirlineCompanyToDb(administratorFacade, t);
 
                     }
@@ -313,7 +313,7 @@ namespace AirlineManagementWPF
 
             ReplaceDBCommand = new DelegateCommand(() =>
             {
-                Log.logger.Debug("Start ReplaceDBCommand");
+       
                 InitDB.InitDataBase();
                 progressCounter = 0;
                 LogMessage = "";
@@ -385,7 +385,7 @@ namespace AirlineManagementWPF
 
                     for (int i = 0; i < NumOfAirlineCompanies; i++)
                     {
-                        Log.logger.Debug($"Before InsertAirlineCompanyToDb i = {i} from {NumOfAirlineCompanies}");
+            
                         InsertAirlineCompanyToDb(administratorFacade, t);
 
                     }
@@ -587,7 +587,7 @@ namespace AirlineManagementWPF
             }
             catch
             {
-                Log.logger.Debug("url " + url + " not responce");
+                
             }
 
             return text;
@@ -631,10 +631,10 @@ namespace AirlineManagementWPF
                 {
                     randomAirlineCompanyName = GetRandomAirlineCompanyName(country.COUNTRY_NAME, administratorFacade, t);
                 }
-                catch { Log.logger.Debug(" GetRandomAirlineCompanyName not return value"); }
+                catch {  }
                 if (randomAirlineCompanyName == null || randomAirlineCompanyName == "")
                 {
-                    Log.logger.Debug("randomAirlineCompanyName == blank -continue");
+                  
                     count2++;
                     continue;
                 }
@@ -673,7 +673,7 @@ namespace AirlineManagementWPF
                 count2++;
                 if (count2 > 19)
                 {
-                    Log.logger.Debug("Counter > 19");
+                    
                 }
             }
 
@@ -686,9 +686,9 @@ namespace AirlineManagementWPF
             bool airlineCompanyExist = true;
             Thread.Sleep(2000);
             string airlineCompanyName = "";
-            Log.logger.Debug("GetRandomAirlineCompanyName" + " country=" + country);
+         
             urlAirlineCompanies = "https://en.wikipedia.org/wiki/List_of_airlines_of_Russia".Replace("Russia", country);
-            Log.logger.Debug("urlAirlineCompanies = " + urlAirlineCompanies);
+          
             Task<string> task = WriteWebRequestCountriesAsync(urlAirlineCompanies);
             string airlineCompaniesHtml = task.Result;
 
@@ -707,7 +707,7 @@ namespace AirlineManagementWPF
                     }
                     catch
                     {
-                        Log.logger.Debug("Not found continue"); continue;
+                  
                     }
 
                     string name = "";
@@ -716,7 +716,7 @@ namespace AirlineManagementWPF
                         name = doc.ChildNodes[0].ChildNodes[0].ChildNodes[0].Value;
                     }
                     catch { name = doc.ChildNodes[0].Value; }
-                    Log.logger.Debug("add name " + name);
+                  
                     ls.Add(name);
                 }
             }

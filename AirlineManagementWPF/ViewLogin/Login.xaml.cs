@@ -35,7 +35,7 @@ namespace AirlineManagementWPF
         {
 
             InitializeComponent();
-            Log.InitLog();
+        
               FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             myBorderBackGround = new BorderBackGround { ColorBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("White")) };
             myBorderBackGroundRed = new BorderBackGround { ColorBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("Red")) };
