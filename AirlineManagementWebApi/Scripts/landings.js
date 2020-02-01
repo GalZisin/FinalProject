@@ -40,7 +40,7 @@ function LoadDropboxes() {
     //Get airline companies to drop down box
     $.ajax({
 
-        url: `/Flights/api/AnonymousFacade/allairlinecompanies/search?typeName=Arrivals`
+        url: `http://localhost:57588/api/AnonymousFacade/allairlinecompanies/search?typeName=Arrivals`
 
     }).then((data) => {
 
@@ -65,7 +65,7 @@ function LoadDropboxes() {
     //Get origin countries to drop down box
     $.ajax({
 
-        url: `/Flights/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=Arrivals`
+        url: `http://localhost:57588/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=Arrivals`
 
     }).then((data) => {
 
@@ -90,7 +90,7 @@ function LoadDropboxes() {
     //Get flight Ids to drop down box
     $.ajax({
 
-        url: `/Flights/api/AnonymousFacade/allFlightIdsByScheduledTime/search?typeName=Arrivals`
+        url: `http://localhost:57588/api/AnonymousFacade/allFlightIdsByScheduledTime/search?typeName=Arrivals`
 
     }).then((data) => {
 
@@ -124,7 +124,7 @@ function fetchdata() {
 
     $.ajax({
               
-        url: `/Flights/api/AnonymousFacade/SearchFlightByConditions/search?typeName=Arrivals&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
+        url: `http://localhost:57588/api/AnonymousFacade/SearchFlightByConditions/search?typeName=Arrivals&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
 
     }).then((data) => {
 
@@ -187,7 +187,7 @@ function fetchdata() {
                 estimatedLandingTime = dateFormat(flight.REAL_LANDING_TIME, 'HH:MM:ss')
 
             }
-            $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="/Flights/Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td><td>${estimatedLandingTime}</td><td id="c${number}" class="${statusColor}">${LandingStatus}</td></tr>`)
+            $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="../../Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td><td>${estimatedLandingTime}</td><td id="c${number}" class="${statusColor}">${LandingStatus}</td></tr>`)
             number++;
          
         })
@@ -215,7 +215,7 @@ function getFlightsJQ(bState, typeName) {
 
     $.ajax({
 
-        url: `/Flights/api/AnonymousFacade/SearchFlightByConditions/search?typeName=${typeName}&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
+        url: `http://localhost:57588/api/AnonymousFacade/SearchFlightByConditions/search?typeName=${typeName}&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
 
     }).then((data) => {
         const event = new Date();
@@ -246,7 +246,7 @@ function getFlightsJQ(bState, typeName) {
 
                     scheduledLandingTime = dateFormat(flight.LANDING_TIME, 'HH:MM:ss')
                 }
-                $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="/Flights/Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledDepartureDate}&nbsp&nbsp&nbsp${scheduledDepartureTime}<td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td></tr>`)
+                $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="../../Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledDepartureDate}&nbsp&nbsp&nbsp${scheduledDepartureTime}<td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td></tr>`)
             })
         }
         if (btnState == 2) //(arrivalsDepartures == 'Arrivals')
@@ -300,7 +300,7 @@ function getFlightsJQ(bState, typeName) {
 
                     estimatedLandingTime = dateFormat(flight.REAL_LANDING_TIME, 'HH:MM:ss')
                 }
-                $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="/Flights/Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td><td>${estimatedLandingTime}</td><td class="${statusColor}">${LandingStatus}</td></tr>`)
+                $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="../../Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td><td>${estimatedLandingTime}</td><td class="${statusColor}">${LandingStatus}</td></tr>`)
             })
         }
         else if (btnState == 1) //(arrivalsDepartures == 'Departures')
@@ -324,7 +324,7 @@ function getFlightsJQ(bState, typeName) {
 
                     estimatedDepartureTime = dateFormat(flight.REAL_DEPARTURE_TIME, 'HH:MM:ss')
                 }
-                $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="/Flights/Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledDepartureDate}&nbsp&nbsp&nbsp&nbsp${scheduledDepartureTime}</td><td>${estimatedDepartureTime}</td><td id="status" class="${statusColor}">${flight.Status}</td></tr>`)
+                $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="../../Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledDepartureDate}&nbsp&nbsp&nbsp&nbsp${scheduledDepartureTime}</td><td>${estimatedDepartureTime}</td><td id="status" class="${statusColor}">${flight.Status}</td></tr>`)
             })
         }
         rows = GetNumOfRows();
@@ -401,7 +401,7 @@ function GetOnError() {
 
             estimatedLandingTime = dateFormat(flight.REAL_LANDING_TIME, 'HH:MM:ss')
         }
-        $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="/Flights/Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td><td>${estimatedLandingTime}</td><td class="${statusColor}">${LandingStatus}</td></tr>`)
+        $flight_table.append(`<tr><td><img class="CompanyImage Imageth" src="../../Content/companyImages/${flight.AIRLINE_NAME}.jpg" alt="Logo" width="250" height="100"></td><td> ${flight.AIRLINE_NAME} ${flight.ID} </td><td>${flight.O_COUNTRY_NAME}</td><td>${flight.D_COUNTRY_NAME}</td><td>${scheduledLandingDate}&nbsp&nbsp&nbsp${scheduledLandingTime}</td><td>${estimatedLandingTime}</td><td class="${statusColor}">${LandingStatus}</td></tr>`)
     })
 }
 
