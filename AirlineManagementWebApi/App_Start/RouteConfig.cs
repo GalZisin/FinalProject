@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,9 @@ namespace AirlineManagementWebApi
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            FlightCenterConfig.strConn = System.Configuration.ConfigurationManager.
+           ConnectionStrings["ConnectionString"].ConnectionString;
+           
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(

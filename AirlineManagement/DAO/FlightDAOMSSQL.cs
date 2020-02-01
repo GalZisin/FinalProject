@@ -176,12 +176,14 @@ namespace AirlineManagement
             sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
             sb.Append($" WHERE(REAL_DEPARTURE_TIME BETWEEN DATEADD(hour, 12, GETDATE()) AND CONVERT(datetime, '2021-01-25 23:59:59'))");
             sb.Append($" AND REMANING_TICKETS > 0 AND REMANING_TICKETS < TOTAL_TICKETS");
-
+        
             string SQL = sb.ToString();
             DataSet DS = DL.GetSqlQueryDS(SQL, "Flights");
+            DL.ErrorMessage = "";
             DataTable dt = DS.Tables[0];
             foreach (DataRow dr in dt.Rows)
             {
+                
                 Flight flight = new Flight();
                 flight.ID = (long)dr["ID"];
                 flight.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];

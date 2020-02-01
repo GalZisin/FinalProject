@@ -21,16 +21,6 @@ namespace AirlineManagementWebApi.Controllers
         private FlyingCenterSystem FCS;
         private ILoginToken loginToken = null;
 
-        private static void AddToLogFile(string str)
-        {
-            DateTime dt = DateTime.Now;
-            string ll = dt.Day.ToString() + dt.Month.ToString() + dt.Year.ToString();
-            string path = @"C:\Log\myWebApiTestLog.txt";
-
-            TextWriter writer = new StreamWriter(path, true);
-            writer.WriteLine(ll + " " + str);
-            writer.Close();
-        }
         [Route("api/Login/UserLogin")]
         [HttpPost]
         public IHttpActionResult Authenticate([FromBody] LoginRequest login)
@@ -57,7 +47,6 @@ namespace AirlineManagementWebApi.Controllers
                 //return the token
 
                 //return Request.CreateResponse(HttpStatusCode.Created, token);
-                AddToLogFile($"Token: {token}");
                 return Ok<string>(token);
               
             }

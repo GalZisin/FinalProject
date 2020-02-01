@@ -5,6 +5,7 @@ using SendGrid.Helpers.Mail;
 using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +14,8 @@ using System.Web.Http.Description;
 
 namespace AirlineManagementWebApi.Controllers
 {
+
+
     public class AnonymousFacadeController : ApiController
     {
         private FlyingCenterSystem fcs;
@@ -102,9 +105,9 @@ namespace AirlineManagementWebApi.Controllers
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
             IList<Flight> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
-
             if (flights.Count == 0)
             {
+              
                 return NotFound();
             }
             return Ok(flights);
@@ -515,7 +518,7 @@ namespace AirlineManagementWebApi.Controllers
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("test@example.com", "Airline management");
             var subject = "Sending with SendGrid is Fun";
-            var to = new EmailAddress("galzisin86@gmail.com", $"Example User ");
+            var to = new EmailAddress(email, $"Example User ");
             var plainTextContent = "and easy to do anywhere, even with C#";
             myGuid = Guid.NewGuid().ToString();
             var htmlContent = "Hello"+" "+firstName+" "+lastName+"<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + myGuid;  //"<strong>and easy to do anywhere, even with C#</strong>";
@@ -524,41 +527,24 @@ namespace AirlineManagementWebApi.Controllers
         }
 
         private static bool Save(string host, string key, string value)
-
         {
-
             bool isSuccess = false;
-
             using (RedisClient redisClient = new RedisClient(host))
-
             {
-
                 if (redisClient.Get<string>(key) == null)
-
                 {
-
                     isSuccess = redisClient.Set(key, value);
                     //redisClient.Remove(key);
                 }
-
             }
-
             return isSuccess;
-
         }
-
         private static string Get(string host, string key)
-
         {
-
             using (RedisClient redisClient = new RedisClient(host))
-
             {
-
                 return redisClient.Get<string>(key);
-
             }
-
         }
     }
 

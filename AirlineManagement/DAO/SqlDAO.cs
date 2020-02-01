@@ -27,6 +27,10 @@ namespace AirlineManagement
         }
         public string ErrorMessage
         {
+            set
+            {
+                 sMessage = value;
+            }
             get
             {
                 return sMessage;
