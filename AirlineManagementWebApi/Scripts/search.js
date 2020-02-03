@@ -52,7 +52,8 @@ function DeparturesClick() {
         arrivalsDepartures = 'Arrivals';
     }
     else if (btnState == 3) {
-        arrivalsDepartures = "";
+        //arrivalsDepartures = "";
+        FillDropBox("");
     }
     console.log("arrivalsDepartures from DeparturesClick: " + arrivalsDepartures);
     FillDropBox(arrivalsDepartures);
@@ -73,7 +74,8 @@ function ArrivalsClick() {
         arrivalsDepartures = 'Arrivals';
     }
     else if (btnState == 3) {
-        arrivalsDepartures = "";
+        //arrivalsDepartures = "";
+        FillDropBox("");
     }
     console.log("arrivalsDepartures from ArrivalsClick: " + arrivalsDepartures);
     FillDropBox(arrivalsDepartures);
