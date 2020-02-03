@@ -35,8 +35,6 @@ function GetDepartureStatusColor(status) {
 }
 
 
-
-
 function DeparturesClick() {
     if ($('#BtnDepatures').hasClass('flightBtnShadow')) {
         $('#BtnDepatures').removeClass('flightBtnShadow')

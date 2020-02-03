@@ -515,7 +515,7 @@ namespace AirlineManagement
         {
             IList<long> flightsIds = new List<long>();
             StringBuilder sb = new StringBuilder();
-            string str1 = "";
+            //string str1 = "";
 
             if(typeName == "Arrivals")
             {
