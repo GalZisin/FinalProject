@@ -156,7 +156,7 @@ namespace AirlineManagement
             }
             else if (typeName == "" || typeName == null)
             {
-                sb.Append($" SELECT DISTINCT a.AIRLINE_NAME");
+                sb.Append($" SELECT DISTINCT AIRLINE_NAME");
                 sb.Append($" FROM (SELECT f.ID, a.AIRLINE_NAME, c.COUNTRY_NAME as ComingFrom, co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as DepartureTime, REAL_DEPARTURE_TIME, f.LANDING_TIME, REAL_LANDING_TIME");
                 sb.Append($" FROM Flights as f");
                 sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
