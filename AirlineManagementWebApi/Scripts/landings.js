@@ -2,7 +2,7 @@
     console.log("document loaded");
 
     fetchdata();
-    setInterval(CheckTime, 60000);
+    setInterval(CheckTime, 30000);
    
 });
 
@@ -24,7 +24,7 @@ function Clear() {
     document.getElementById('multiSelectFieldCompanies').selectedIndex = 0;
     document.getElementById('multiSelectFieldCountries').selectedIndex = 0;
     fetchdata();
-    setTimeout(LoadDropboxes, 2000);
+    setTimeout(LoadDropboxes, 500);
 }
 function GetDepartureStatusColor(status) {
     if (status == 'ON TIME') {
@@ -146,7 +146,7 @@ function fetchdata() {
                                     <th>Scheduled time</th>
                                     <th>Estimated time</th>
                                     <th>Status</th></tr>`);
-
+        console.log("Before each");
         $.each(data, function (i, flight) {
             if (data.length > 0) {
 
@@ -459,7 +459,7 @@ function myFunction(data) {
         })
 }
 
-setInterval(function () { myFunction1(); }, 60000)
+//setInterval(function () { myFunction1(); }, 60000)
 
 function GetNumOfRows() {
     let x = document.getElementById("flights").rows.length - 1;
@@ -468,17 +468,13 @@ function GetNumOfRows() {
 
 
 function CheckTime() {
-    console.log("Date.now.getMinutes: " + Date.now.getMinutes());
-    console.log("mouseMoveTime.getMinutes: " + mouseMoveTime.getMinutes());
-    console.log("Diff: " + Date.now.getMinutes() - mouseMoveTime.getMinutes());
-    if (Date.now.getMinutes() - mouseMoveTime.getMinutes() > 1) {
+    var d = new Date();
+    if (d.getMinutes() - mouseMoveTime.getMinutes() > 1) {
         console.log("Run fetchdata()");
         fetchdata();
     }
 }
 
-
 $(document).mousemove(function (event) {
-    mouseMoveTime = Date.now();
-    //$("span").text(event.pageX + ", " + event.pageY);
+    mouseMoveTime = new Date();
 });

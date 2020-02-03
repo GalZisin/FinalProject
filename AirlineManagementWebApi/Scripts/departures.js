@@ -2,7 +2,7 @@
     console.log("document loaded successfully");
   
     fetchdata();
-    setInterval(fetchdata, 60000);
+    setInterval(CheckTime, 30000);
 });
 
 let scheduledDepartureDate = '';
@@ -15,13 +15,14 @@ let statusColor = '';
 let btnState = 0;
 let rows = 0;
 let selectedRows = 5;
+let mouseMoveTime = 0;
 function Clear() {
     document.getElementById('multiSelectFieldFlightIds').selectedIndex = 0;
     document.getElementById('multiSelectFieldCompanies').selectedIndex = 0;
     document.getElementById('multiSelectFieldCountries').selectedIndex = 0;
     fetchdata();
     //LoadDropboxes();
-    setTimeout(LoadDropboxes, 2000);
+    setTimeout(LoadDropboxes, 500);
 }
 function GetDepartureStatusColor(status) {
     if (status == 'ON TIME') {
@@ -302,8 +303,6 @@ function getFlightsJQ(bState, typeName) {
 }
 
 
-
-
 function GetOnError() {
     let statusColor = '';
     let aadata = localStorage.getItem('FlightData');
@@ -379,3 +378,14 @@ function GetNumOfRows() {
     return x;
 }
 
+function CheckTime() {
+    var d = new Date();
+    if (d.getMinutes() - mouseMoveTime.getMinutes() > 1) {
+        console.log("Run fetchdata()");
+        fetchdata();
+    }
+}
+
+$(document).mousemove(function (event) {
+    mouseMoveTime = new Date();
+});
