@@ -54,8 +54,9 @@ function DeparturesClick() {
     else if (btnState == 3) {
         arrivalsDepartures = "";
     }
-    FillDropBox(arrivalsDepartures);
     console.log("arrivalsDepartures from DeparturesClick: " + arrivalsDepartures);
+    FillDropBox(arrivalsDepartures);
+
 }
 function ArrivalsClick() {
     if ($('#BtnArrivals').hasClass('flightBtnShadow')) {
@@ -74,8 +75,9 @@ function ArrivalsClick() {
     else if (btnState == 3) {
         arrivalsDepartures = "";
     }
-    FillDropBox(arrivalsDepartures);
     console.log("arrivalsDepartures from ArrivalsClick: " + arrivalsDepartures);
+    FillDropBox(arrivalsDepartures);
+
 }
 
 //function ArrivalsDeparturesClick() {
