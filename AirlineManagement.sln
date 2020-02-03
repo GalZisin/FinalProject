@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineManagementWPF", "Air
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBGenerator", "DBGenerator\DBGenerator.csproj", "{7EF7FA46-3BBA-411D-8317-4E31779ADB0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineUnitTest", "..\AirlineUnitTest\AirlineUnitTest.csproj", "{C653A8E8-B596-4B08-BEE6-2965781F3D27}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineManagementWebApi", "AirlineManagementWebApi\AirlineManagementWebApi.csproj", "{BF7082A2-E796-4D34-9697-2A68B492533D}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{7EF7FA46-3BBA-411D-8317-4E31779ADB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EF7FA46-3BBA-411D-8317-4E31779ADB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EF7FA46-3BBA-411D-8317-4E31779ADB0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C653A8E8-B596-4B08-BEE6-2965781F3D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C653A8E8-B596-4B08-BEE6-2965781F3D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C653A8E8-B596-4B08-BEE6-2965781F3D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C653A8E8-B596-4B08-BEE6-2965781F3D27}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF7082A2-E796-4D34-9697-2A68B492533D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF7082A2-E796-4D34-9697-2A68B492533D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF7082A2-E796-4D34-9697-2A68B492533D}.Release|Any CPU.ActiveCfg = Release|Any CPU

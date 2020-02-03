@@ -161,10 +161,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AirlineUnitTest\AirlineUnitTest.csproj">
-      <Project>{C653A8E8-B596-4B08-BEE6-2965781F3D27}</Project>
-      <Name>AirlineUnitTest</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AirlineManagement\AirlineManagement.csproj">
       <Project>{06774e26-0c4b-466f-aefa-d01bbf2662d5}</Project>
       <Name>AirlineManagement</Name>

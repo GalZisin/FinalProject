@@ -2,7 +2,8 @@
     console.log("document loaded");
 
     fetchdata();
-    setInterval(fetchdata, 60000);
+    setInterval(CheckTime, 60000);
+   
 });
 
 let scheduledDepartureDate = '';
@@ -17,6 +18,7 @@ let btnState = 0;
 let typeName1 = '';
 let rows = 0;
 let selectedRows = 5;
+let mouseMoveTime = 0;
 function Clear() {
     document.getElementById('multiSelectFieldFlightIds').selectedIndex = 0;
     document.getElementById('multiSelectFieldCompanies').selectedIndex = 0;
@@ -463,3 +465,20 @@ function GetNumOfRows() {
     let x = document.getElementById("flights").rows.length - 1;
     return x;
 }
+
+
+function CheckTime() {
+    console.log("Date.now.getMinutes: " + Date.now.getMinutes());
+    console.log("mouseMoveTime.getMinutes: " + mouseMoveTime.getMinutes());
+    console.log("Diff: " + Date.now.getMinutes() - mouseMoveTime.getMinutes());
+    if (Date.now.getMinutes() - mouseMoveTime.getMinutes() > 1) {
+        console.log("Run fetchdata()");
+        fetchdata();
+    }
+}
+
+
+$(document).mousemove(function (event) {
+    mouseMoveTime = Date.now();
+    //$("span").text(event.pageX + ", " + event.pageY);
+});
