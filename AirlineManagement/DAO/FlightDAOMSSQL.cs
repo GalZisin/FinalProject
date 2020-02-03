@@ -183,7 +183,6 @@ namespace AirlineManagement
             DataTable dt = DS.Tables[0];
             foreach (DataRow dr in dt.Rows)
             {
-                
                 Flight flight = new Flight();
                 flight.ID = (long)dr["ID"];
                 flight.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];

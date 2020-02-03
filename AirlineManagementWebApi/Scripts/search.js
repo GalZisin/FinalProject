@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     console.log("document loaded");
     //getPagination('#flights');
-   
+    
 });
 let scheduledDepartureDate = '';
 let scheduledDepartureTime = '';
@@ -33,6 +33,10 @@ function GetDepartureStatusColor(status) {
     }
     return statusColor;
 }
+
+
+
+
 function DeparturesClick() {
     if ($('#BtnDepatures').hasClass('flightBtnShadow')) {
         $('#BtnDepatures').removeClass('flightBtnShadow')
@@ -51,6 +55,7 @@ function DeparturesClick() {
         arrivalsDepartures = "";
     }
     FillDropBox(arrivalsDepartures);
+    console.log("arrivalsDepartures from DeparturesClick: " + arrivalsDepartures);
 }
 function ArrivalsClick() {
     if ($('#BtnArrivals').hasClass('flightBtnShadow')) {
@@ -70,7 +75,19 @@ function ArrivalsClick() {
         arrivalsDepartures = "";
     }
     FillDropBox(arrivalsDepartures);
+    console.log("arrivalsDepartures from ArrivalsClick: " + arrivalsDepartures);
 }
+
+//function ArrivalsDeparturesClick() {
+//    if (btnState == 3) {
+//        FillDropBox("");
+//    }
+//}
+
+
+
+
+
 function GetBtnState() {
     if (!$('#BtnDepatures').hasClass('flightBtnShadow') && $('#BtnArrivals').hasClass('flightBtnShadow')) {
         btnState = 1;
