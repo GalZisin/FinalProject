@@ -9,21 +9,35 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
+
     <!--<!-- Font Awesome CDN -->
-   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" />
-   
- 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" />
+
+
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
 
-    <script rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"></script>
+    <!--<script rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"></script>-->
+
+
+    <!--   font awesome -->
+    <!--<link rel="stylesheet" href="../../Content/AngularJsCSS/font-awesome.min.css">-->
+    <!--    google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!--owl carousel-->
+    <link rel="stylesheet" href="../../Content/AngularJsCSS/owl.carousel.min.css">
+    <link rel="stylesheet" href="../../Content/AngularJsCSS/owl.theme.default.min.css">
 
 
     <link rel="stylesheet" href="../../Content/search.css">
-    <link rel="stylesheet" type="text/css" href="../../Content/myStyles.css" />
+    <!--<link rel="stylesheet" type="text/css" href="../../Content/myStyles.css" />-->
     <link rel="stylesheet" type="text/css" href="../../Content/bootstarp-iconpicker.min.css" />
+    
+    <!--<link rel="stylesheet" href="../../Content/AngularJsCSS/formStyle.css">-->
+    <link rel="stylesheet" href="../../Content/AngularJsCSS/style.css">
+    <link rel="stylesheet" href="../../Content/AngularJsCSS/navbar.css">
+
     <title>SearchFlights</title>
 </head>
 <body>
@@ -33,30 +47,73 @@
     <script src="../../Scripts/bootstrap-iconpicker.bundle.min.js"></script>
     <!--Table pagination-->
     <script src="../../Scripts/js.js"></script>
+    <!-- Navbar links -->
+    <script src="../../Scripts/AngulaJS/navbarScript.js"></script>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-9">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #ddeeff;">
-                    <div class="navbar-header">
-                        <a href="#" class="navbar-brand" style="margin-bottom:13px;">
-                            <img class="logo" src="../../Content/logo.png" alt="Logo" height="70">
-                        </a>
-                    </div>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarCollapse">
-                        <div class="navbar-nav">
-                            <!--<a href="#" class="nav-item nav-link active">Home</a>-->
-                            <button class="btn btn-outline-white nav-link navFontZise" type="button">Home</button>
-                            <button onclick="location.href='http://localhost:57588/Page/GetDepartureFlights'" class="btn btn-outline-white nav-link navFontZise" type="button">Departures</button>
-                            <button onclick="location.href='http://localhost:57588/Page/GetLandingFlights'" class="btn btn-outline-white nav-link navFontZise" type="button">Arrivals</button>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+
+
+    <!--	nav-->
+    <nav class="navbar navbar-expand-lg  fixed-top">
+        <!-- Brand -->
+        <img class="logo navbar-brand" src="../../Content/AngularJsCSS/logo3.png" alt="Logo" height="100" width="300">
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="http://localhost:57588/Page/FlightDeals">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:57588/Page/GetDepartureFlights">Departures</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:57588/Page/GetLandingFlights">Arrivals</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:57588/Page/FlightDeals">Deals</a>
+                </li>
+
+          
+                <li style="margin-left: 100px;">
+                </li>
+                <li style="margin-right: 20px;">
+                </li>
+
+            </ul>
         </div>
+    </nav>
+    <!--<div class="row">
+    <div class="col-sm-9">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #ddeeff;">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand" style="margin-bottom:13px;">
+                    <img class="logo" src="../../Content/logo.png" alt="Logo" height="70">
+                </a>
+            </div>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">-->
+    <!--<a href="#" class="nav-item nav-link active">Home</a>-->
+    <!--<button class="btn btn-outline-white nav-link navFontZise" type="button">Home</button>
+                        <button onclick="location.href='http://localhost:57588/Page/GetDepartureFlights'" class="btn btn-outline-white nav-link navFontZise" type="button">Departures</button>
+                        <button onclick="location.href='http://localhost:57588/Page/GetLandingFlights'" class="btn btn-outline-white nav-link navFontZise" type="button">Arrivals</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>-->
+    <div class="container-fluid">
         <div class="row">
             <div class="col-sm-9">
                 <div class="navbar1">

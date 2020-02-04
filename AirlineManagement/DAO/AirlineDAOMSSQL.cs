@@ -140,7 +140,6 @@ namespace AirlineManagement
                 sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
                 sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
                 sb.Append($" WHERE(REAL_LANDING_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE()) OR (REAL_LANDING_TIME BETWEEN DATEADD(hour, -4, GETDATE()) AND GETDATE())))");
-             //str1 = $" WHERE(REAL_LANDING_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE()) OR (REAL_LANDING_TIME BETWEEN DATEADD(hour, -4, GETDATE()) AND GETDATE())))";
             }
             else if (typeName == "Departures")
             {
@@ -152,7 +151,6 @@ namespace AirlineManagement
                 sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
                 sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
                 sb.Append($" WHERE (REAL_DEPARTURE_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE())))");
-               //str1 = $" WHERE (REAL_DEPARTURE_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE())))";
             }
             else if (typeName == "" || typeName == null)
             {
@@ -167,17 +165,8 @@ namespace AirlineManagement
                 sb.Append($" FROM Flights as f");
                 sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
                 sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID WHERE(REAL_DEPARTURE_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE()))) as ss");
-                //str1 = $" WHERE(REAL_DEPARTURE_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE())) AND (REAL_LANDING_TIME BETWEEN GETDATE() AND DATEADD(hour, 12, GETDATE()) OR (LANDING_TIME BETWEEN DATEADD(hour, -4, GETDATE()) AND GETDATE())))";
             }
-            //sb.Append($"SELECT * FROM AirlineCompanies");
-            //sb.Append($" SELECT a.AIRLINE_NAME");
-            //sb.Append($" FROM AirlineCompanies as a");
-            //sb.Append($" WHERE a.AIRLINE_NAME IN (SELECT a.AIRLINE_NAME");
-            //sb.Append($" FROM Flights as f");
-            //sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID");
-            //sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
-            //sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
-            //sb.Append(str1);
+
             string SQL = sb.ToString();
             DataSet DS = DL.GetSqlQueryDS(SQL, "AirlineCompanies");
             DataTable dt = DS.Tables[0];

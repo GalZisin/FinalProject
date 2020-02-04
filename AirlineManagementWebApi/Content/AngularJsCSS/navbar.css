@@ -1,0 +1,101 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  /* background-color: #f5f0f5; */
+  /* background-image: url(/cloudy-sky-cartoon.jpg); */
+  background-image: url(/white-clouds-background.jpg);
+}
+
+
+
+/*##############################################navbar############################*/
+
+.navbar {
+  /* border-top: 6px solid #F15025; */
+  border-top: 6px solid#ffc299;
+  /* background-color: #242a33; */
+  background-color:#662900;
+
+
+
+  padding: 0;
+  margin: 0;
+}
+
+.navbar .navbar-brand {
+  display: block;
+  background-color:#ffc299;
+  padding: 15px 40px;
+  font-style: italic;
+  color: #f5f3f5;
+}
+
+
+.navbar .nav-link {
+  color: white;
+  font-size: 20px;
+  padding: 10px 15px;
+  margin: 0 10px;
+}
+
+.navbar .nav-link:hover {
+  color: #f5f3f5;
+  background-color: rgb(206, 77, 17);
+border-radius: 4px;
+}
+
+.subColor{
+  color:black !important;
+}
+.subColor:hover{
+  color:white !important;
+}
+/*##################################################viewport######################*/
+
+.viewport-80 {
+  min-height: 80vh;
+}
+
+/*###############################banener###################################*/
+
+#banner {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  url(images/background-banner.jpg);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#banner::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgb(36, 42, 51);
+  z-index: -1;
+  bottom: 0;
+  transform-origin: left bottom;
+  transform: skewY(3deg);
+}
+
+#banner .banner-title {
+  font-style: italic;
+}
+
+#banner .banner-link {
+  text-decoration: none;
+  font-size: 20px;
+  padding: 15px 25px;
+  border: 2px solid #f15025;
+  background-color: transparent;
+  border-radius: 0;
+  color: #f15025;
+}
+
+
+#banner .banner-link:hover {
+  border: 2px solid #f5f3f5;
+  background-color: #f5f3f5;
+}
+
+

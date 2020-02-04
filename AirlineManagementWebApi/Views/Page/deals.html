@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html ng-app="dataApp">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+
+	
+	<!--   font awesome -->
+	<link rel="stylesheet" href="../../Content/AngularJsCSS/font-awesome.min.css">
+	<!--    google fonts-->
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<!--owl carousel-->
+	<link rel="stylesheet" href="../../Content/AngularJsCSS/owl.carousel.min.css">
+	<link rel="stylesheet" href="../../Content/AngularJsCSS/owl.theme.default.min.css">
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<title>DealCards</title>
+	<!-- <link rel="stylesheet" href="formStyle.css"> -->
+	<link rel="stylesheet" href="../../Content/AngularJsCSS/formStyle.css">
+	<link rel="stylesheet" href="../../Content/AngularJsCSS/style.css">
+	<link rel="stylesheet" href="../../Content/AngularJsCSS/navbar.css">
+	<!-- <script src="angular.js"></script> -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-animate.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-sanitize.js"></script>
+	<script src="../../Scripts/AngulaJS/myBootstrap.js"></script>
+	<script src="../../Scripts/AngulaJS/ui-bootstrap-tpls-3.0.6.min.js"></script>
+	<script src="../../Scripts/AngulaJS/data.service.js"></script>
+	<script src="../../Scripts/AngulaJS/globalconst.service.js"></script>
+	<script src="../../Scripts/AngulaJS/service.service.js"></script>
+	<script src="../../Scripts/AngulaJS/dealCardsCtrl.ctrl.js"></script>
+	<script src="../../Scripts/AngulaJS/form.js"></script>
+	<script src="../../Scripts/AngulaJS/navbarScript.js"></script>
+
+</head>
+
+<body>
+
+	<div ng-controller="dealCardsCtrl">
+
+		<!--	nav-->
+		<nav class="navbar navbar-expand-lg  fixed-top">
+			<!-- Brand -->
+			<!-- <a class="navbar-brand" href="#">Navbar</a> -->
+			<img class="logo navbar-brand" src="../../Content/AngularJsCSS/logo3.png" alt="Logo" height="100" width="300">
+			<!-- Toggler/collapsibe Button -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+				aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+
+					<li class="nav-item">
+						<a class="nav-link active" href="#Home">Home</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:57588/Page/GetDepartureFlights">Departures</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:57588/Page/GetLandingFlights">Arrivals</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:57588/Page/SearchFlights">Search</a>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							Create account
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<!-- <div ng-controller="ModalCtrl"> -->
+							<a href="#" class="nav-item nav-link subColor" data-toggle="modal"
+								data-target="#myCustomerModal">New Customer</a>
+
+							<a href="#" class="nav-item nav-link subColor" data-toggle="modal"
+								data-target="#myCompanyModal">New
+								Company</a>
+							<!-- </div> -->
+						</div>
+					</li>
+				
+
+					<li style="margin-left: 100px;">
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#Login">Login</a>
+					</li>
+
+					<li style="margin-right: 20px;">
+					</li>
+
+				</ul>
+			</div>
+		</nav>
+
+		<div class="container">
+			<!-- card block -->
+			<div class="row">
+				<div class="col-md-3 col-xs-8 centerThis" ng-repeat="flight in filteredFlights">
+					<div class="box" style="margin-right: 1000px;">
+						<div class="imgBx">
+							<img style="z-index:-1;" ng-src="../../Content/AngularJsCSS/Photos/{{flight.D_COUNTRY_NAME}}.jpg"
+								fallback-src="../../Content/AngularJsCSS/Photos/img3.jpg">
+							<div class="myCardStyle">
+								<h2 class="cardCountryName">{{flight.D_COUNTRY_NAME}}</h2>
+								<h6 class="cardFlightName">Fly with {{flight.AIRLINE_NAME}}</h6>
+									<h5 class="cardDateTime"><span>{{flight.DEPARTURE_TIME | date:'mediumDate'}}</span>
+									</h5>
+							</div>
+						</div>
+						<div style="color:black" class="content">
+							<h2>{{flight.D_COUNTRY_NAME}}</h2>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								tempor incididunt ut labore et dolore magna aliqua.</p>
+							<a href="#">Read More</a>
+							</div style="color:black">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- pagination section -->
+			<div class="container">
+				<div class="row" data-ng-show="flights.length == 0">
+					<div class="col-span-8">
+						No results found
+					</div>
+				</div>
+				<div class="row" data-ng-show="flights.length > 0">
+					<div class="col-span-8">
+						<ul uib-pagination total-items="BigTotalItems" ng-model="currentPage" class="pagination-md"
+							boundary-link-numbers="false" rotate="false"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+	<!-- -------------------------------------------Customer modal---------------------------------------- -->
+
+	<div class="modal fade" id="myCustomerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<div ng-controller="MainCtrl">
+				<form ng-submit="onSubmit(customerForm.$valid)"	name="customerForm"  ng-controller="CustomerFormController"> 
+				
+
+					<!-- Close Btn X-->
+					<div class="modal-header headerdialog">
+						<h5 class="modal-title" id="customerexampleModalCenter">Create account</h5>
+						<button type="button" class="close" ng-click="reset()" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body dialogcolor">
+						<div>
+
+						</div>
+						<br>
+						<!-- First name and Last name-->
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-user icon"></i> </span>
+							</div>
+							<input type="text" id="customerFirstName" class="form-control" ng-model="formModel.firstName"
+								style="background-color:#e6f2ff" name="firstName" placeholder="First Name"
+								aria-label="firstName" aria-describedby="basic-addon1" required="required">
+
+							<input type="text" id="customerLastName" class="form-control" ng-model="formModel.lastName"
+								style="background-color:#e6f2ff; margin-left: 20px;" name="lastName"
+								placeholder="Last Name" aria-label="lastName" aria-describedby="basic-addon1"
+								required="required">
+						</div>
+
+						<!-- Username-->
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-user icon"></i> </span>
+							</div>
+							<input type="text" id="customerUsername" class="form-control" ng-model="formModel.username"
+								style="background-color:#e6f2ff" name="username" placeholder="Username"
+								aria-label="Username" aria-describedby="basic-addon1" required="required">
+						</div>
+
+						<!-- Email-->
+						<div class="form-group input-group"
+							ng-class="{'has-error':!customerForm.email.$valid,'has-success':customerForm.email.$valid}">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-paper-plane icon"></i></span>
+							</div>
+							<input type="email" id="customerEmail" class="form-control" ng-model="formModel.email" name="email"
+								style="background-color:#e6f2ff" aria-describedby="emailHelp"
+								placeholder="Email Address" required="required">
+						</div>
+						<pre ng-show="customerForm.email.$invalid && !customerForm.email.$pristine"
+							class="help-block">*Enter a valid email.</pre>
+						<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+							else.</small>
+
+						<!-- Phone number-->
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"><i class="fa fa-phone icon"></i></span>
+							</div>
+							<input type="text" id="customerPhoneNumber" class="form-control" ng-model="formModel.phoneNumber"
+								style="background-color:#e6f2ff" name="phoneNumber" placeholder="Phone Number"
+								aria-label="phoneNumber" aria-describedby="basic-addon1" required="required">
+						</div>
+
+						<!-- Password-->
+						<div class="form-group input-group" id="show_hide_password">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-lock icon"></i> </span>
+							</div>
+							<input type="password" id="customerPassword" class="form-control" ng-model="formModel.password"
+								style="background-color:#e6f2ff" name="password" placeholder="Password"
+								required="required">
+							<div class="input-group-addon">
+								<a id="k" href=""><i id="pp" class="fa fa-eye-slash icon" aria-hidden="true"></i></a>
+							</div>
+						</div>
+
+						<!-- Confirm Password-->
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"><i class="fa fa-key icon"></i></span>
+							</div>
+							<input type="password" id="customerPasswordConfirmation" class="form-control"
+								ng-model="formModel.confirm_password" style="background-color:#e6f2ff"
+								name="confirm_password" placeholder="Confirm Password" required="required">
+
+						</div>
+						<pre style="margin-top: -15px"
+							ng-show="formModel.password != formModel.confirm_password && formModel.confirm_password != null">*Your passwords must match.</pre>
+
+					</div>
+
+					<div class="form-group">
+						<div class="modal-footer footerdialog">
+							<button type="button" id="customermodalClose" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+
+
+							<button type="submit" class="btn btn-primary"
+								>Register</button>
+								<!-- ng-disabled="customerForm.$invalid || customerForm.$pending" -->
+						</div>
+						<div style="margin-top: 10px; color:black" class="text-center">Already have
+							an account?
+							<a href="#">Login here</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<!-- -------------------------------------------Company modal---------------------------------------- -->
+
+	<div class="modal fade" id="myCompanyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<form class="well" ng-class="{'submitted': submitted}" ng-submit="onSubmit(companyForm.$valid)"
+					name="companyForm" ng-controller="CompanyFormController">
+
+					<div class="modal-header headerdialog">
+						<h5 class="modal-title" id="companyexampleModalCenter">Create account</h5>
+						<button type="button" ng-click="reset()" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body dialogcolor">
+						<div>
+
+						</div><br>
+
+						
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-briefcase icon"></i> </span>
+							</div>
+							<input type="text" id="companyName" class="form-control" ng-model="formModel.companyName"
+								style="background-color:#e6f2ff" name="companyName" placeholder="Company Name"
+								aria-label="companyName" aria-describedby="basic-addon1" required="required">
+						</div> <!-- form-group// -->
+
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-user icon"></i> </span>
+							</div>
+							<input type="text" id="companyUsername" class="form-control" ng-model="formModel.username"
+								style="background-color:#e6f2ff" name="username" placeholder="Username"
+								aria-label="Username" aria-describedby="basic-addon1" required="required">
+						</div> <!-- form-group// -->
+
+
+						<div class="form-group input-group"
+							ng-class="{'has-error':!companyForm.email.$valid,'has-success':companyForm.email.$valid}">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-paper-plane icon"></i></span>
+							</div>
+							<input type="email" id="companyEmail" class="form-control" ng-model="formModel.email" name="email"
+								style="background-color:#e6f2ff" aria-describedby="emailHelp"
+								placeholder="Email Address" required="required">
+						</div> <!-- form-group// -->
+
+						<pre ng-show="companyForm.email.$invalid && !customerForm.email.$pristine"
+							class="help-block">*Enter a valid email.</pre>
+						<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+							else.</small>
+
+						<!-- Phone number-->
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"><i class="fa fa-phone icon"></i></span>
+							</div>
+							<input type="text" id="companyPhoneNumber" class="form-control" ng-model="formModel.phoneNumber"
+								style="background-color:#e6f2ff" name="phoneNumber" placeholder="Phone Number"
+								aria-label="phoneNumber" aria-describedby="basic-addon1" required="required">
+						</div>
+
+						<div class="form-group input-group" id="show_hide_password">
+							<div class="input-group-prepend">
+								<span class="input-group"> <i class="fa fa-lock icon"></i> </span>
+							</div>
+							<input type="password" id="companyPassword" class="form-control" ng-model="formModel.password"
+								style="background-color:#e6f2ff" name="password" placeholder="Password"
+								required="required">
+							<div class="input-group-addon">
+								<a id="k" href=""><i id="pp" class="fa fa-eye-slash icon" aria-hidden="true"></i></a>
+							</div>
+						</div> <!-- form-group// -->
+
+
+						<div class="form-group input-group">
+							<div class="input-group-prepend">
+								<span class="input-group"><i class="fa fa-key icon"></i></span>
+							</div>
+							<input type="password" id="companyPasswordConfirmation" class="form-control"
+								ng-model="formModel.confirm_password" style="background-color:#e6f2ff"
+								name="confirm_password" placeholder="Confirm Password" required="required">
+
+						</div> <!-- form-group// -->
+						<pre style="margin-top: -15px"
+							ng-show="formModel.password != formModel.confirm_password && formModel.confirm_password != null">*Your passwords must match.</pre>
+
+					</div>
+
+					<div class="form-group">
+						<div class="modal-footer footerdialog">
+							<button type="button" id="companymodalClose" class="btn btn-secondary" ng-click="reset()"
+								data-dismiss="modal">Close</button>
+
+
+							<button type="submit" class="btn btn-primary" ng-click="submitted= true;"
+								ng-disabled="companyForm.$invalid || companyForm.$pending">Submit</button>
+						</div>
+						<div style="margin-top: 10px; color:black" class="text-center">Already have
+							an account?
+							<a href="#">Login here</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

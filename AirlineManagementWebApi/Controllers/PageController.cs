@@ -28,7 +28,10 @@ namespace AirlineManagementWebApi.Controllers
         {
             return new FilePathResult("~/Views/Page/search.html", "text/html");
         }
-
+        public ActionResult FlightDeals()
+        {
+            return new FilePathResult("~/Views/Page/deals.html", "text/html");
+        }
 
 
         //public static string myGuid = null;
