@@ -105,5 +105,19 @@ namespace AirlineManagementWebApi.Controllers
             }
             return res;
         }
+        [ResponseType(typeof(string))]
+        [Route("api/CustomerFacade/GetCustomerFirstName")]
+        [HttpPost]
+        public IHttpActionResult ShowFirstNameOnLogin()
+        {
+            //IList<Flight> flights = null;
+            //IHttpActionResult result = null;
+            GetLoginToken();
+            if (customerLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(customerLoginToken.User.FIRST_NAME); ;
+        }
     }
 }

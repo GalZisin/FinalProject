@@ -262,13 +262,18 @@
     </Compile>
     <Compile Include="Models\AccountParameters.cs" />
     <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\FlightLists.cs" />
     <Compile Include="Models\Models.cs" />
     <Compile Include="Models\SearchParameters.cs" />
+    <Compile Include="Models\RoundTripFlights.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\myBackgrounds\137094952.jpg" />
+    <Content Include="Content\myBackgrounds\33.jpg" />
+    <Content Include="Content\myBackgrounds\788314.jpg" />
     <Content Include="Content\AngularJSCSS\cloudy-sky-cartoon.jpg" />
     <Content Include="Content\AngularJSCSS\font-awesome.css" />
     <Content Include="Content\AngularJSCSS\font-awesome.min.css" />
@@ -312,16 +317,18 @@
     <Content Include="Content\AngularJSCSS\Photos\Switzerland.jpg" />
     <Content Include="Content\AngularJSCSS\Photos\Turkey.jpg" />
     <Content Include="Content\AngularJSCSS\style.css" />
-    <Content Include="Content\AngularJSCSS\white-clouds-background.jpg" />
+    <Content Include="Content\AngularJSCSS\Photos\white-clouds-background.jpg" />
     <Content Include="Content\bootstarp-iconpicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\myBackgrounds\cloudy-sky-cartoon.jpg" />
     <Content Include="Content\flying-bubbles.css" />
     <Content Include="Content\logo.png" />
-    <Content Include="Content\myStyles.css" />
+    <Content Include="Content\myStyles1.css" />
     <Content Include="Content\search.css" />
+    <Content Include="Content\myBackgrounds\white-clouds-background.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

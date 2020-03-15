@@ -11,6 +11,9 @@ using System.Web;
 using System.Web.Http.Controllers;
 //using System.Web.Http.Filters;
 using System.Web.Http;
+using ServiceStack.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace AirlineManagementWebApi.Controllers
 {
@@ -19,13 +22,14 @@ namespace AirlineManagementWebApi.Controllers
     {
         private FlyingCenterSystem FCS;
         private ILoginToken loginToken = null;
-
+      
         //[ThreadStatic]
         //public static Airline CurrentAirline = null;
 
-     
+
         public override void OnAuthorization(HttpActionContext actionContext)
         {
+
             // got user name + password here in server
             // How to get username and password?
             // does the request have username +psw?
@@ -39,6 +43,7 @@ namespace AirlineManagementWebApi.Controllers
 
 
             string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
+    
 
             //string decodedAuthenticationToken = Encoding.UTF8.GetString(
             //    Convert.FromBase64String(authenticationToken));
@@ -88,5 +93,6 @@ namespace AirlineManagementWebApi.Controllers
             //stops the request -will not arrive to web api controller
             actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized, "You are not allowed!");
         }
+    
     }
 }

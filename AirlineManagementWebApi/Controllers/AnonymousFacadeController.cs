@@ -113,6 +113,52 @@ namespace AirlineManagementWebApi.Controllers
             return Ok(flights);
         }
         /// <summary>
+        /// Get grouped by flights by vacancy and scheduled time
+        /// </summary>
+        /// <returns>IHttpActionResult</returns>
+        [ResponseType(typeof(Flight))]
+        [Route("api/AnonymousFacade/getgrupedbyflightsbyvacancy")]
+        [HttpGet]
+        public IHttpActionResult GetAllGroupedByFlightsByVacancyAndScheduledTime()
+        {
+            fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
+            IList<Flight> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
+            FlightLists flightLists = new FlightLists();
+            List<KMessage> ids = flights.GroupBy(x => new { x.ID }).Select(g => new KMessage() { Keyst = g.Key.ID.ToString() }).ToList<KMessage>();
+            List<KMessage> companies = flights.GroupBy(x => new { x.AIRLINE_NAME }).Select(g => new KMessage() { Keyst = g.Key.AIRLINE_NAME }).ToList<KMessage>();
+            List<KMessage> originCountries = flights.GroupBy(x => new { x.O_COUNTRY_NAME }).Select(g => new KMessage() { Keyst = g.Key.O_COUNTRY_NAME }).ToList<KMessage>();
+            List<KMessage> destinationCountries = flights.GroupBy(x => new { x.D_COUNTRY_NAME }).Select(g => new KMessage() { Keyst = g.Key.D_COUNTRY_NAME }).ToList<KMessage>();
+
+            flightLists.ids = new List<string>();
+            flightLists.companies = new List<string>();
+            flightLists.originCountries = new List<string>();
+            flightLists.destinationCountries = new List<string>();
+
+            foreach (KMessage item in ids)
+            {
+                flightLists.ids.Add(item.Keyst);
+            }
+            foreach (KMessage item in companies)
+            {
+                flightLists.companies.Add(item.Keyst);
+            }
+            foreach (KMessage item in originCountries)
+            {
+                flightLists.originCountries.Add(item.Keyst);
+            }
+            foreach (KMessage item in destinationCountries)
+            {
+                flightLists.destinationCountries.Add(item.Keyst);
+            }
+
+            if (flights.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(flightLists);
+        }
+        /// <summary>
         /// Get flight by id
         /// </summary>
         /// <returns>IHttpActionResult</returns>
@@ -154,7 +200,46 @@ namespace AirlineManagementWebApi.Controllers
             SetRandomArrivalDelayedStatus(flights);
             return Ok(flights);
         }
+        [ResponseType(typeof(Flight))]
+        [Route("api/AnonymousFacade/getflightsbyvacancy/search")]
+        [HttpGet]
+        public IHttpActionResult SearchAllFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate, string returnDate)
+        {
+            string departureFormatedDate = departureDate.Substring(0, 15);
+            DateTime ddt = DateTime.ParseExact(departureFormatedDate, "ddd MMM dd yyyy", null);
+            departureFormatedDate = ddt.ToString("yyyy-MM-dd");
 
+            string returnFormatedDate = returnDate.Substring(0, 15);
+            DateTime rdt = DateTime.ParseExact(returnFormatedDate, "ddd MMM dd yyyy", null);
+            returnFormatedDate = rdt.ToString("yyyy-MM-dd");
+
+            IList <RoundTripFlights> roundTripFlights = new List<RoundTripFlights>();
+            IList<Flight> flights1 = null;
+            IList<Flight> flights2 = null;
+            fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
+
+            flights1 = anonymousFacade.GetAllGoingFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, departureFormatedDate);
+
+            flights2 = anonymousFacade.GetAllReturnFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, returnFormatedDate);
+
+            foreach(Flight flight1 in flights1)
+            {
+                foreach(Flight flight2 in flights2)
+                {
+                    
+                    //flight1.TIME_DIFF = flight1.REAL_LANDING_TIME - flight1.REAL_DEPARTURE_TIME;
+                    //flight2.TIME_DIFF = flight2.REAL_LANDING_TIME - flight2.REAL_DEPARTURE_TIME;
+                    roundTripFlights.Add(new RoundTripFlights { f1 = flight1, f2 = flight2 });
+                }
+            }
+
+            if (flights1 == null && flights2 ==null)
+            {
+                return NotFound();
+            }
+            return Ok(roundTripFlights);
+        }
         /// <summary>
         /// Get flights by origin country code
         /// </summary>
@@ -301,7 +386,7 @@ namespace AirlineManagementWebApi.Controllers
 
                     randomMinutes = random.Next(30, 241);
                     flightsArray[index].REAL_DEPARTURE_TIME = flightsArray[index].DEPARTURE_TIME.AddMinutes(randomMinutes);
-                    flightsArray[index].DEPARTURE_TIME_DIFF = flightsArray[index].DEPARTURE_TIME.Subtract(flightsArray[index].REAL_DEPARTURE_TIME);
+                    flightsArray[index].TIME_DIFF = flightsArray[index].DEPARTURE_TIME.Subtract(flightsArray[index].REAL_DEPARTURE_TIME);
                     anonymousFacade.UpdateRealDepartureTime(flightsArray[index].ID, flightsArray[index].REAL_DEPARTURE_TIME);
                 }
             }
@@ -371,7 +456,7 @@ namespace AirlineManagementWebApi.Controllers
 
                         randomMinutes = random.Next(30, 241);
                         flightsArray[index].REAL_LANDING_TIME = flightsArray[index].LANDING_TIME.AddMinutes(randomMinutes);
-                        flightsArray[index].LANDING_TIME_DIFF = flightsArray[index].LANDING_TIME.Subtract(flightsArray[index].REAL_LANDING_TIME);
+                        flightsArray[index].TIME_DIFF = flightsArray[index].LANDING_TIME.Subtract(flightsArray[index].REAL_LANDING_TIME);
                         anonymousFacade.UpdateRealArrivalTime(flightsArray[index].ID, flightsArray[index].REAL_LANDING_TIME);
                     }
                 }
@@ -496,7 +581,8 @@ namespace AirlineManagementWebApi.Controllers
             account.userName = newAccount.userName;
             account.phoneNumber = newAccount.phoneNumber;
             account.password = newAccount.password;
-            Execute(account.email, account.firstName, account.lastName);
+
+            Execute(account.email, account.firstName, account.lastName, account.userName);
 
             var jsonStringAccount = Newtonsoft.Json.JsonConvert.SerializeObject(account);
             string host = "localhost";
@@ -511,8 +597,8 @@ namespace AirlineManagementWebApi.Controllers
             return Ok($"Email sent");
         }
 
-        public static string myGuid = null;
-        private static void Execute(string email, string firstName, string lastName)
+        //public static string myGuid = null;
+        private static void Execute(string email, string firstName, string lastName, string userName)
         {
             var apiKey = Environment.GetEnvironmentVariable("KeyForEmail", EnvironmentVariableTarget.Machine);
             var client = new SendGridClient(apiKey);
@@ -520,8 +606,9 @@ namespace AirlineManagementWebApi.Controllers
             var subject = "Sending with SendGrid is Fun";
             var to = new EmailAddress(email, $"Example User ");
             var plainTextContent = "and easy to do anywhere, even with C#";
-            myGuid = Guid.NewGuid().ToString();
-            var htmlContent = "Hello"+" "+firstName+" "+lastName+"<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + myGuid;  //"<strong>and easy to do anywhere, even with C#</strong>";
+            var token = TokenManager.GenerateToken(userName);
+            //myGuid = Guid.NewGuid().ToString();
+            var htmlContent = "Hello"+" "+firstName+" "+lastName+"<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = client.SendEmailAsync(msg).Result;
         }
@@ -539,13 +626,13 @@ namespace AirlineManagementWebApi.Controllers
             }
             return isSuccess;
         }
-        private static string Get(string host, string key)
-        {
-            using (RedisClient redisClient = new RedisClient(host))
-            {
-                return redisClient.Get<string>(key);
-            }
-        }
+        //private static string Get(string host, string key)
+        //{
+        //    using (RedisClient redisClient = new RedisClient(host))
+        //    {
+        //        return redisClient.Get<string>(key);
+        //    }
+        //}
     }
 
 }

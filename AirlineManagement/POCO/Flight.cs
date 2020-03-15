@@ -45,8 +45,8 @@ namespace AirlineManagement
         public string AIRLINE_NAME { get; set; }
         public DateTime REAL_DEPARTURE_TIME { get; set; }
         public DateTime REAL_LANDING_TIME { get; set; }
-        public TimeSpan DEPARTURE_TIME_DIFF { get; set; }
-        public TimeSpan LANDING_TIME_DIFF { get; set; }
+        public TimeSpan TIME_DIFF { get; set; }
+        //public TimeSpan LANDING_TIME_DIFF { get; set; }
         //public string Status { get; set; }
         //public string LandingStatus { get; set; }
         public static bool operator ==(Flight thisFlight, Flight otherFlight)

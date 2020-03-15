@@ -1,8 +1,9 @@
 body {
-  font-family: 'Roboto', sans-serif;
-  /* background-color: #f5f0f5; */
-  /* background-image: url(/cloudy-sky-cartoon.jpg); */
-  background-image: url(/white-clouds-background.jpg);
+    font-family: 'Roboto', sans-serif;
+    /*background-color: #f5f0f5;*/
+    /*background-color: yellow;*/
+    /* background-image: url(/cloudy-sky-cartoon.jpg); */
+    background-image: url(../myBackgrounds/white-clouds-background.jpg);
 }
 
 

@@ -127,7 +127,24 @@ namespace AirlineManagement
         {
             return _flightDAO.GetFilteredFlights(typeName, flightId, country, company);
         }
-       
+        /// <summary>
+        /// Return list of filtered flights
+        /// </summary>
+        /// <param name="flightId"></param>
+        /// <param name="originCountry"></param>
+        /// <param name="destinationCountry"></param>
+        /// <param name="company"></param>
+        /// <param name="departureDate"></param>
+        /// <param name="returnDate"></param>
+        /// <returns></returns>
+        public IList<Flight> GetAllGoingFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate)
+        {
+            return _flightDAO.GetAllGoingFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, departureDate);
+        }
+        public IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string returnDate)
+        {
+            return _flightDAO.GetAllReturnFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, returnDate);
+        }
         /// <summary>
         /// Return flights Ids.
         /// </summary>
@@ -157,6 +174,20 @@ namespace AirlineManagement
         public void UpdateRealArrivalTime(long flightId, DateTime arrivalDateTime)
         {
             _flightDAO.UpdateRealArrivalTime(flightId, arrivalDateTime);
+        }
+        public long CreateNewCustomerFromRedis(Customer customer)
+        {
+
+            string res = _customerDAO.CheckIfCustomerExist(customer);
+            if (res == "0")
+            {
+                return _customerDAO.Add(customer);
+            }
+            else
+            {
+                throw new CustomerAlreadyExistException("Customer already exists");
+            }
+
         }
 
     }

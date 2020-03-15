@@ -26,5 +26,8 @@ namespace AirlineManagement
         IList<long> GetFlightIdsByScheduledTime(string typeName);
         IList<AirlineCompany> GetAllAirlineCompaniesByScheduledTime(string typeName);
         IList<Flight> GetAllFlightsByVacancyAndScheduledTime();
+        long CreateNewCustomerFromRedis(Customer customer);
+        IList<Flight> GetAllGoingFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate);
+        IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string returnDate);
     }
 }

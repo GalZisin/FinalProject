@@ -184,7 +184,7 @@ namespace AirlineManagementWebApi.Controllers
         /// Get all airline companies
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(AirlineCompany))]
         [Route("api/AdministratorFacade/allairlinecompanies", Name = "getAllAirlineCompanies")]
         [HttpGet]
         public IHttpActionResult GetAllAirlineCompanies()
@@ -203,6 +203,30 @@ namespace AirlineManagementWebApi.Controllers
                 return NotFound();
             }
             return Ok(airlineCompanies);
+        }
+        /// <summary>
+        /// Get all customers
+        /// </summary>
+        /// <returns>IHttpActionResult</returns>
+        [ResponseType(typeof(Customer))]
+        [Route("api/AdministratorFacade/getAllCustomers", Name = "getAllCustomers")]
+        [HttpGet]
+        public IHttpActionResult GetAllCustomers()
+        {
+            GetLoginToken();
+            if (adminLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
+            IList<Customer> customers = administratorFacade.GetAllCustomers(adminLoginToken);
+
+            if (customers.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(customers);
         }
         /// <summary>
         /// Get Customer by user name (Query parameters)

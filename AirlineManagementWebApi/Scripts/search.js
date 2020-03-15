@@ -138,18 +138,21 @@ $.ajax({
     url: `http://localhost:57588/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=${typeName}`
 
 }).then((data) => {
-
+    
     let len = data.length;
-    let id = 1;
-    $("#multiSelectFieldCountries").empty();
-    $("#multiSelectFieldCountries").append("<option selected></option>");
-    for (var i = 0; i < len; i++) {
+    if (len > 0) {
+        let id = 1;
+        $("#multiSelectFieldCountries").empty();
+        $("#multiSelectFieldCountries").append("<option selected></option>");
+        for (var i = 0; i < len; i++) {
 
-        let name = data[i].COUNTRY_NAME;
+            let name = data[i].COUNTRY_NAME;
 
-        $("#multiSelectFieldCountries").append("<option value='" + id + "'>" + name + "</option>");
-        id++;
+            $("#multiSelectFieldCountries").append("<option value='" + id + "'>" + name + "</option>");
+            id++;
+        }
     }
+  
 }).fail(
 
     // what to do on error
