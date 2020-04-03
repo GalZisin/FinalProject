@@ -141,9 +141,9 @@ namespace AirlineManagement
         {
             return _flightDAO.GetAllGoingFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, departureDate);
         }
-        public IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string returnDate)
+        public IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate)
         {
-            return _flightDAO.GetAllReturnFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, returnDate);
+            return _flightDAO.GetAllReturnFlightsByVacancyAndScheduledTime(originCountry, destinationCountry, company, returnDate);
         }
         /// <summary>
         /// Return flights Ids.

@@ -30,6 +30,6 @@ namespace AirlineManagement
         IList<long> GetFlightIdsByScheduledTime(string typeName);
         IList<Flight> GetAllFlightsByVacancyAndScheduledTime();
         IList<Flight> GetAllGoingFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate);
-        IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string returnDate);
+        IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate);
     }
 }

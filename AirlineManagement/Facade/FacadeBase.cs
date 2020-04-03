@@ -13,7 +13,7 @@ namespace AirlineManagement
         protected ICustomerDAO _customerDAO;
         protected IFlightDAO _flightDAO;
         protected ITicketDAO _ticketDAO;
-        protected IAdministratorDAO _administrator;
+        protected IAdministratorDAO _administratorDAO;
 
         //protected AirlineDAOMSSQL _airlineDAO { get; set; }
         //protected CountryDAOMSSQL _countryDAO { get; set; }
@@ -28,7 +28,7 @@ namespace AirlineManagement
             _customerDAO = new CustomerDAOMSSQL();
             _flightDAO = new FlightDAOMSSQL();
             _ticketDAO = new TicketDAOMSSQL();
-            _administrator = new AdministratorDAOMSSQL();
+            _administratorDAO = new AdministratorDAOMSSQL();
         }
     }
 }

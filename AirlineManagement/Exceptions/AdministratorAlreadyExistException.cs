@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace AirlineManagement
 {
     [Serializable]
-    internal class AdministratorAlreadyExistException : Exception
+    public class AdministratorAlreadyExistException : Exception
     {
         public AdministratorAlreadyExistException()
         {

@@ -30,4 +30,16 @@ namespace AirlineManagementWebApi.Models
         public HttpResponseMessage responseMsg { get; set; }
 
     }
+    public class CustomerDetailsAdmin
+    {
+        public int id { get; set; }
+    }
+    public class AirlineCompanyDetailsAdmin
+    {
+        public int id { get; set; }
+    }
+    public class AdministratorDetailsAdmin
+    {
+        public int id { get; set; }
+    }
 }

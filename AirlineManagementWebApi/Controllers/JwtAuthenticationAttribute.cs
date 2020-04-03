@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 namespace AirlineManagementWebApi.Controllers
 {
-     public class BasicAuthenticationAttribute : AuthorizeAttribute
+     public class JwtAuthenticationAttribute : AuthorizeAttribute
     //public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
     {
         private FlyingCenterSystem FCS;
@@ -40,6 +40,7 @@ namespace AirlineManagementWebApi.Controllers
                     "you must send name +pwd in basic authentication");
                 return;
             }
+
 
 
             string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;

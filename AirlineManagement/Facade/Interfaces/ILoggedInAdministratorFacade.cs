@@ -16,6 +16,7 @@ namespace AirlineManagement
         void RemoveCustomer(LoginToken<Administrator> token, Customer customer);
         Customer GetCustomerById(LoginToken<Administrator> token, long customerId);
         AirlineCompany GetAirlineCompanyById(LoginToken<Administrator> token, long airlineCompanyId);
+        Administrator GetAdministratorById(LoginToken<Administrator> token, long adminId);
         long CreateNewCountry(LoginToken<Administrator> token, Country country);
         Country GetCountryByCode(LoginToken<Administrator> token, long CountryCode);
         void RemoveCountry(LoginToken<Administrator> token, Country country);
@@ -25,12 +26,18 @@ namespace AirlineManagement
         AirlineCompany GetAirlineCompanyByAirlineName(LoginToken<Administrator> token, string AirlineName);
         IList<Country> GetAllCountries(LoginToken<Administrator> token);
         IList<AirlineCompany> GetAllAirlineCompanies(LoginToken<Administrator> token);
-        long CreateFlight(LoginToken<Administrator> token, Flight flight);
+        long CreateNewFlight(LoginToken<Administrator> token, Flight flight);
         void AddTicket(LoginToken<Administrator> token, long customerId, long flightId);
         IList<Flight> GetAllFlights(LoginToken<Administrator> token);
         Ticket GetTicketByCustomerId(LoginToken<Administrator> token, long customerId);
         Administrator GetAdministratorByUserName(LoginToken<Administrator> token, string administratorUserName);
         long CreateNewAdministrator(LoginToken<Administrator> token, Administrator administrator);
-    
+        void UpdateAdministratorDetails(LoginToken<Administrator> token, Administrator administrator);
+        IList<Administrator> GetAllAdministrators(LoginToken<Administrator> token);
+        void RemoveAdministrator(LoginToken<Administrator> token, Administrator administrator);
+
+
+
+
     }
 }

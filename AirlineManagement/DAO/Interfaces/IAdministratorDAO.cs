@@ -10,5 +10,6 @@ namespace AirlineManagement
     {
         Administrator GetAdministratorByUserName(string userName);
         string CheckIfAdministratorExist(Administrator t);
+        string CheckIfAdministratorExistById(Administrator t);
     }
 }

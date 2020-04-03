@@ -23,6 +23,13 @@ namespace AirlineManagement
             string res = DL.ExecuteSqlScalarStatement(SQL1);
             return res;
         }
+        public string CheckIfAirlineCompanyExistById(AirlineCompany t)
+        {
+            StringBuilder sb = new StringBuilder();
+            string SQL1 = $"SELECT COUNT(*) FROM AirlineCompanies WHERE USER_NAME = '{t.USER_NAME}' AND ID <> {t.ID}";
+            string res = DL.ExecuteSqlScalarStatement(SQL1);
+            return res;
+        }
         public long Add(AirlineCompany t)
         {
             StringBuilder sb = new StringBuilder();

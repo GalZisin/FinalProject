@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace AirlineManagement
 {
     [Serializable]
-    internal class FlightUpdateErrorException : Exception
+    public class FlightUpdateErrorException : Exception
     {
         public FlightUpdateErrorException()
         {

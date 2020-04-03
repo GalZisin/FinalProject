@@ -48,7 +48,12 @@ namespace AirlineManagement
         {
             Flight flight = null;
             StringBuilder sb = new StringBuilder();
-            sb.Append($"SELECT * FROM Flights WHERE ID = {flightId}");
+            sb.Append($"SELECT f.ID, a.AIRLINE_NAME, f.ORIGIN_COUNTRY_CODE, f.DESTINATION_COUNTRY_CODE, c.COUNTRY_NAME as 'Coming from', co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as 'Departure time', REAL_DEPARTURE_TIME, f.LANDING_TIME as 'Landing time', REAL_LANDING_TIME, REMANING_TICKETS, TOTAL_TICKETS");
+            sb.Append($" FROM Flights as f");
+            sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID");
+            sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
+            sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
+            sb.Append($" WHERE f.ID = {flightId}");
             string SQL = sb.ToString();
             DataSet DS = DL.GetSqlQueryDS(SQL, "Flights");
             DataTable dt = DS.Tables[0];
@@ -56,13 +61,17 @@ namespace AirlineManagement
             {
                 flight = new Flight();
                 flight.ID = Convert.ToInt64(dr["ID"]);
-                flight.AIRLINECOMPANY_ID = (long)dr["AIRLINECOMPANY_ID"];
+                flight.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
                 flight.ORIGIN_COUNTRY_CODE = (long)dr["ORIGIN_COUNTRY_CODE"];
                 flight.DESTINATION_COUNTRY_CODE = (long)dr["DESTINATION_COUNTRY_CODE"];
-                flight.DEPARTURE_TIME = Convert.ToDateTime(dr["DEPARTURE_TIME"].ToString());
-                flight.LANDING_TIME = Convert.ToDateTime(dr["LANDING_TIME"].ToString());
+                flight.O_COUNTRY_NAME = (string)dr["Coming from"];
+                flight.D_COUNTRY_NAME = (string)dr["Destination"];
+                flight.DEPARTURE_TIME = (DateTime)dr["Departure time"];
+                flight.REAL_DEPARTURE_TIME = (DateTime)dr["REAL_DEPARTURE_TIME"];
+                flight.LANDING_TIME = (DateTime)dr["Landing time"];
+                flight.REAL_LANDING_TIME = (DateTime)dr["REAL_LANDING_TIME"];
                 flight.REMANING_TICKETS = (int)dr["REMANING_TICKETS"];
-                flight.TOTAL_TICKETS = Convert.ToInt32(dr["TOTAL_TICKETS"]);
+                flight.TOTAL_TICKETS = (int)dr["TOTAL_TICKETS"];
             }
             if (flight != null)
             {
@@ -203,13 +212,13 @@ namespace AirlineManagement
             string str1 = "";
             IList<Flight> flights = new List<Flight>();
             StringBuilder sb = new StringBuilder();
-            if (flightId == null || flightId == "")
+            if (flightId == null || flightId == "" || flightId == "Select Flight ID")
             {
                 str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{originCountry}%' AND co.COUNTRY_NAME LIKE '{destinationCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{departureDate}'";
             }
             else
             {
-                str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{originCountry}%' AND co.COUNTRY_NAME LIKE '{destinationCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{departureDate}' AND f.ID = '{flightId}'";
+                str1 = $" AND f.ID = '{flightId}'";
             }
                 sb.Append($"SELECT f.ID, a.AIRLINE_NAME, c.COUNTRY_NAME as 'Coming from', co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as 'Departure time', REAL_DEPARTURE_TIME, f.LANDING_TIME as 'Landing time', REAL_LANDING_TIME, REMANING_TICKETS, TOTAL_TICKETS");
             sb.Append($" FROM Flights as f");
@@ -240,19 +249,19 @@ namespace AirlineManagement
             }
             return flights;
         }
-        public IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string returnDate)
+        public IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate)
         {
             string str1 = "";
             IList<Flight> flights = new List<Flight>();
             StringBuilder sb = new StringBuilder();
-            if (flightId == null || flightId == "")
-            {
-                str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}'";
-            }
-            else
-            {
-                str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}' AND f.ID = '{flightId}'";
-            }
+            //if (flightId == null || flightId == "")
+            //{
+            //    str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}'";
+            //}
+            //else
+            //{
+            //    str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}' AND f.ID = '{flightId}'";
+            //}
             sb.Append($"SELECT f.ID, a.AIRLINE_NAME, c.COUNTRY_NAME as 'Coming from', co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as 'Departure time', REAL_DEPARTURE_TIME, f.LANDING_TIME as 'Landing time', REAL_LANDING_TIME, REMANING_TICKETS, TOTAL_TICKETS");
             sb.Append($" FROM Flights as f");
             sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID");
@@ -260,8 +269,9 @@ namespace AirlineManagement
             sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
             sb.Append($" WHERE (REAL_DEPARTURE_TIME BETWEEN DATEADD(hour, 12, GETDATE()) AND CONVERT(datetime, '2021-01-25 23:59:59'))");
             sb.Append($" AND REMANING_TICKETS > 0 AND REMANING_TICKETS < TOTAL_TICKETS");
-            sb.Append(str1);
-            string SQL = sb.ToString();
+            sb.Append($" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}'");
+           //sb.Append(str1);
+           string SQL = sb.ToString();
             DataSet DS = DL.GetSqlQueryDS(SQL, "Flights");
             DL.ErrorMessage = "";
             DataTable dt = DS.Tables[0];
@@ -286,7 +296,13 @@ namespace AirlineManagement
         {
             IList<Flight> flights = new List<Flight>();
             StringBuilder sb = new StringBuilder();
-            sb.Append($"SELECT * FROM Flights WHERE AIRLINECOMPANY_ID = {airlineCompanyId}");
+
+            sb.Append($"SELECT f.ID, a.AIRLINE_NAME, c.COUNTRY_NAME as 'Coming from', co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as 'Departure time', REAL_DEPARTURE_TIME, f.LANDING_TIME as 'Landing time', REAL_LANDING_TIME, REMANING_TICKETS, TOTAL_TICKETS");
+            sb.Append($" FROM Flights as f");
+            sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID");
+            sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
+            sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
+            sb.Append($" WHERE AIRLINECOMPANY_ID = {airlineCompanyId}");
             string SQL = sb.ToString();
             DataSet DS = DL.GetSqlQueryDS(SQL, "Flights");
             DataTable dt = DS.Tables[0];
@@ -294,11 +310,13 @@ namespace AirlineManagement
             {
                 Flight flight = new Flight();
                 flight.ID = (long)dr["ID"];
-                flight.AIRLINECOMPANY_ID = (long)dr["AIRLINECOMPANY_ID"];
-                flight.ORIGIN_COUNTRY_CODE = (long)dr["ORIGIN_COUNTRY_CODE"];
-                flight.DESTINATION_COUNTRY_CODE = (long)dr["DESTINATION_COUNTRY_CODE"];
-                flight.DEPARTURE_TIME = (DateTime)dr["DEPARTURE_TIME"];
-                flight.LANDING_TIME = (DateTime)dr["LANDING_TIME"];
+                flight.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
+                flight.O_COUNTRY_NAME = (string)dr["Coming from"];
+                flight.D_COUNTRY_NAME = (string)dr["Destination"];
+                flight.DEPARTURE_TIME = (DateTime)dr["Departure time"];
+                flight.REAL_DEPARTURE_TIME = (DateTime)dr["REAL_DEPARTURE_TIME"];
+                flight.LANDING_TIME = (DateTime)dr["Landing time"];
+                flight.REAL_LANDING_TIME = (DateTime)dr["REAL_LANDING_TIME"];
                 flight.REMANING_TICKETS = (int)dr["REMANING_TICKETS"];
                 flight.TOTAL_TICKETS = (int)dr["TOTAL_TICKETS"];
                 flights.Add(flight);

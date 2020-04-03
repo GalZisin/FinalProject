@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Description;
 
 namespace AirlineManagementWebApi.Controllers
 {
     //[Authorize]
-    [BasicAuthenticationAttribute]
+    [JwtAuthenticationAttribute]
     //[CustomAuthorize]
     public class AirlineCompanyFacadeController : ApiController
     {
@@ -95,12 +97,57 @@ namespace AirlineManagementWebApi.Controllers
                 if (flight != null)
                 {
                     airlineCompanyFacade.CancelFlight(airlineCompanyLoginToken, flight);
-                    res = Ok($"Flight with ID = {flightId} not found");
+                    res = Ok($"Flight with ID = {flightId} deleted succsesfully");
                 }
+            }
+            catch (InvalidTokenException ex)
+            {
+                return Ok($"Flight not deleted, authorization error");
+            }
+            catch (FlightDeleteErrorException e1)
+            {
+                return Ok($"Flight not deleted, flight with ID = {flightId} not found");
             }
             catch (Exception e1)
             {
                 res = BadRequest("Flight hasn't been deleted " + e1.Message);
+            }
+            return res;
+        }
+        [ResponseType(typeof(string))]
+        [Route("api/AirlineCompanyFacade/deletecompany/{companyId}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteAirlineCompany([FromUri] long companyId)
+        {
+            IHttpActionResult res = null;
+            AirlineCompany airlineCompany = null;
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
+            try
+            {
+                airlineCompany = airlineCompanyFacade.GetAirlineCompanyByAirlineCompanyId(airlineCompanyLoginToken, companyId);
+                if (airlineCompany != null)
+                {
+                    airlineCompanyFacade.DeleteAirlineCompany(airlineCompanyLoginToken, airlineCompany);
+                    res = Ok($"Airline Company with ID = {companyId} deleted succsesfully");
+                }
+            }
+            catch (InvalidTokenException ex)
+            {
+                return Ok($"Airline Company not deleted, authorization error");
+            }
+            catch (AirlineCompanyDeleteErrorException e1)
+            {
+                return Ok($"Airline Company with ID = {companyId} not deleted");
+            }
+            catch (Exception e1)
+            {
+                res = BadRequest("Airline company hasn't been deleted " + e1.Message);
             }
             return res;
         }
@@ -120,37 +167,105 @@ namespace AirlineManagementWebApi.Controllers
             }
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
-            long flightId = airlineCompanyFacade.CreateFlight(airlineCompanyLoginToken, flight);
-            flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, flightId);
-            return CreatedAtRoute("createflight", new { id = flightId }, flight);
+            try
+            {
+                long flightId = airlineCompanyFacade.CreateFlight(airlineCompanyLoginToken, flight);
+                flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, flightId);
+                //return CreatedAtRoute("createflight", new { id = flightId }, flight);
+                return Ok("Flight created succsesfully ");
+            }
+            catch (InvalidTokenException ex)
+            {
+                return Ok($"Flight not created, authorization error");
+
+            }
+            catch (FlightAlreadyExistException ex)
+            {
+                return Ok($"Flight already exist");
+            }
+            catch (Exception e1)
+            {
+                return Ok($"Flight not created, {e1.Message}");
+            }
         }
         /// <summary>
-        /// Update flight
+        /// Get flight by flight ID
         /// </summary>
-        /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(string))]
-        [Route("api/AirlineCompanyFacade/updateflight/{id}")]
-        [HttpPut]
-        public IHttpActionResult UpdateFlight(int id, [FromBody] Flight flight)
+        /// <param name="flight"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(Flight))]
+        [Route("api/AirlineCompanyFacade/getFlightByFlightId/{flightId}")]
+        [HttpGet]
+        public IHttpActionResult GetFlightByFlightId([FromUri] long flightId)
         {
             GetLoginToken();
             if (airlineCompanyLoginToken == null)
             {
                 return Unauthorized();
             }
+            Flight flight = null;
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
-            flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, id);
+            flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, flightId);
+            if (flight == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(flight);
+            }
+            //return CreatedAtRoute("createflight", new { id = flightId }, flight);
+        }
+        /// <summary>
+        /// Update flight
+        /// </summary>
+        /// <returns>IHttpActionResult</returns>
+        [ResponseType(typeof(string))]
+        [Route("api/AirlineCompanyFacade/updateflight")]
+        [HttpPut]
+        public IHttpActionResult UpdateFlight([FromBody] Flight updatedFlight)
+        {
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            Flight flight = null;
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
+            flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, updatedFlight.ID);
             if (flight == null)
             {
                 return BadRequest("Id not found");
             }
             else
             {
-                airlineCompanyFacade.UpdateFlight(airlineCompanyLoginToken, flight);
-                return Ok($"Flight ID = {id} updated");
+                try
+                {
+                    airlineCompanyFacade.UpdateFlight(airlineCompanyLoginToken, updatedFlight);
+                    return Ok($"Flight with ID = {updatedFlight.ID} updated succsesfully");
+                }
+                catch (InvalidTokenException ex)
+                {
+                    return Ok($"Flight with ID = {updatedFlight.ID} not updated, authorization error");
+                }
+                catch (FlightUpdateErrorException ex)
+                {
+                    return Ok($"Flight with ID = {updatedFlight.ID} not updated, { ex.Message}");
+                }
+                catch (FlightAlreadyExistException ex)
+                {
+                    return Ok($"Flight with ID = {updatedFlight.ID} not updated, Flight already exist");
+                }
+                catch (Exception e1)
+                {
+                    return Ok($"Flight with ID = {updatedFlight.ID} not updated, {e1.Message}");
+                }
             }
+
         }
+
         /// <summary>
         /// Change old password
         /// </summary>
@@ -181,31 +296,58 @@ namespace AirlineManagementWebApi.Controllers
 
         }
         /// <summary>
-        /// Modify airline company details
+        /// Update airline company details
         /// </summary>
         /// <param name="airlineCompany"></param>
         /// <returns></returns>
         [ResponseType(typeof(void))]
-        [Route("api/AirlineCompanyFacade/modifayairline")]
+        [Route("api/AirlineCompanyFacade/updateairlinecompany")]
         [HttpPut]
-        public IHttpActionResult ModifyAirlineDetails([FromBody] AirlineCompany airlineCompany)
+        public IHttpActionResult UpdateAirlineDetails([FromBody] AirlineCompany updatedAirlineCompany)
         {
             GetLoginToken();
             if (airlineCompanyLoginToken == null)
             {
                 return Unauthorized();
             }
+            AirlineCompany airlineCompany = null;
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
-            try
+            airlineCompany = airlineCompanyFacade.GetAirlineCompanyByAirlineCompanyId(airlineCompanyLoginToken, updatedAirlineCompany.ID);
+            if (airlineCompany == null)
             {
-                airlineCompanyFacade.ModifyAirlineDetails(airlineCompanyLoginToken, airlineCompany);
-                return Ok("Airline company details had been modified");
+                return BadRequest("Id not found");
             }
-            catch (Exception e1)
+            else
             {
-                return BadRequest(e1.Message);
+                try
+                {
+                    airlineCompanyFacade.UpdateAirlineDetails(airlineCompanyLoginToken, updatedAirlineCompany);
+                    string newToken = TokenManager.GenerateToken(updatedAirlineCompany.USER_NAME + ":" + updatedAirlineCompany.PASSWORD);
+               
+              
+                    return Ok(newToken);
+                    //return Ok($"Airline Company with ID = {updatedAirlineCompany.ID} updated succsesfully");
+                }
+
+                catch (InvalidTokenException ex)
+                {
+                    return Ok($"Airline Company with ID = {updatedAirlineCompany.ID} not updated, authorization error");
+                }
+                catch (AirlineCompanyUpdateErrorException ex)
+                {
+                    return Ok($"Airline Company with ID = {updatedAirlineCompany.ID} not updated, {ex.Message}");
+                }
+                catch (AirlineCompanyAlreadyExistException ex)
+                {
+                    return Ok($"Airline Company with ID = {updatedAirlineCompany.ID} not updated, Airline Company already exist");
+                }
+                catch (Exception e1)
+                {
+                    return Ok($"Airline Company with ID = {updatedAirlineCompany.ID} not updated, {e1.Message}");
+                }
             }
+
         }
         /// <summary>
         /// Get customer by username (Query parameters)
@@ -237,6 +379,153 @@ namespace AirlineManagementWebApi.Controllers
             }
 
             return res;
+        }
+        [ResponseType(typeof(Flight))]
+        [Route("api/AirlineCompanyFacade/GetAllFlightsByAirlineCompanyId/{companyId}")]
+        [HttpGet]
+        public IHttpActionResult GetAllFlightsByCompanyId([FromUri] long companyId)
+        {
+            IList<Flight> flights = null;
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
+            try
+            {
+                flights = airlineCompanyFacade.GetAllFlightsByCompanyId(airlineCompanyLoginToken, companyId);
+                if (flights != null)
+                {
+
+                    return Ok(flights);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e1)
+            {
+                return NotFound();
+            }
+
+        }
+        /// <summary>
+        /// Get Airline company by company name
+        /// </summary>
+        /// <param name="companyName"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(AirlineCompany))]
+        [Route("api/AirlineCompanyFacade/GetAirlineCompanyByAirlineName/{companyName}")]
+        [HttpGet]
+        public IHttpActionResult GetAirlineCompanyByAirlineName([FromUri] string companyName)
+        {
+            AirlineCompany airlineCompany = null;
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
+            try
+            {
+                airlineCompany = airlineCompanyFacade.GetAirlineCompanyByAirlineName(airlineCompanyLoginToken, companyName);
+                if (airlineCompany != null)
+                {
+
+                    return Ok(airlineCompany);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e1)
+            {
+                return NotFound();
+            }
+
+        }
+        [ResponseType(typeof(AirlineCompany))]
+        [Route("api/AirlineCompanyFacade/getAirlineCompanyByAirlineId/{companyId}")]
+        [HttpGet]
+        public IHttpActionResult GetAirlineCompanyByAirlineCompanyId([FromUri] long companyId)
+        {
+            AirlineCompany airlineCompany = null;
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
+            try
+            {
+                airlineCompany = airlineCompanyFacade.GetAirlineCompanyByAirlineCompanyId(airlineCompanyLoginToken, companyId);
+                if (airlineCompany != null)
+                {
+
+                    return Ok(airlineCompany);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e1)
+            {
+                return NotFound();
+            }
+
+        }
+        [ResponseType(typeof(AirlineCompany))]
+        [Route("api/AirlineCompanyFacade/getAirlineCompany")]
+        [HttpGet]
+        public IHttpActionResult GetAirlineCompany()
+        {
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            AirlineCompany airlineCompany = null;
+            airlineCompany = airlineCompanyLoginToken.User;
+            return Ok(airlineCompany); ;
+        }
+        /// <summary>
+        /// Get Airline Company ID
+        /// </summary>
+        /// <returns></returns>
+        [ResponseType(typeof(string))]
+        [Route("api/AirlineCompanyFacade/getAirlineCompanyId")]
+        [HttpGet]
+        public IHttpActionResult GetAirlineCompanyId()
+        {
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(airlineCompanyLoginToken.User.ID); ;
+        }
+        /// <summary>
+        /// Get airline company name
+        /// </summary>
+        /// <returns></returns>
+        [ResponseType(typeof(string))]
+        [Route("api/AirlineCompanyFacade/getAirlineCompanyName")]
+        [HttpPost]
+        public IHttpActionResult ShowFirstNameOnLogin()
+        {
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(airlineCompanyLoginToken.User.AIRLINE_NAME); ;
         }
     }
 }

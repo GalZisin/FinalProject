@@ -10,7 +10,7 @@ using System.Web.Http.Description;
 namespace AirlineManagementWebApi.Controllers
 {
     //[Authorize]
-    [BasicAuthentication]
+    [JwtAuthentication]
     public class CustomerFacadeController : ApiController
     {
         private FlyingCenterSystem FCS;
@@ -106,12 +106,11 @@ namespace AirlineManagementWebApi.Controllers
             return res;
         }
         [ResponseType(typeof(string))]
-        [Route("api/CustomerFacade/GetCustomerFirstName")]
+        [Route("api/CustomerFacade/getCustomerFirstName")]
         [HttpPost]
         public IHttpActionResult ShowFirstNameOnLogin()
         {
-            //IList<Flight> flights = null;
-            //IHttpActionResult result = null;
+      
             GetLoginToken();
             if (customerLoginToken == null)
             {

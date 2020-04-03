@@ -221,11 +221,12 @@ namespace AirlineManagementWebApi.Controllers
 
             flights1 = anonymousFacade.GetAllGoingFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, departureFormatedDate);
 
-            flights2 = anonymousFacade.GetAllReturnFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, returnFormatedDate);
+         
 
             foreach(Flight flight1 in flights1)
             {
-                foreach(Flight flight2 in flights2)
+                flights2 = anonymousFacade.GetAllReturnFlightsByVacancyAndScheduledTime(flight1.O_COUNTRY_NAME, flight1.D_COUNTRY_NAME, company, returnFormatedDate);
+                foreach (Flight flight2 in flights2)
                 {
                     
                     //flight1.TIME_DIFF = flight1.REAL_LANDING_TIME - flight1.REAL_DEPARTURE_TIME;
@@ -568,7 +569,7 @@ namespace AirlineManagementWebApi.Controllers
 
 
         [ResponseType(typeof(string))]
-        [Route("api/AnonymousFacade/sendEmail", Name = "sendEmail")]
+        [Route("api/AnonymousFacade/register", Name = "register")]
         [HttpPost]
         public IHttpActionResult SendEmailToConfirm([FromBody] AccountParameters newAccount)
         {

@@ -20,6 +20,21 @@ namespace AirlineManagement
                 throw new InvalidTokenException("Token can't be null");
             }
         }
+     /// <summary>
+     /// Delete Airline Comompany
+     /// </summary>
+     /// <param name="token"></param>
+     /// <param name="airlineCompany"></param>
+        public void DeleteAirlineCompany(LoginToken<AirlineCompany> token, AirlineCompany airlineCompany)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                _ticketDAO.RemoveTicketsByAirlineCompanyId(airlineCompany.ID);
+                _flightDAO.RemoveFlightsByAirlineCompanyId(airlineCompany.ID);
+                _airlineDAO.Remove(airlineCompany);
+            }
+        }
         /// <summary>
         /// Cancel flight by using a given flight.
         /// </summary>
@@ -83,12 +98,12 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public IList<Flight> GetAllFlightsByCompanyId(LoginToken<AirlineCompany> token)
+        public IList<Flight> GetAllFlightsByCompanyId(LoginToken<AirlineCompany> token, long companyId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                return _flightDAO.GetFlightsByAirlineCompanyId(token.User.ID);
+                return _flightDAO.GetFlightsByAirlineCompanyId(companyId);
             }
             return null;
         }
@@ -135,16 +150,25 @@ namespace AirlineManagement
             return null;
         }
         /// <summary>
-        /// Modify airline details by using modified airline data.
+        /// Update airline company details by using modified airline data.
         /// </summary>
         /// <param name="token"></param>
         /// <param name="airline"></param>
-        public void ModifyAirlineDetails(LoginToken<AirlineCompany> token, AirlineCompany airline)
+        public void UpdateAirlineDetails(LoginToken<AirlineCompany> token, AirlineCompany airline)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                _airlineDAO.Update(airline);
+                string res = _airlineDAO.CheckIfAirlineCompanyExistById(airline);
+                if (res == "0")
+                {
+                    _airlineDAO.Update(airline);
+                }
+                else
+                {
+                    throw new AirlineCompanyAlreadyExistException("Flight already exists");
+                }
+
             }
         }
         /// <summary>
@@ -249,6 +273,24 @@ namespace AirlineManagement
             }
             return null;
         }
-        
+        public AirlineCompany GetAirlineCompanyByAirlineName(LoginToken<AirlineCompany> token, string companyName)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _airlineDAO.GetAirlineCompanyByAirlineName(companyName);
+            }
+            return null;
+        }
+        public AirlineCompany GetAirlineCompanyByAirlineCompanyId(LoginToken<AirlineCompany> token, long companyId)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _airlineDAO.Get(companyId);
+            }
+            return null;
+        }
+
     }
 }

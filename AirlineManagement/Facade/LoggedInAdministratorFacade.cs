@@ -31,10 +31,10 @@ namespace AirlineManagement
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                string res = _administrator.CheckIfAdministratorExist(administrator);
+                string res = _administratorDAO.CheckIfAdministratorExist(administrator);
                 if (res == "0")
                 {
-                    return _administrator.Add(administrator);
+                    return _administratorDAO.Add(administrator);
                 }
                 else
                 {
@@ -117,7 +117,7 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="flight"></param>
         /// <returns></returns>
-        public long CreateFlight(LoginToken<Administrator> token, Flight flight)
+        public long CreateNewFlight(LoginToken<Administrator> token, Flight flight)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -180,6 +180,19 @@ namespace AirlineManagement
             }
         }
         /// <summary>
+        /// Remove administrator by using given administrator.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="administrator"></param>
+        public void RemoveAdministrator(LoginToken<Administrator> token, Administrator administrator)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                _administratorDAO.Remove(administrator);
+            }
+        }
+        /// <summary>
         /// Update airline company details by using given airline data.
         /// </summary>
         /// <param name="token"></param>
@@ -189,7 +202,16 @@ namespace AirlineManagement
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                _airlineDAO.Update(airline);
+                string res = _airlineDAO.CheckIfAirlineCompanyExistById(airline);
+                if (res == "0")
+                {
+                    _airlineDAO.Update(airline);
+                }
+                else
+                {
+                    throw new AirlineCompanyAlreadyExistException("Flight already exists");
+                }
+
             }
         }
         /// <summary>
@@ -202,7 +224,36 @@ namespace AirlineManagement
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                _customerDAO.Update(customer);
+                string res = _customerDAO.CheckIfCustomerExistById(customer);
+                if (res == "0")
+                {
+                    _customerDAO.Update(customer);
+                }
+                else
+                {
+                    throw new FlightAlreadyExistException("Flight already exists");
+                }  
+            }
+        }
+        /// <summary>
+        /// Update administrator details by using given admin data.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="customer"></param>
+        public void UpdateAdministratorDetails(LoginToken<Administrator> token, Administrator administrator)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                string res = _administratorDAO.CheckIfAdministratorExistById(administrator);
+                if (res == "0")
+                {
+                    _administratorDAO.Update(administrator);
+                }
+                else
+                {
+                    throw new AdministratorAlreadyExistException("Administrator already exists");
+                }
             }
         }
         /// <summary>
@@ -236,6 +287,21 @@ namespace AirlineManagement
             return null;
         }
         /// <summary>
+        /// Get Administrator By Admin ID
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="adminId"></param>
+        /// <returns></returns>
+        public Administrator GetAdministratorById(LoginToken<Administrator> token, long adminId)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _administratorDAO.Get(adminId);
+            }
+            return null;
+        }
+        /// <summary>
         /// Get country By country code
         /// </summary>
         /// <param name="token"></param>
@@ -261,6 +327,20 @@ namespace AirlineManagement
             if (isTokenValid)
             {
                 return _customerDAO.GetAll();
+            }
+            return null;
+        }
+        /// <summary>
+        /// Get all administrators
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public IList<Administrator> GetAllAdministrators(LoginToken<Administrator> token)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _administratorDAO.GetAll();
             }
             return null;
         }
@@ -362,7 +442,7 @@ namespace AirlineManagement
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                return _administrator.GetAdministratorByUserName(administratorUserName);
+                return _administratorDAO.GetAdministratorByUserName(administratorUserName);
             }
             return null;
         }

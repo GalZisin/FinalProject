@@ -15,5 +15,6 @@ namespace AirlineManagement
         AirlineCompany GetAirlineCompanyByAirlineName(string AirlineName);
         string CheckIfAirlineCompanyExist(AirlineCompany t);
         IList<AirlineCompany> GetAllAirlineCompaniesByScheduledTime(string typeName);
+        string CheckIfAirlineCompanyExistById(AirlineCompany t);
     }
 }

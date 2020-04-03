@@ -11,5 +11,6 @@ namespace AirlineManagement
         Customer GetCustomerByUsername(string name);
         Customer GetCustomerByName(string customerName);
         string CheckIfCustomerExist(Customer t);
+        string CheckIfCustomerExistById(Customer t);
     }
 }

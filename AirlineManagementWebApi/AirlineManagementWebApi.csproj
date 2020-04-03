@@ -249,7 +249,7 @@
     <Compile Include="Controllers\AdministratorFacadeController.cs" />
     <Compile Include="Controllers\AirlineCompanyFacadeController.cs" />
     <Compile Include="Controllers\AnonymousFacadeController.cs" />
-    <Compile Include="Controllers\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Controllers\JwtAuthenticationAttribute.cs" />
     <Compile Include="Controllers\CustomAuthrize.cs" />
     <Compile Include="Controllers\CustomerFacadeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

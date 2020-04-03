@@ -877,7 +877,7 @@ namespace AirlineManagementWPF
             newFlight.LANDING_TIME = RandomLandingDate();
             newFlight.REMANING_TICKETS = 300;
             newFlight.TOTAL_TICKETS = 300;
-            administratorFacade.CreateFlight(t, newFlight);
+            administratorFacade.CreateNewFlight(t, newFlight);
             progressCounter++;
             Progress = 100 * progressCounter / totalResources;
             counterFlights++;
