@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement.POCO.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace AirlineManagement
 {
-    public interface IFlightDAO : IBasicDB<Flight>
+    public interface IFlightDAO : IBasicDB<FlightView>
     {
-        Dictionary<Flight, int> GetAllFlightsByVacancy();
+        Dictionary<FlightView, int> GetAllFlightsByVacancy();
         //Flight GetFlightById(int id);
-        IList<Flight> GetFlightsByOriginCountry(long countryCode);
-        IList<Flight> GetFlightsByDestinationCountry(long countryCode);
-        IList<Flight> GetFlightsByDepartureDate(DateTime departureDate);
-        IList<Flight> GetFlightsByLandingDate(DateTime landingDate);
-        IList<Flight> GetFlightsByAirlineCompanyId(long airlineCompanyId);
-        IList<Flight> GetFlightsByCustomerId(long CustomerId);
+        IList<FlightView> GetFlightsByOriginCountry(long countryCode);
+        IList<FlightView> GetFlightsByDestinationCountry(long countryCode);
+        IList<FlightView> GetFlightsByDepartureDate(DateTime departureDate);
+        IList<FlightView> GetFlightsByLandingDate(DateTime landingDate);
+        IList<FlightView> GetFlightsByAirlineCompanyId(long airlineCompanyId);
+        IList<FlightView> GetFlightsByCustomerId(long CustomerId);
         void UpdateRemainingTickets(long flightId);
         int GetReminingTickets(long flightId);
         void RemoveFlightsByAirlineCompanyId(long airlineCompamyId);
         void RemoveFlightsByCountryCode(long countryCode);
-        IList<Flight> GetFlightsByCustomerUserName(string customerUserName);
-        string CheckIfFlightExist(Flight t);
-        Flight GetFlightById(long flightId);
+        IList<FlightView> GetFlightsByCustomerUserName(string customerUserName);
+        string CheckIfFlightExist(FlightView t);
+        FlightView GetFlightById(long flightId);
         IList<long> GetFlightIds();
         void UpdateRealDepartureTime(long flightID, DateTime departureDateTime);
         void UpdateRealArrivalTime(long flightID, DateTime arrivalDateTime);
-        IList<Flight> GetFilteredFlights(string typeName, string flightId, string country, string company);
+        IList<FlightView> GetFilteredFlights(string typeName, string flightId, string country, string company);
         IList<long> GetFlightIdsByScheduledTime(string typeName);
-        IList<Flight> GetAllFlightsByVacancyAndScheduledTime();
-        IList<Flight> GetAllGoingFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate);
-        IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate);
+        IList<FlightView> GetAllFlightsByVacancyAndScheduledTime();
+        IList<FlightView> GetAllGoingFlightsByVacancyAndScheduledTime(string flightNumber, string originCountry, string destinationCountry, string company, string departureDate);
+        IList<FlightView> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate);
     }
 }

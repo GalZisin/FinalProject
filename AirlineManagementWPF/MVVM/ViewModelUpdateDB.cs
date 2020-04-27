@@ -46,7 +46,6 @@ namespace AirlineManagementWPF
                 counterCustomers = value;
                 OnPropertyChanged("CounterCustomers");
             }
-
         }
         public static int counterAdministrator = 0;
         public static int counterAielineCompanies = 0;
@@ -61,7 +60,6 @@ namespace AirlineManagementWPF
         private LoginToken<Administrator> t = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
 
         public DelegateCommand AddDBCommand { get; set; }
         public DelegateCommand ReplaceDBCommand { get; set; }
@@ -82,7 +80,6 @@ namespace AirlineManagementWPF
                 logMessage = value;
                 OnPropertyChanged("LogMessage");
             }
-
         }
         private int numOfCustomers;
         public int NumOfCustomers
@@ -96,7 +93,6 @@ namespace AirlineManagementWPF
                 numOfCustomers = value;
                 OnPropertyChanged("NumOfCustomers");
             }
-
         }
         private int numOfAirlineCompanies;
         public int NumOfAirlineCompanies
@@ -170,9 +166,8 @@ namespace AirlineManagementWPF
             t = _token as LoginToken<Administrator>;
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(token) as ILoggedInAdministratorFacade;
-
-            AddDBCommand = new DelegateCommand(() => {
-         
+            AddDBCommand = new DelegateCommand(() =>
+            {
                 progressCounter = 0;
                 LogMessage = "";
                 totalResources = NumOfCountries + NumOfCustomers + NumOfAirlineCompanies + NumOfFlights + NumOfAdministrators;
@@ -222,7 +217,6 @@ namespace AirlineManagementWPF
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfCustomers} customers");
 
                     }
-
                     InsertCountriesToDbByNumOfCountries(NumOfCountries, administratorFacade, t);
                     if (counterCountries == NumOfCountries)
                     {
@@ -243,9 +237,7 @@ namespace AirlineManagementWPF
 
                     for (int i = 0; i < NumOfAirlineCompanies; i++)
                     {
-                    
                         InsertAirlineCompanyToDb(administratorFacade, t);
-
                     }
                     if (counterAielineCompanies == NumOfAirlineCompanies)
                     {
@@ -263,7 +255,6 @@ namespace AirlineManagementWPF
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfAirlineCompanies} airline companies");
                     }
-
                     for (int i = 0; i < NumOfFlights; i++)
                     {
                         InsertFlightsToDb(administratorFacade, t);
@@ -284,7 +275,6 @@ namespace AirlineManagementWPF
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfFlights} flights");
                     }
-
                     for (int i = 0; i < NumOfTickets; i++)
                     {
                         InsetTicketsToDb(administratorFacade, t);
@@ -305,15 +295,11 @@ namespace AirlineManagementWPF
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfTickets} tickets");
                     }
-
                 });
-
             }, () => { return CanExecuteAddMethod(); });
-
 
             ReplaceDBCommand = new DelegateCommand(() =>
             {
-       
                 InitDB.InitDataBase();
                 progressCounter = 0;
                 LogMessage = "";
@@ -341,7 +327,6 @@ namespace AirlineManagementWPF
                             LogMessage = LogMessage + "\n";
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfCustomers} Administrators");
-
                     }
                     for (int i = 0; i < NumOfCustomers; i++)
                     {
@@ -362,9 +347,7 @@ namespace AirlineManagementWPF
                             LogMessage = LogMessage + "\n";
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfCustomers} customers");
-
                     }
-
                     InsertCountriesToDbByNumOfCountries(NumOfCountries, administratorFacade, t);
                     if (counterCountries == NumOfCountries)
                     {
@@ -385,9 +368,7 @@ namespace AirlineManagementWPF
 
                     for (int i = 0; i < NumOfAirlineCompanies; i++)
                     {
-            
                         InsertAirlineCompanyToDb(administratorFacade, t);
-
                     }
                     if (counterAielineCompanies == NumOfAirlineCompanies)
                     {
@@ -405,7 +386,6 @@ namespace AirlineManagementWPF
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfAirlineCompanies} airline companies");
                     }
-
                     for (int i = 0; i < NumOfFlights; i++)
                     {
                         InsertFlightsToDb(administratorFacade, t);
@@ -426,7 +406,6 @@ namespace AirlineManagementWPF
                         }
                         LogMessage = LogMessage + string.Format($"Failed to create {NumOfFlights} flights");
                     }
-
                     for (int i = 0; i < NumOfTickets; i++)
                     {
                         InsetTicketsToDb(administratorFacade, t);
@@ -457,9 +436,7 @@ namespace AirlineManagementWPF
                     }
                 });
 
-
             }, () => { return CanExecuteAddMethod(); });
-
 
             Task.Run(() =>
             {
@@ -469,9 +446,7 @@ namespace AirlineManagementWPF
                     ReplaceDBCommand.RaiseCanExecuteChanged(); // go check the enable/disable
                     Thread.Sleep(250);
                 }
-
             });
-
         }
 
         private void OnPropertyChanged(string property)
@@ -587,7 +562,7 @@ namespace AirlineManagementWPF
             }
             catch
             {
-                
+
             }
 
             return text;
@@ -604,7 +579,7 @@ namespace AirlineManagementWPF
             int count2 = 0;
             while (!isAirlineCompanyInserted && count2 < 20)
             {
-                if(NumOfCountries == 0)
+                if (NumOfCountries == 0)
                 {
                     random1 = new Random();
                     countries = administratorFacade.GetAllCountries(t);
@@ -624,17 +599,14 @@ namespace AirlineManagementWPF
                     index = random1.Next(0, countriesToAddArray.Length);
                     country = administratorFacade.GetCountryByName(t, countriesToAddArray[index]);
                 }
-               
-
                 string randomAirlineCompanyName = "";
                 try
                 {
                     randomAirlineCompanyName = GetRandomAirlineCompanyName(country.COUNTRY_NAME, administratorFacade, t);
                 }
-                catch {  }
+                catch { }
                 if (randomAirlineCompanyName == null || randomAirlineCompanyName == "")
                 {
-                  
                     count2++;
                     continue;
                 }
@@ -662,7 +634,6 @@ namespace AirlineManagementWPF
                             break;
                         }
                     }
-
                     newAirlineCompany.PASSWORD = RandomString();
                     administratorFacade.CreateNewAirline(t, newAirlineCompany);
                     progressCounter++;
@@ -673,11 +644,9 @@ namespace AirlineManagementWPF
                 count2++;
                 if (count2 > 19)
                 {
-                    
+
                 }
             }
-
-
         }
         public string GetRandomAirlineCompanyName(string country, ILoggedInAdministratorFacade administratorFacade, LoginToken<Administrator> t)
         {
@@ -686,12 +655,9 @@ namespace AirlineManagementWPF
             bool airlineCompanyExist = true;
             Thread.Sleep(2000);
             string airlineCompanyName = "";
-         
             urlAirlineCompanies = "https://en.wikipedia.org/wiki/List_of_airlines_of_Russia".Replace("Russia", country);
-          
             Task<string> task = WriteWebRequestCountriesAsync(urlAirlineCompanies);
             string airlineCompaniesHtml = task.Result;
-
             string[] paragraphArray = airlineCompaniesHtml.Split('\n');
             List<string> ls = new List<string>();
             for (int j = 0; j < paragraphArray.Length; j++)
@@ -707,16 +673,14 @@ namespace AirlineManagementWPF
                     }
                     catch
                     {
-                  
-                    }
 
+                    }
                     string name = "";
                     try
                     {
                         name = doc.ChildNodes[0].ChildNodes[0].ChildNodes[0].Value;
                     }
                     catch { name = doc.ChildNodes[0].Value; }
-                  
                     ls.Add(name);
                 }
             }
@@ -744,7 +708,6 @@ namespace AirlineManagementWPF
                 }
                 counter++;
             }
-
             return airlineCompanyName;
         }
         public void AddToCountryList(ILoggedInAdministratorFacade administratorFacade, LoginToken<Administrator> t)
@@ -754,16 +717,13 @@ namespace AirlineManagementWPF
             country = new Country();
             for (int i = 0; i < CountryArray.Names.Length - 1; i++)
             {
-
                 country = administratorFacade.GetCountryByName(t, CountryArray.Names[i]);
-
                 if (country == null)
                 {
                     countryList.Add(CountryArray.Names[i]);
                 }
             }
         }
-
         public void InsertCountriesToDbByNumOfCountries(int NumOfCountries, ILoggedInAdministratorFacade administratorFacade, LoginToken<Administrator> t)
         {
             Country newCountry = null;
@@ -776,13 +736,10 @@ namespace AirlineManagementWPF
                 countriesNotInDbArray[i] = countryList[i];
                 countriesListToAdd.Add(countryList[i]);
             }
-
-
             for (int i = 0; i < NumOfCountries; i++)
             {
                 for (int j = 1; j <= 10; j++)
                 {
-
                     random1 = new Random();
                     index = random1.Next(0, countriesNotInDbArray.Length);
                     urlAirlineCompanies = "https://en.wikipedia.org/wiki/List_of_airlines_of_Russia".Replace("Russia", countriesNotInDbArray[index]);
@@ -798,7 +755,6 @@ namespace AirlineManagementWPF
                         break;
                     }
                 }
-
                 countriesToAddArray[i] = countryName;
                 newCountry = new Country();
                 newCountry.COUNTRY_NAME = countriesToAddArray[i];
@@ -811,7 +767,6 @@ namespace AirlineManagementWPF
                     for (int k = 0; k < countriesListToAdd.Count; k++)
                     {
                         countriesNotInDbArray[k] = countriesListToAdd[k];
-
                     }
                     progressCounter++;
                     Progress = 100 * progressCounter / totalResources;
@@ -819,10 +774,8 @@ namespace AirlineManagementWPF
                 }
             }
         }
-
         public void InsertFlightsToDb(ILoggedInAdministratorFacade administratorFacade, LoginToken<Administrator> t)
         {
-            
             Flight newFlight = null;
             bool equalsOroginCountry = true;
             IList<AirlineCompany> airlineCompaniesListFromDb = new List<AirlineCompany>();
@@ -844,7 +797,7 @@ namespace AirlineManagementWPF
                 {
                     countries = administratorFacade.GetAllCountries(t);
                     string[] newCountryArray = new string[countries.Count];
-                  
+
                     for (int i = 0; i < countries.Count; i++)
                     {
                         newCountryArray[i] = countries[i].COUNTRY_NAME;
@@ -911,7 +864,7 @@ namespace AirlineManagementWPF
                 {
                     administratorFacade.AddTicket(t, customerArray[index1].ID, flightsArray[index2].ID);
                     progressCounter++;
-                    if(totalResources == 0)
+                    if (totalResources == 0)
                     {
                         totalResources = 1;
                     }
@@ -957,8 +910,8 @@ namespace AirlineManagementWPF
             minutes = rnd.Next(1, 721);
 
             DateTime currentTime = DateTime.Now;
-          
-           return currentTime.AddMinutes(minutes);
+
+            return currentTime.AddMinutes(minutes);
         }
         public DateTime RandomLandingDate()
         {
@@ -1000,5 +953,4 @@ namespace AirlineManagementWPF
         public string PhoneNumber { get; set; }
         public string CreditCardNumber { get; set; }
     }
-
 }

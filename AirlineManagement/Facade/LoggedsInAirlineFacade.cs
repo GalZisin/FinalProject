@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement.POCO.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <param name="flight"></param>
-        public void CancelFlight(LoginToken<AirlineCompany> token, Flight flight)
+        public void CancelFlight(LoginToken<AirlineCompany> token, FlightView flight)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -76,7 +77,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <param name="flight"></param>
-        public long CreateFlight(LoginToken<AirlineCompany> token, Flight flight)
+        public long CreateFlight(LoginToken<AirlineCompany> token, FlightView flight)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -98,7 +99,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public IList<Flight> GetAllFlightsByCompanyId(LoginToken<AirlineCompany> token, long companyId)
+        public IList<FlightView> GetAllFlightsByCompanyId(LoginToken<AirlineCompany> token, long companyId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -112,7 +113,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public IList<Flight> GetAllFlights(LoginToken<AirlineCompany> token)
+        public IList<FlightView> GetAllFlights(LoginToken<AirlineCompany> token)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -166,7 +167,7 @@ namespace AirlineManagement
                 }
                 else
                 {
-                    throw new AirlineCompanyAlreadyExistException("Flight already exists");
+                    throw new AirlineCompanyAlreadyExistException("Airline company already exists");
                 }
 
             }
@@ -177,7 +178,7 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="flight"></param>
         /// 
-        public void UpdateFlight(LoginToken<AirlineCompany> token, Flight flight)
+        public void UpdateFlight(LoginToken<AirlineCompany> token, FlightView flight)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -190,7 +191,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <param name="flight"></param>
-        public void UpdateRemainingTickets(LoginToken<AirlineCompany> token, Flight flight)
+        public void UpdateRemainingTickets(LoginToken<AirlineCompany> token, FlightView flight)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -204,12 +205,26 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="flightId"></param>
         /// <returns></returns>
-        public Flight GetFlightByFlightId(LoginToken<AirlineCompany> token, long flightId)
+        public FlightView GetFlightByFlightId(LoginToken<AirlineCompany> token, long flightId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
                 return _flightDAO.Get(flightId);
+            }
+            return null;
+        }
+        /// <summary>
+        /// Get all countries
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public IList<Country> GetAllCountries(LoginToken<AirlineCompany> token)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _countryDAO.GetAll();
             }
             return null;
         }
@@ -264,12 +279,12 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        public Ticket GetTicketByCustomerId(LoginToken<AirlineCompany> token, long customerId)
+        public IList<TicketView> GetTicketByCustomerId(LoginToken<AirlineCompany> token, long customerId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                return _ticketDAO.GetTicketByCustomerId(customerId);
+                return _ticketDAO.GetAllTicketsByCustomerId(customerId);
             }
             return null;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement.POCO.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,7 @@ namespace AirlineManagement
         /// Return list of all flights.
         /// </summary>
         /// <returns></returns>
-        public IList<Flight> GetAllFlights()
+        public IList<FlightView> GetAllFlights()
         {
             return _flightDAO.GetAll();
         }
@@ -52,7 +53,7 @@ namespace AirlineManagement
         /// Get all flights by vacancy
         /// </summary>
         /// <returns></returns>
-        public Dictionary<Flight, int> GetAllFlightsByVacancy()
+        public Dictionary<FlightView, int> GetAllFlightsByVacancy()
         {
             return _flightDAO.GetAllFlightsByVacancy();
         }
@@ -60,7 +61,7 @@ namespace AirlineManagement
         /// Get all flights by vacancy and scheduled time
         /// </summary>
         /// <returns></returns>
-        public IList<Flight> GetAllFlightsByVacancyAndScheduledTime()
+        public IList<FlightView> GetAllFlightsByVacancyAndScheduledTime()
         {
             return _flightDAO.GetAllFlightsByVacancyAndScheduledTime();
         }
@@ -69,7 +70,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="flightId"></param>
         /// <returns></returns>
-        public Flight GetFlightById(long flightId)
+        public FlightView GetFlightById(long flightId)
         {
             return _flightDAO.Get(flightId);
         }
@@ -78,7 +79,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="flightId"></param>
         /// <returns></returns>
-        public Flight SearchFlightById(long flightId)
+        public FlightView SearchFlightById(long flightId)
         {
             return _flightDAO.GetFlightById(flightId);
         }
@@ -87,7 +88,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="departureDate"></param>
         /// <returns></returns>
-        public IList<Flight> GetFlightsByDepatrureDate(DateTime departureDate)
+        public IList<FlightView> GetFlightsByDepatrureDate(DateTime departureDate)
         {
             return _flightDAO.GetFlightsByDepartureDate(departureDate);
         }
@@ -96,7 +97,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="countryCode"></param>
         /// <returns></returns>
-        public IList<Flight> GetFlightsByDestinationCountry(long countryCode)
+        public IList<FlightView> GetFlightsByDestinationCountry(long countryCode)
         {
             return _flightDAO.GetFlightsByDestinationCountry(countryCode);
         }
@@ -105,7 +106,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="landingDate"></param>
         /// <returns></returns>
-        public IList<Flight> GetFlightsByLandingDate(DateTime landingDate)
+        public IList<FlightView> GetFlightsByLandingDate(DateTime landingDate)
         {
             return _flightDAO.GetFlightsByLandingDate(landingDate);
         }
@@ -114,7 +115,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="countryCode"></param>
         /// <returns></returns>
-        public IList<Flight> GetFlightsByOriginCountry(long countryCode)
+        public IList<FlightView> GetFlightsByOriginCountry(long countryCode)
         {
             return _flightDAO.GetFlightsByOriginCountry(countryCode);
         }
@@ -123,25 +124,25 @@ namespace AirlineManagement
         /// Return list of filtered or all flights.
         /// </summary>
         /// <returns></returns>
-        public IList<Flight> GetAllFilteredFlights(string typeName, string flightId, string country, string company)
+        public IList<FlightView> GetAllFilteredFlights(string typeName, string flightId, string country, string company)
         {
             return _flightDAO.GetFilteredFlights(typeName, flightId, country, company);
         }
         /// <summary>
         /// Return list of filtered flights
         /// </summary>
-        /// <param name="flightId"></param>
+        /// <param name="flightNumber"></param>
         /// <param name="originCountry"></param>
         /// <param name="destinationCountry"></param>
         /// <param name="company"></param>
         /// <param name="departureDate"></param>
         /// <param name="returnDate"></param>
         /// <returns></returns>
-        public IList<Flight> GetAllGoingFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate)
+        public IList<FlightView> GetAllGoingFlightsByVacancyAndScheduledTime(string flightNumbers, string originCountry, string destinationCountry, string company, string departureDate)
         {
-            return _flightDAO.GetAllGoingFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, departureDate);
+            return _flightDAO.GetAllGoingFlightsByVacancyAndScheduledTime(flightNumbers, originCountry, destinationCountry, company, departureDate);
         }
-        public IList<Flight> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate)
+        public IList<FlightView> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate)
         {
             return _flightDAO.GetAllReturnFlightsByVacancyAndScheduledTime(originCountry, destinationCountry, company, returnDate);
         }

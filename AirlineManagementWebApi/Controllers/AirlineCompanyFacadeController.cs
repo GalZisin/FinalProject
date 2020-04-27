@@ -1,4 +1,5 @@
 ﻿using AirlineManagement;
+using AirlineManagement.POCO.Views;
 using AirlineManagementWebApi.Models;
 using System;
 using System.Collections.Generic;
@@ -50,10 +51,34 @@ namespace AirlineManagementWebApi.Controllers
             return Ok(Tickets);
         }
         /// <summary>
+        /// Get all countries
+        /// </summary>
+        /// <returns></returns>
+        [ResponseType(typeof(Country))]
+        [Route("api/AirlineCompanyFacade/getAllCountries")]
+        [HttpGet]
+        public IHttpActionResult GetAllCountries()
+       {
+            GetLoginToken();
+            if (airlineCompanyLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
+            IList<Country> countries = airlineCompanyFacade.GetAllCountries(airlineCompanyLoginToken);
+
+            if (countries.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(countries);
+        }
+        /// <summary>
         /// Get all flights
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AirlineCompanyFacade/allflights")]
         [HttpGet]
         public IHttpActionResult GetAllFlights()
@@ -65,7 +90,7 @@ namespace AirlineManagementWebApi.Controllers
             }
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
-            IList<Flight> flights = airlineCompanyFacade.GetAllFlights(airlineCompanyLoginToken);
+            IList<FlightView> flights = airlineCompanyFacade.GetAllFlights(airlineCompanyLoginToken);
 
             if (flights.Count == 0)
             {
@@ -83,7 +108,7 @@ namespace AirlineManagementWebApi.Controllers
         public IHttpActionResult RemoveFlight([FromUri] long flightId)
         {
             IHttpActionResult res = null;
-            Flight flight = null;
+            FlightView flight = null;
             GetLoginToken();
             if (airlineCompanyLoginToken == null)
             {
@@ -155,10 +180,10 @@ namespace AirlineManagementWebApi.Controllers
         /// Create new flight and return it's id
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AirlineCompanyFacade/createflight", Name = "createflight")]
         [HttpPost]
-        public IHttpActionResult CreateNewFlight([FromBody] Flight flight)
+        public IHttpActionResult CreateNewFlight([FromBody] FlightView flight)
         {
             GetLoginToken();
             if (airlineCompanyLoginToken == null)
@@ -172,7 +197,7 @@ namespace AirlineManagementWebApi.Controllers
                 long flightId = airlineCompanyFacade.CreateFlight(airlineCompanyLoginToken, flight);
                 flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, flightId);
                 //return CreatedAtRoute("createflight", new { id = flightId }, flight);
-                return Ok("Flight created succsesfully ");
+                return Ok("Flight created succsesfully");
             }
             catch (InvalidTokenException ex)
             {
@@ -224,14 +249,14 @@ namespace AirlineManagementWebApi.Controllers
         [ResponseType(typeof(string))]
         [Route("api/AirlineCompanyFacade/updateflight")]
         [HttpPut]
-        public IHttpActionResult UpdateFlight([FromBody] Flight updatedFlight)
+        public IHttpActionResult UpdateFlight([FromBody] FlightView updatedFlight)
         {
             GetLoginToken();
             if (airlineCompanyLoginToken == null)
             {
                 return Unauthorized();
             }
-            Flight flight = null;
+            FlightView flight = null;
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
             flight = airlineCompanyFacade.GetFlightByFlightId(airlineCompanyLoginToken, updatedFlight.ID);
@@ -367,7 +392,6 @@ namespace AirlineManagementWebApi.Controllers
             }
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAirlineFacade airlineCompanyFacade = FCS.GetFacade(airlineCompanyLoginToken) as ILoggedInAirlineFacade;
-            IList<Flight> flights = airlineCompanyFacade.GetAllFlights(airlineCompanyLoginToken);
             if (username != "")
             {
                 customer = airlineCompanyFacade.GetCustomerByUserName(airlineCompanyLoginToken, username);
@@ -380,12 +404,12 @@ namespace AirlineManagementWebApi.Controllers
 
             return res;
         }
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AirlineCompanyFacade/GetAllFlightsByAirlineCompanyId/{companyId}")]
         [HttpGet]
         public IHttpActionResult GetAllFlightsByCompanyId([FromUri] long companyId)
         {
-            IList<Flight> flights = null;
+            IList<FlightView> flights = null;
             GetLoginToken();
             if (airlineCompanyLoginToken == null)
             {

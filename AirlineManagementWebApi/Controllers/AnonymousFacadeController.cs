@@ -1,4 +1,5 @@
 ﻿using AirlineManagement;
+using AirlineManagement.POCO.Views;
 using AirlineManagementWebApi.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -23,14 +24,14 @@ namespace AirlineManagementWebApi.Controllers
         /// Get all flights
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/allflights")]
         [HttpGet]
         public IHttpActionResult GetAllFlights()
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<Flight> flights = anonymousFacade.GetAllFlights();
+            IList<FlightView> flights = anonymousFacade.GetAllFlights();
             if (flights.Count == 0)
             {
                 return NotFound();
@@ -78,14 +79,14 @@ namespace AirlineManagementWebApi.Controllers
         /// Get flights by vacancy
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/gebyvacancy/{id}")]
         [HttpGet]
         public IHttpActionResult GetAllFlightsVacancy()
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            Dictionary<Flight, int> flights = anonymousFacade.GetAllFlightsByVacancy();
+            Dictionary<FlightView, int> flights = anonymousFacade.GetAllFlightsByVacancy();
 
             if (flights.Count == 0)
             {
@@ -97,17 +98,17 @@ namespace AirlineManagementWebApi.Controllers
         /// Get flights by vacancy and scheduled time
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getflightsbyvacancy")]
         [HttpGet]
         public IHttpActionResult GetAllFlightsByVacancyAndScheduledTime()
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<Flight> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
+            IList<FlightView> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
             if (flights.Count == 0)
             {
-              
+
                 return NotFound();
             }
             return Ok(flights);
@@ -116,21 +117,23 @@ namespace AirlineManagementWebApi.Controllers
         /// Get grouped by flights by vacancy and scheduled time
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getgrupedbyflightsbyvacancy")]
         [HttpGet]
         public IHttpActionResult GetAllGroupedByFlightsByVacancyAndScheduledTime()
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<Flight> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
+            IList<FlightView> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
             FlightLists flightLists = new FlightLists();
             List<KMessage> ids = flights.GroupBy(x => new { x.ID }).Select(g => new KMessage() { Keyst = g.Key.ID.ToString() }).ToList<KMessage>();
+            List<KMessage> flightNumbers = flights.GroupBy(x => new { x.FLIGHT_NUMBER }).Select(g => new KMessage() { Keyst = g.Key.FLIGHT_NUMBER.ToString() }).ToList<KMessage>();
             List<KMessage> companies = flights.GroupBy(x => new { x.AIRLINE_NAME }).Select(g => new KMessage() { Keyst = g.Key.AIRLINE_NAME }).ToList<KMessage>();
             List<KMessage> originCountries = flights.GroupBy(x => new { x.O_COUNTRY_NAME }).Select(g => new KMessage() { Keyst = g.Key.O_COUNTRY_NAME }).ToList<KMessage>();
             List<KMessage> destinationCountries = flights.GroupBy(x => new { x.D_COUNTRY_NAME }).Select(g => new KMessage() { Keyst = g.Key.D_COUNTRY_NAME }).ToList<KMessage>();
 
             flightLists.ids = new List<string>();
+            flightLists.flightNumbers = new List<string>();
             flightLists.companies = new List<string>();
             flightLists.originCountries = new List<string>();
             flightLists.destinationCountries = new List<string>();
@@ -138,6 +141,10 @@ namespace AirlineManagementWebApi.Controllers
             foreach (KMessage item in ids)
             {
                 flightLists.ids.Add(item.Keyst);
+            }
+            foreach (KMessage item in flightNumbers)
+            {
+                flightLists.flightNumbers.Add(item.Keyst);
             }
             foreach (KMessage item in companies)
             {
@@ -181,13 +188,13 @@ namespace AirlineManagementWebApi.Controllers
         /// Search with parameters (GET)
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/SearchFlightByConditions/search")]
         [HttpGet]
         public IHttpActionResult SearchFlightByConditions(string typeName, string flightId, string country, string company)
         {
 
-            IList<Flight> flights = null;
+            IList<FlightView> flights = null;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
 
@@ -200,10 +207,10 @@ namespace AirlineManagementWebApi.Controllers
             SetRandomArrivalDelayedStatus(flights);
             return Ok(flights);
         }
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getflightsbyvacancy/search")]
         [HttpGet]
-        public IHttpActionResult SearchAllFlightsByVacancyAndScheduledTime(string flightId, string originCountry, string destinationCountry, string company, string departureDate, string returnDate)
+        public IHttpActionResult SearchAllFlightsByVacancyAndScheduledTime(string flightNumber, string originCountry, string destinationCountry, string company, string departureDate, string returnDate)
         {
             string departureFormatedDate = departureDate.Substring(0, 15);
             DateTime ddt = DateTime.ParseExact(departureFormatedDate, "ddd MMM dd yyyy", null);
@@ -214,19 +221,19 @@ namespace AirlineManagementWebApi.Controllers
             returnFormatedDate = rdt.ToString("yyyy-MM-dd");
 
             IList <RoundTripFlights> roundTripFlights = new List<RoundTripFlights>();
-            IList<Flight> flights1 = null;
-            IList<Flight> flights2 = null;
+            IList<FlightView> flights1 = null;
+            IList<FlightView> flights2 = null;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
 
-            flights1 = anonymousFacade.GetAllGoingFlightsByVacancyAndScheduledTime(flightId, originCountry, destinationCountry, company, departureFormatedDate);
+            flights1 = anonymousFacade.GetAllGoingFlightsByVacancyAndScheduledTime(flightNumber, originCountry, destinationCountry, company, departureFormatedDate);
 
          
 
-            foreach(Flight flight1 in flights1)
+            foreach(FlightView flight1 in flights1)
             {
                 flights2 = anonymousFacade.GetAllReturnFlightsByVacancyAndScheduledTime(flight1.O_COUNTRY_NAME, flight1.D_COUNTRY_NAME, company, returnFormatedDate);
-                foreach (Flight flight2 in flights2)
+                foreach (FlightView flight2 in flights2)
                 {
                     
                     //flight1.TIME_DIFF = flight1.REAL_LANDING_TIME - flight1.REAL_DEPARTURE_TIME;
@@ -245,14 +252,14 @@ namespace AirlineManagementWebApi.Controllers
         /// Get flights by origin country code
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getbyorigincountrycode/{countryCode}")]
         [HttpGet]
         public IHttpActionResult GetFlightsByOriginCountry(int countryCode)
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<Flight> flights = anonymousFacade.GetFlightsByOriginCountry(countryCode);
+            IList<FlightView> flights = anonymousFacade.GetFlightsByOriginCountry(countryCode);
 
             if (flights.Count == 0)
             {
@@ -264,13 +271,13 @@ namespace AirlineManagementWebApi.Controllers
         /// Get flights by destination country code (Query parameters)
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getbydestinationcountrycode/search")]
         [HttpGet]
         public IHttpActionResult GetFlightsByDestinationCountry(int countryCode = 0)
         {
             IHttpActionResult res = null;
-            IList<Flight> flights = null;
+            IList<FlightView> flights = null;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
             if (countryCode != 0)
@@ -289,14 +296,14 @@ namespace AirlineManagementWebApi.Controllers
         /// Get flights by departure date
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getbydeparturedate/{departureDate}")]
         [HttpGet]
         public IHttpActionResult GetFlightsByDepatrureDate(DateTime departureDate)
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<Flight> flights = anonymousFacade.GetFlightsByDepatrureDate(departureDate);
+            IList<FlightView> flights = anonymousFacade.GetFlightsByDepatrureDate(departureDate);
 
             if (flights.Count == 0)
             {
@@ -308,14 +315,14 @@ namespace AirlineManagementWebApi.Controllers
         /// Get flights by landinge date
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/getbylandingdate/{landingeDate}")]
         [HttpGet]
         public IHttpActionResult GetFlightsByLandingDate(DateTime landingeDate)
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<Flight> flights = anonymousFacade.GetFlightsByLandingDate(landingeDate);
+            IList<FlightView> flights = anonymousFacade.GetFlightsByLandingDate(landingeDate);
 
             if (flights.Count == 0)
             {
@@ -339,7 +346,7 @@ namespace AirlineManagementWebApi.Controllers
         /// Set random departure delayes status
         /// </summary>
         /// <param name="flights"></param>
-        public void SetRandomDepartureDelayedStatus(IList<Flight> flights)
+        public void SetRandomDepartureDelayedStatus(IList<FlightView> flights)
         {
             Random random = new Random();
             int perpercentage;
@@ -347,12 +354,12 @@ namespace AirlineManagementWebApi.Controllers
             int numOfFlights;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            Flight[] flightsArray = new Flight[flights.Count];
+            FlightView[] flightsArray = new FlightView[flights.Count];
             int[] flightsRandomIndex = new int[flights.Count];
             perpercentage = random.Next(10, 21);
 
             int m = 0;
-            foreach (Flight f in flights)
+            foreach (FlightView f in flights)
             {
                 if (f.REAL_DEPARTURE_TIME == f.DEPARTURE_TIME)
                 {
@@ -396,7 +403,7 @@ namespace AirlineManagementWebApi.Controllers
         /// Set random arrivals delayes status
         /// </summary>
         /// <param name="arrivalFlights"></param>
-        public void SetRandomArrivalDelayedStatus(IList<Flight> arrivalFlights)
+        public void SetRandomArrivalDelayedStatus(IList<FlightView> arrivalFlights)
         {
             Random random = new Random();
             int perpercentage;
@@ -404,14 +411,14 @@ namespace AirlineManagementWebApi.Controllers
             int numOfFlights;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            Flight[] flightsArray = new Flight[arrivalFlights.Count];
+            FlightView[] flightsArray = new FlightView[arrivalFlights.Count];
             int[] flightsRandomIndex = new int[arrivalFlights.Count];
             DateTime localDate = DateTime.Now;
             perpercentage = random.Next(10, 21);
 
             int m = 0;
             int nf = 0;
-            foreach (Flight f in arrivalFlights)
+            foreach (FlightView f in arrivalFlights)
             {
                 if (localDate < f.REAL_LANDING_TIME.AddHours(-2))
                 {
@@ -540,12 +547,12 @@ namespace AirlineManagementWebApi.Controllers
         /// Search with parameters (POST)
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AnonymousFacade/searchbydata", Name = "searchbydata")]
         [HttpPost]
         public IHttpActionResult SearchWithParametars([FromBody] SearchParameters searchData)
         {
-            IList<Flight> flights = null;
+            IList<FlightView> flights = null;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
             SearchParameters searchParameters = new SearchParameters();

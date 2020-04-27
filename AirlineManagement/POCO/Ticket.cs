@@ -22,6 +22,11 @@ namespace AirlineManagement
         public long ID { get; set; }
         public long FLIGHT_ID { get; set; }
         public long CUSTOMER_ID { get; set; }
+        /// <summary>
+        /// another property for ticket list
+        /// </summary>
+        public string FIRST_NAME { get; set; }
+        public string LAST_NAME { get; set; }
         public static bool operator ==(Ticket thisTicket, Ticket otherTicket)
         {
             if (ReferenceEquals(thisTicket, null) && ReferenceEquals(otherTicket, null))

@@ -42,7 +42,8 @@ namespace AirlineManagementWebApi
                     RequireExpirationTime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                     ClockSkew = TimeSpan.Zero
                 };
                 SecurityToken securityToken;
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(token,

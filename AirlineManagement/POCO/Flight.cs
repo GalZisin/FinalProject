@@ -12,7 +12,7 @@ namespace AirlineManagement
         {
         }
 
-        public Flight(long iD, long aIRLINECOMPANY_ID, long oRIGIN_COUNTRY_CODE, long dESTINATION_COUNTRY_CODE, DateTime dEPARTURE_TIME, DateTime lANDING_TIME, int rEMANING_TICKETS, int tOTAL_TICKETS, string o_cOUNTRY_NAME, string d_cOUNTRY_NAME, string aIRLINE_NAME)
+        public Flight(long iD, long aIRLINECOMPANY_ID, long oRIGIN_COUNTRY_CODE, long dESTINATION_COUNTRY_CODE, DateTime dEPARTURE_TIME, DateTime lANDING_TIME, DateTime rEAL_DEPARTURE_TIME, DateTime rEAL_LANDING_TIME, int rEMANING_TICKETS, int tOTAL_TICKETS, string fLIGHT_NUMBER)
         {
             ID = iD;
             AIRLINECOMPANY_ID = aIRLINECOMPANY_ID;
@@ -20,12 +20,11 @@ namespace AirlineManagement
             DESTINATION_COUNTRY_CODE = dESTINATION_COUNTRY_CODE;
             DEPARTURE_TIME = dEPARTURE_TIME;
             LANDING_TIME = lANDING_TIME;
+            REAL_DEPARTURE_TIME = rEAL_DEPARTURE_TIME;
+            REAL_LANDING_TIME = rEAL_LANDING_TIME;
             REMANING_TICKETS = rEMANING_TICKETS;
             TOTAL_TICKETS = tOTAL_TICKETS;
-
-            O_COUNTRY_NAME = o_cOUNTRY_NAME;
-            D_COUNTRY_NAME = d_cOUNTRY_NAME;
-            AIRLINE_NAME = aIRLINE_NAME;
+            FLIGHT_NUMBER = fLIGHT_NUMBER;
         }
 
         public long ID { get; set; }
@@ -34,21 +33,12 @@ namespace AirlineManagement
         public long DESTINATION_COUNTRY_CODE { get; set; }
         public DateTime DEPARTURE_TIME { get; set; }
         public DateTime LANDING_TIME { get; set; }
-        public int REMANING_TICKETS { get; set; }
-        public int TOTAL_TICKETS { get; set; }
-   
-        /// <summary>
-        /// property for flight departures and landings
-        /// </summary>
-        public string O_COUNTRY_NAME { get; set; }
-        public string D_COUNTRY_NAME { get; set; }
-        public string AIRLINE_NAME { get; set; }
         public DateTime REAL_DEPARTURE_TIME { get; set; }
         public DateTime REAL_LANDING_TIME { get; set; }
-        public TimeSpan TIME_DIFF { get; set; }
-        //public TimeSpan LANDING_TIME_DIFF { get; set; }
-        //public string Status { get; set; }
-        //public string LandingStatus { get; set; }
+        public int REMANING_TICKETS { get; set; }
+        public int TOTAL_TICKETS { get; set; }
+        public string FLIGHT_NUMBER { get; set; }
+     
         public static bool operator ==(Flight thisFlight, Flight otherFlight)
         {
             if (ReferenceEquals(thisFlight, null) && ReferenceEquals(otherFlight, null))

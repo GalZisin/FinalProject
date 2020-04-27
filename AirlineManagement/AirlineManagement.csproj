@@ -95,6 +95,7 @@
     <Compile Include="Exceptions\FlightAlreadyExistException.cs" />
     <Compile Include="Exceptions\NoTicketsException.cs" />
     <Compile Include="Exceptions\InvalidTokenException.cs" />
+    <Compile Include="Exceptions\NoFlightException.cs" />
     <Compile Include="FlyingCenterSystem.cs" />
     <Compile Include="Facade\Interfaces\IFacade.cs" />
     <Compile Include="Login\ILoginToken.cs" />
@@ -128,6 +129,9 @@
     <Compile Include="Facade\LoggedsInAirlineFacade.cs" />
     <Compile Include="Login\LoginService.cs" />
     <Compile Include="Login\LoginToken.cs" />
+    <Compile Include="POCO\Views\AirlineCompanyView.cs" />
+    <Compile Include="POCO\Views\FlightView.cs" />
+    <Compile Include="POCO\Views\TicketView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAO\SqlDAO.cs" />
     <Compile Include="POCO\Ticket.cs" />

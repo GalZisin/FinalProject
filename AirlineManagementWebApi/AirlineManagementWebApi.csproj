@@ -250,13 +250,10 @@
     <Compile Include="Controllers\AirlineCompanyFacadeController.cs" />
     <Compile Include="Controllers\AnonymousFacadeController.cs" />
     <Compile Include="Controllers\JwtAuthenticationAttribute.cs" />
-    <Compile Include="Controllers\CustomAuthrize.cs" />
     <Compile Include="Controllers\CustomerFacadeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PageController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -264,6 +261,7 @@
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\FlightLists.cs" />
     <Compile Include="Models\Models.cs" />
+    <Compile Include="Models\PassengersTickets.cs" />
     <Compile Include="Models\SearchParameters.cs" />
     <Compile Include="Models\RoundTripFlights.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

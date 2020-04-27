@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement.POCO.Views;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -35,7 +36,19 @@ namespace AirlineManagement
             StringBuilder sb = new StringBuilder();
             sb = new StringBuilder();
             sb.Append($"INSERT INTO AirlineCompanies(AIRLINE_NAME, USER_NAME, PASSWORD, COUNTRY_CODE)");
-            sb.Append($" values('{ t.AIRLINE_NAME}', '{ t.USER_NAME}', '{ t.PASSWORD}', { t.COUNTRY_CODE})");
+            sb.Append($" values('{ t.AIRLINE_NAME}', '{ t.USER_NAME}', '{ t.PASSWORD}'");
+            string SQL2 = sb.ToString();
+            DL.ExecuteSqlNonQuery(SQL2);
+            SQL2 = $"SELECT ID FROM AirlineCompanies WHERE USER_NAME = '{t.USER_NAME}'";
+            return Int64.Parse(DL.ExecuteSqlScalarStatement(SQL2));
+        }
+
+        public long AddAirlineCompany(AirlineCompanyView t)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder();
+            sb.Append($"INSERT INTO AirlineCompanies (AIRLINE_NAME, USER_NAME, PASSWORD, COUNTRY_CODE)");
+            sb.Append($" values('{ t.AIRLINE_NAME}', '{ t.USER_NAME}', '{ t.PASSWORD}', (SELECT ID FROM Countries WHERE COUNTRY_NAME = '{t.COUNTRY_NAME}'))");
             string SQL2 = sb.ToString();
             DL.ExecuteSqlNonQuery(SQL2);
             SQL2 = $"SELECT ID FROM AirlineCompanies WHERE USER_NAME = '{t.USER_NAME}'";
@@ -54,6 +67,31 @@ namespace AirlineManagement
             {
                 a = new AirlineCompany();
                 a.ID = (long)dr["ID"];
+                a.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
+                a.USER_NAME = (string)dr["USER_NAME"];
+                a.PASSWORD = (string)dr["PASSWORD"];
+                a.COUNTRY_CODE = (long)dr["COUNTRY_CODE"];
+            }
+            if (a != null)
+            {
+                return a;
+            }
+            return null;
+        }
+        public AirlineCompanyView GetGetAirlineCompanyById(long id)
+        {
+            AirlineCompanyView a = null;
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"SELECT a.ID, a.AIRLINE_NAME, a.USER_NAME, a.PASSWORD, a.COUNTRY_CODE, (SELECT COUNTRY_NAME FROM Countries WHERE ID = a.COUNTRY_CODE) as countryName");
+            sb.Append($" FROM AirlineCompanies a INNER JOIN Countries c ON c.ID = a.COUNTRY_CODE WHERE a.ID = {id}");
+            string SQL = sb.ToString();
+            DataSet DS = DL.GetSqlQueryDS(SQL, "AirlineCompanies");
+            DataTable dt = DS.Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                a = new AirlineCompanyView();
+                a.ID = (long)dr["ID"];
+                a.COUNTRY_NAME = (string)dr["countryName"];
                 a.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
                 a.USER_NAME = (string)dr["USER_NAME"];
                 a.PASSWORD = (string)dr["PASSWORD"];
@@ -124,6 +162,28 @@ namespace AirlineManagement
             {
                 AirlineCompany a = new AirlineCompany();
                 a.ID = (long)dr["ID"];
+                a.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
+                a.USER_NAME = (string)dr["USER_NAME"];
+                a.PASSWORD = (string)dr["PASSWORD"];
+                a.COUNTRY_CODE = (long)dr["COUNTRY_CODE"];
+                airlineCompanies.Add(a);
+            }
+            return airlineCompanies;
+        }
+        public IList<AirlineCompanyView> GetAllAirlineCompanies()
+        {
+            IList<AirlineCompanyView> airlineCompanies = new List<AirlineCompanyView>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"SELECT a.ID, a.AIRLINE_NAME, a.USER_NAME, a.PASSWORD, a.COUNTRY_CODE, (SELECT COUNTRY_NAME FROM Countries WHERE ID = a.COUNTRY_CODE) as countryName");
+            sb.Append($" FROM AirlineCompanies a INNER JOIN Countries c ON c.ID = a.COUNTRY_CODE");
+            string SQL = sb.ToString();
+            DataSet DS = DL.GetSqlQueryDS(SQL, "AirlineCompanies");
+            DataTable dt = DS.Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                AirlineCompanyView a = new AirlineCompanyView();
+                a.ID = (long)dr["ID"];
+                a.COUNTRY_NAME = (string)dr["countryName"];
                 a.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
                 a.USER_NAME = (string)dr["USER_NAME"];
                 a.PASSWORD = (string)dr["PASSWORD"];
@@ -277,6 +337,18 @@ namespace AirlineManagement
                 throw new AirlineCompanyUpdateErrorException("AirlineCompany update error");
             }
         }
-       
+        public void UpdateAirlineCompany(AirlineCompanyView t)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"UPDATE AirlineCompanies SET AIRLINE_NAME = '{t.AIRLINE_NAME}', USER_NAME = '{t.USER_NAME}', PASSWORD = '{t.PASSWORD}', COUNTRY_CODE = (SELECT ID FROM Countries WHERE COUNTRY_NAME = '{t.COUNTRY_NAME}')");
+            sb.Append($" WHERE ID = {t.ID}");
+            string SQL = sb.ToString();
+            string res = DL.ExecuteSqlNonQuery(SQL);
+            if (res == "")
+            {
+                throw new AirlineCompanyUpdateErrorException("AirlineCompany update error");
+            }
+        }
+
     }
 }

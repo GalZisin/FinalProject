@@ -8,6 +8,7 @@ namespace AirlineManagementWebApi.Models
     public class FlightLists
     {
         public IList<string> ids = null;
+        public IList<string> flightNumbers = null;
         public IList<string> companies = null;
         public IList<string> originCountries = null;
         public IList<string> destinationCountries = null;

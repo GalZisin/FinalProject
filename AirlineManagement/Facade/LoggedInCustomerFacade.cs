@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement.POCO.Views;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace AirlineManagement
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                Flight f = _flightDAO.Get(ticket.FLIGHT_ID);
+                FlightView f = _flightDAO.Get(ticket.FLIGHT_ID);
                 f.REMANING_TICKETS++;
                 _flightDAO.Update(f);
                 _ticketDAO.Remove(ticket);
@@ -42,7 +43,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public IList<Flight> GetAllFlights(LoginToken<Customer> token)
+        public IList<FlightView> GetAllFlights(LoginToken<Customer> token)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -56,7 +57,7 @@ namespace AirlineManagement
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public IList<Flight> GetAllMyFlights(LoginToken<Customer> token, string customerUserName)
+        public IList<FlightView> GetAllMyFlights(LoginToken<Customer> token, string customerUserName)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -71,12 +72,12 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        public Ticket GetTicketByCustomerId(LoginToken<Customer> token, long customerId)
+        public IList<TicketView> GetAllTicketsByCustomerId(LoginToken<Customer> token, long customerId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                return _ticketDAO.GetTicketByCustomerId(customerId);
+                return _ticketDAO.GetAllTicketsByCustomerId(customerId);
             }
             return null;
         }
@@ -101,7 +102,7 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="flightId"></param>
         /// <returns></returns>
-        public Flight GetFlightByFlightId(LoginToken<Customer> token, long flightId)
+        public FlightView GetFlightByFlightId(LoginToken<Customer> token, long flightId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
@@ -116,36 +117,150 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="flight"></param>
         /// <returns></returns>
-        public Ticket PurchaseTicket(LoginToken<Customer> token, Flight flight)
+        //public Ticket PurchaseTicket(LoginToken<Customer> token, Ticket ticket, DateTime departureDate)
+        //{
+        //    CheckTokenValidity(token, out bool isTokenValid);
+        //    if (isTokenValid)
+        //    {
+        //        FlightView flight = _flightDAO.Get(ticket.FLIGHT_ID);
+        //        if (flight == null)
+        //        {
+        //            throw new NoFlightException("No flight");
+        //        }
+        //        //int value = DateTime.Compare(flight.DEPARTURE_TIME, DateTime.Now);
+        //        if (_flightDAO.GetReminingTickets(ticket.FLIGHT_ID) <= 0 || departureDate > DateTime.Now)
+        //        {
+        //            throw new NoTicketsException("There is no tickets");
+        //        }
+        //        else
+        //        {
+        //            //Ticket ticket1 = new Ticket()
+        //            //{
+        //            //    FLIGHT_ID = ticket.FLIGHT_ID,
+        //            //    CUSTOMER_ID = token.User.ID
+        //            //};
+        //            string res = _ticketDAO.CheckIfTicketExist(ticket);
+        //            if (res == "0")
+        //            {
+        //                long ID = _ticketDAO.Add(ticket);
+        //                ticket.ID = ID;
+        //                _flightDAO.UpdateRemainingTickets(ticket.FLIGHT_ID);
+        //                return ticket;
+        //            }
+        //            else
+        //            {
+        //                throw new TicketAlreadyExistException("Ticket already exists");
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
+        public Ticket PurchaseTicket(Ticket ticket)
+        {
+            long ID = _ticketDAO.Add(ticket);
+            ticket.ID = ID;
+            _flightDAO.UpdateRemainingTickets(ticket.FLIGHT_ID);
+            return ticket;
+        }
+
+
+        public Ticket PurchaseTickets(LoginToken<Customer> token, Ticket[] tickets)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                //int value = DateTime.Compare(flight.DEPARTURE_TIME, DateTime.Now);
-                if (_flightDAO.GetReminingTickets(flight.ID) <= 0 || flight.DEPARTURE_TIME > DateTime.Now)
+                bool ticketsOk = true;
+                if (tickets.Length % 2 != 0)
                 {
-                    throw new NoTicketsException("There is no tickets");
+                    ticketsOk = false;
+                    throw new NoFlightException("No flight");
                 }
-                else
+
+                for (int i = 0; i < tickets.Length; i++)
                 {
-                    Ticket ticket = new Ticket()
+                    FlightView flight = _flightDAO.Get(tickets[i].FLIGHT_ID);
+                    if (flight == null)
                     {
-                        FLIGHT_ID = flight.ID,
-                        CUSTOMER_ID = token.User.ID
-                    };
-                    string res = _ticketDAO.CheckIfTicketExist(ticket);
-                    if(res == "0")
-                    {
-                        long ID = _ticketDAO.Add(ticket);
-                        ticket.ID = ID;
-                        _flightDAO.UpdateRemainingTickets(flight.ID);
-                        return ticket;
+                        ticketsOk = false;
+                        throw new NoFlightException("No flight");
                     }
-                    else
+                }
+                for (int i = 0; i < tickets.Length; i++)
+                {
+                    if (_flightDAO.GetReminingTickets(tickets[i].FLIGHT_ID) <= 0)
                     {
+                        ticketsOk = false;
+                        throw new NoTicketsException("There is no tickets");
+                    }
+                }
+                for (int i = 0; i < tickets.Length; i++)
+                {
+                    string res = _ticketDAO.CheckIfTicketExist(tickets[i]);
+                    if (res != "0")
+                    {
+                        ticketsOk = false;
                         throw new TicketAlreadyExistException("Ticket already exists");
                     }
                 }
+                if (ticketsOk)
+                {
+                    for (int i = 0; i < tickets.Length; i++)
+                    {
+                        PurchaseTicket(tickets[i]);
+                    }
+                }
+
+            }
+            return null;
+        }
+        /// <summary>
+        /// Updatye customer details
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="customer"></param>
+        public void UpdateCustomerDetails(LoginToken<Customer> token, Customer customer)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                string res = _customerDAO.CheckIfCustomerExistById(customer);
+                if (res == "0")
+                {
+                    _customerDAO.Update(customer);
+                }
+                else
+                {
+                    throw new CustomerAlreadyExistException("Customer already exists");
+                }
+
+            }
+        }
+        /// <summary>
+        /// Delete customer
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="customer"></param>
+        public void DeleteCustomer(LoginToken<Customer> token, Customer customer)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                _ticketDAO.RemoveTicketsByCustomerId(customer.ID);
+                _customerDAO.Remove(customer);
+            }
+        }
+        /// <summary>
+        /// Get customer by customer id
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
+        public Customer GetCustomerByCustomerId(LoginToken<Customer> token, long customerId)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _customerDAO.Get(customerId);
             }
             return null;
         }

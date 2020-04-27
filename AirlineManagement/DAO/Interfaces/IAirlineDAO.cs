@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirlineManagement.POCO.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,9 @@ namespace AirlineManagement
         string CheckIfAirlineCompanyExist(AirlineCompany t);
         IList<AirlineCompany> GetAllAirlineCompaniesByScheduledTime(string typeName);
         string CheckIfAirlineCompanyExistById(AirlineCompany t);
+        IList<AirlineCompanyView> GetAllAirlineCompanies();
+        AirlineCompanyView GetGetAirlineCompanyById(long id);
+        long AddAirlineCompany(AirlineCompanyView t);
+        void UpdateAirlineCompany(AirlineCompanyView t);
     }
 }

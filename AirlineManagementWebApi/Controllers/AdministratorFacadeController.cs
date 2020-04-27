@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using ServiceStack.Redis;
 using AirlineManagementWebApi.Models;
+using AirlineManagement.POCO.Views;
 
 namespace AirlineManagementWebApi.Controllers
 {
@@ -46,7 +47,7 @@ namespace AirlineManagementWebApi.Controllers
             {
                 adminId = administratorFacade.CreateNewAdministrator(adminLoginToken, admin);
                 admin = administratorFacade.GetAdministratorById(adminLoginToken, adminId);
-                return Ok("Administrator account created succsesfully ");
+                return Ok("Administrator account created succsesfully");
                 //return CreatedAtRoute("createairlinecompany", new { id = airlineCompanyId }, airlineCompany);
             }
             catch (InvalidTokenException ex)
@@ -111,10 +112,10 @@ namespace AirlineManagementWebApi.Controllers
         /// Create new airline company and return it's id
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(AirlineCompany))]
+        [ResponseType(typeof(AirlineCompanyView))]
         [Route("api/AdministratorFacade/createairlinecompany", Name = "createairlinecompany")]
         [HttpPost]
-        public IHttpActionResult CreateNewAirline([FromBody] AirlineCompany airlineCompany)
+        public IHttpActionResult CreateNewAirline([FromBody] AirlineCompanyView airlineCompany)
         {
             GetLoginToken();
             if (adminLoginToken == null)
@@ -129,7 +130,7 @@ namespace AirlineManagementWebApi.Controllers
             {
                 airlineCompanyId = administratorFacade.CreateNewAirline(adminLoginToken, airlineCompany);
                 airlineCompany = administratorFacade.GetAirlineCompanyById(adminLoginToken, airlineCompanyId);
-               return Ok("AirlineCompany account created succsesfully ");
+               return Ok("AirlineCompany account created succsesfully");
                 //return CreatedAtRoute("createairlinecompany", new { id = airlineCompanyId }, airlineCompany);
             }
             catch (InvalidTokenException ex)
@@ -154,14 +155,14 @@ namespace AirlineManagementWebApi.Controllers
         [ResponseType(typeof(string))]
         [Route("api/AdministratorFacade/updateairlinecompany")]
         [HttpPut]
-        public IHttpActionResult UpdateAirlineDetails([FromBody] AirlineCompany updatedAirlineCompany)
+        public IHttpActionResult UpdateAirlineDetails([FromBody] AirlineCompanyView updatedAirlineCompany)
         {
             GetLoginToken();
             if (adminLoginToken == null)
             {
                 return Unauthorized();
             }
-            AirlineCompany airlineCompany = null;
+            AirlineCompanyView airlineCompany = null;
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
             airlineCompany = administratorFacade.GetAirlineCompanyById(adminLoginToken, updatedAirlineCompany.ID);
@@ -344,7 +345,7 @@ namespace AirlineManagementWebApi.Controllers
             {
                 customerId = administratorFacade.CreateNewCustomer(adminLoginToken, customer);
                 customer = administratorFacade.GetCustomerById(adminLoginToken, customerId);
-                return Ok("Customer account created succsesfully ");
+                return Ok("Customer account created succsesfully");
                 //return CreatedAtRoute("createcustomer", new { id = customerId }, customer);
             }
             catch (InvalidTokenException ex)
@@ -407,7 +408,7 @@ namespace AirlineManagementWebApi.Controllers
         /// Get all flights
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(Flight))]
+        [ResponseType(typeof(FlightView))]
         [Route("api/AdministratorFacade/allflights")]
         [HttpGet]
         public IHttpActionResult GetAllFlights()
@@ -419,7 +420,7 @@ namespace AirlineManagementWebApi.Controllers
             }
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
-            IList<Flight> flights = administratorFacade.GetAllFlights(adminLoginToken);
+            IList<FlightView> flights = administratorFacade.GetAllFlights(adminLoginToken);
 
             if (flights.Count == 0)
             {
@@ -431,7 +432,7 @@ namespace AirlineManagementWebApi.Controllers
         /// Get all airline companies
         /// </summary>
         /// <returns>IHttpActionResult</returns>
-        [ResponseType(typeof(AirlineCompany))]
+        [ResponseType(typeof(AirlineCompanyView))]
         [Route("api/AdministratorFacade/getallairlinecompanies")]
         [HttpPost]
         public IHttpActionResult GetAllAirlineCompanies()
@@ -443,13 +444,37 @@ namespace AirlineManagementWebApi.Controllers
             }
             FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
-            IList<AirlineCompany> airlineCompanies = administratorFacade.GetAllAirlineCompanies(adminLoginToken);
+            IList<AirlineCompanyView> airlineCompanies = administratorFacade.GetAllAirlineCompanies(adminLoginToken);
 
             if (airlineCompanies.Count == 0)
             {
                 return NotFound();
             }
             return Ok(airlineCompanies);
+        }
+        /// <summary>
+        /// Get all countries
+        /// </summary>
+        /// <returns></returns>
+        [ResponseType(typeof(Country))]
+        [Route("api/AdministratorFacade/getAllCountries")]
+        [HttpGet]
+        public IHttpActionResult GetAllCountries()
+        {
+            GetLoginToken();
+            if (adminLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
+            IList<Country> countries = administratorFacade.GetAllCountries(adminLoginToken);
+
+            if (countries.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(countries);
         }
         /// <summary>
         /// Get all customers
