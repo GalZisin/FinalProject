@@ -78,7 +78,7 @@ namespace AirlineManagement
             }
             return null;
         }
-        public AirlineCompanyView GetGetAirlineCompanyById(long id)
+        public AirlineCompanyView GetAirlineCompanyById(long id)
         {
             AirlineCompanyView a = null;
             StringBuilder sb = new StringBuilder();
@@ -304,27 +304,6 @@ namespace AirlineManagement
                 throw new AirlineCompanyDeleteErrorException("AirlineCompanie delete error");
             }
         }
-        //public long GetAirlineCompanyIdByCountryCode(long countryCode)
-        //{
-        //    AirlineCompany a = null;
-        //    string SQL = $"SELECT ID FROM AirlineCompanies WHERE COUNTRY_CODE = {countryCode}";
-        //    DataSet DS = DL.GetSqlQueryDS(SQL, "AirlineCompanies");
-        //    DataTable dt = DS.Tables[0];
-        //    foreach (DataRow dr in dt.Rows)
-        //    {
-        //        a = new AirlineCompany();
-        //        a.ID = (long)dr["ID"];
-
-        //    }
-        //    if (a != null)
-        //    {
-        //        return a.ID;
-        //    }
-        //    else
-        //    {
-        //        throw new AirlineCompanyDoesNotExistException("Airline Company Doesn't Exist");
-        //    }
-        //}
         public void Update(AirlineCompany t)
         {
             StringBuilder sb = new StringBuilder();
@@ -349,6 +328,81 @@ namespace AirlineManagement
                 throw new AirlineCompanyUpdateErrorException("AirlineCompany update error");
             }
         }
-
+        public void AddAirlineCompanyToStandbyTable(AirlineCompanyView t)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder();
+            sb.Append($"INSERT INTO CompaniesForApproval(AIRLINE_NAME, USER_NAME, PASSWORD, COUNTRY_NAME, EMAIL)");
+            sb.Append($" values('{ t.AIRLINE_NAME}', '{ t.USER_NAME}', '{ t.PASSWORD}', '{t.COUNTRY_NAME}', '{t.EMAIL}') ");
+            string SQL = sb.ToString();
+            DL.ExecuteSqlNonQuery(SQL);
+        }
+        public IList<AirlineCompanyView> GetAllcompaniesToApprove()
+        {
+            IList<AirlineCompanyView> airlineCompanies = new List<AirlineCompanyView>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"SELECT * FROM CompaniesForApproval");
+            string SQL = sb.ToString();
+            DataSet DS = DL.GetSqlQueryDS(SQL, "CompaniesForApproval");
+            DataTable dt = DS.Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                AirlineCompanyView a = new AirlineCompanyView();
+                a.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
+                a.USER_NAME = (string)dr["USER_NAME"];
+                a.PASSWORD = (string)dr["PASSWORD"];
+                a.EMAIL = (string)dr["EMAIL"];
+                a.COUNTRY_NAME = (string)dr["COUNTRY_NAME"];
+                airlineCompanies.Add(a);
+            }
+            return airlineCompanies;
+        }
+        public long AddApprovalAirlineCompany(AirlineCompanyView t)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder();
+            sb.Append($"INSERT INTO AirlineCompanies(AIRLINE_NAME, USER_NAME, PASSWORD, COUNTRY_CODE)");
+            sb.Append($" SELECT AIRLINE_NAME, USER_NAME, PASSWORD, (SELECT ID FROM Countries WHERE COUNTRY_NAME = '{t.COUNTRY_NAME}') as COUNTRY_CODE FROM CompaniesForApproval");
+            sb.Append($" WHERE USER_NAME = '{t.USER_NAME}'");
+            string SQL2 = sb.ToString();
+            DL.ExecuteSqlNonQuery(SQL2);
+            SQL2 = $"SELECT ID FROM AirlineCompanies WHERE USER_NAME = '{t.USER_NAME}'";
+            return Int64.Parse(DL.ExecuteSqlScalarStatement(SQL2));
+        }
+        public void RemoveFromApprovalTable(string companyUsername)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"DELETE FROM CompaniesForApproval WHERE USER_NAME = '{companyUsername}'");
+            string SQL = sb.ToString();
+            string res = DL.ExecuteSqlNonQuery(SQL);
+            if (res == "")
+            {
+                throw new AirlineCompanyDeleteErrorException("Airline company delete error");
+            }
+        }
+        public AirlineCompanyView GetCompanyFromApprovalTableByUserName(string companyUsername)
+        {
+            AirlineCompanyView a = null;
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"SELECT * FROM CompaniesForApproval WHERE USER_NAME = '{companyUsername}'");
+            string SQL = sb.ToString();
+            DataSet DS = DL.GetSqlQueryDS(SQL, "AirlineCompanies");
+            DataTable dt = DS.Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                a = new AirlineCompanyView();
+          
+                a.AIRLINE_NAME = (string)dr["AIRLINE_NAME"];
+                a.USER_NAME = (string)dr["USER_NAME"];
+                a.PASSWORD = (string)dr["PASSWORD"];
+                a.COUNTRY_NAME = (string)dr["COUNTRY_NAME"];
+                a.EMAIL = (string)dr["EMAIL"];
+            }
+            if (a != null)
+            {
+                return a;
+            }
+            return null;
+        }
     }
 }

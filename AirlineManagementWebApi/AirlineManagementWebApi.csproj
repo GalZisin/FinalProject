@@ -258,80 +258,127 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountParameters.cs" />
+    <Compile Include="Models\CalendarData.cs" />
     <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\CompanyAccount.cs" />
     <Compile Include="Models\FlightLists.cs" />
     <Compile Include="Models\Models.cs" />
     <Compile Include="Models\PassengersTickets.cs" />
     <Compile Include="Models\SearchParameters.cs" />
     <Compile Include="Models\RoundTripFlights.cs" />
+    <Compile Include="Models\TicketData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
-    <Content Include="Content\myBackgrounds\137094952.jpg" />
-    <Content Include="Content\myBackgrounds\33.jpg" />
-    <Content Include="Content\myBackgrounds\788314.jpg" />
-    <Content Include="Content\AngularJSCSS\cloudy-sky-cartoon.jpg" />
-    <Content Include="Content\AngularJSCSS\font-awesome.css" />
-    <Content Include="Content\AngularJSCSS\font-awesome.min.css" />
-    <Content Include="Content\AngularJSCSS\formStyle.css" />
-    <Content Include="Content\AngularJSCSS\logo3.png" />
-    <Content Include="Content\AngularJSCSS\navbar.css" />
-    <Content Include="Content\AngularJSCSS\owl.carousel.min.css" />
-    <Content Include="Content\AngularJSCSS\owl.theme.default.min.css" />
-    <Content Include="Content\AngularJSCSS\Photos\16.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Angola.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Aruba.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\awesome-france-wallpaper_120812626_116.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Bahamas.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Belgium.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Cook Islands.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Costa Rica.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Egypt.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\French Guiana.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Germany.jpeg" />
-    <Content Include="Content\AngularJSCSS\Photos\Hong Kong.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\img1.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\img2.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\img3.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\img4.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Indonesia.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Italy.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Lesotho.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Luxembourg.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Mayotte.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Monaco.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Mongolia.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Myanmar.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Nepal.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Netherland.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Oman.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Pakistan.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Poland.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Puerto Rico.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Solomon Islands.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Sri Lanka.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Switzerland.jpg" />
-    <Content Include="Content\AngularJSCSS\Photos\Turkey.jpg" />
-    <Content Include="Content\AngularJSCSS\style.css" />
-    <Content Include="Content\AngularJSCSS\Photos\white-clouds-background.jpg" />
+    <Content Include="Content\AngularJsCSS\font-awesome-4.7.0\css\font-awesome.css" />
+    <Content Include="Content\AngularJsCSS\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="Content\AngularJsCSS\font-awesome.css" />
+    <Content Include="Content\AngularJsCSS\font-awesome.min.css" />
+    <Content Include="Content\AngularJsCSS\formStyle.css" />
+    <Content Include="Content\AngularJsCSS\hot_deal.png" />
+    <Content Include="Content\AngularJsCSS\logo3.png" />
+    <Content Include="Content\AngularJsCSS\navbar.css" />
+    <Content Include="Content\AngularJsCSS\owl.carousel.min.css" />
+    <Content Include="Content\AngularJsCSS\owl.theme.default.min.css" />
+    <Content Include="Content\AngularJsCSS\owl\font-awesome.css" />
+    <Content Include="Content\AngularJsCSS\owl\font-awesome.min.css" />
+    <Content Include="Content\AngularJsCSS\Photos\16.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Angola.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Aruba.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\awesome-france-wallpaper_120812626_116.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Bahamas.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Belgium.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Cook Islands.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Costa Rica.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Egypt.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\French Guiana.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Germany.jpeg" />
+    <Content Include="Content\AngularJsCSS\Photos\Hong Kong.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\img1.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\img2.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\img3.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\img4.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Indonesia.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Israel.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Italy.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Lesotho.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Luxembourg.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Mayotte.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Monaco.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Mongolia.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Myanmar.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Nepal.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Netherland.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Oman.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Pakistan.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Poland.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Puerto Rico.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Solomon Islands.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Sri Lanka.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Switzerland.jpg" />
+    <Content Include="Content\AngularJsCSS\Photos\Turkey.jpg" />
+    <Content Include="Content\AngularJsCSS\style.css" />
+    <Content Include="Content\backgrounds\137094952.jpg" />
+    <Content Include="Content\backgrounds\33.jpg" />
+    <Content Include="Content\backgrounds\788314.jpg" />
+    <Content Include="Content\backgrounds\cloudy-sky-cartoon.jpg" />
+    <Content Include="Content\backgrounds\white-clouds-background.jpg" />
     <Content Include="Content\bootstarp-iconpicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\myBackgrounds\cloudy-sky-cartoon.jpg" />
+    <Content Include="Content\companyImages\AB Aviation.jpg" />
+    <Content Include="Content\companyImages\Aerobell Airlines.jpg" />
+    <Content Include="Content\companyImages\Air Mali.jpg" />
+    <Content Include="Content\companyImages\Corendon Airlines.jpg" />
+    <Content Include="Content\companyImages\El-AL.jpg" />
+    <Content Include="Content\companyImages\FlyMontserrat.jpg" />
+    <Content Include="Content\companyImages\Heli Air Monaco.jpg" />
+    <Content Include="Content\companyImages\Helitours.jpg" />
+    <Content Include="Content\companyImages\Hong Kong Air Cargo Carrier Limited.jpg" />
+    <Content Include="Content\companyImages\JU Air.jpg" />
+    <Content Include="Content\companyImages\Lions Air.jpg" />
+    <Content Include="Content\companyImages\Malawian Airlines.jpg" />
+    <Content Include="Content\companyImages\Millennium Airlines.jpg" />
+    <Content Include="Content\companyImages\MJets.jpg" />
+    <Content Include="Content\companyImages\Monacair.jpg" />
+    <Content Include="Content\companyImages\Myanmar National Airlines.jpg" />
+    <Content Include="Content\companyImages\Oman Air.jpg" />
+    <Content Include="Content\companyImages\Orex Aviation.jpg" />
+    <Content Include="Content\companyImages\Paladin Energy Airlines.jpg" />
+    <Content Include="Content\companyImages\Saurya Airlines.jpg" />
+    <Content Include="Content\companyImages\Sky Shuttle Helicopters.jpg" />
+    <Content Include="Content\companyImages\SkyWay.jpg" />
+    <Content Include="Content\companyImages\Skywise Airlines.jpg" />
+    <Content Include="Content\companyImages\Solomon Islands Seaplanes.jpg" />
+    <Content Include="Content\companyImages\Summit Helicopters.jpg" />
+    <Content Include="Content\companyImages\SVG Air.jpg" />
+    <Content Include="Content\companyImages\Trans Am Aero Express del Ecuador.jpg" />
+    <Content Include="Content\companyImages\Turkish Airlines.jpg" />
+    <Content Include="Content\companyImages\Ulendo Airlink.jpg" />
+    <Content Include="Content\companyImages\Vanuatu Helicopters.jpg" />
+    <Content Include="Content\companyImages\Volaris Costa Rica.jpg" />
     <Content Include="Content\flying-bubbles.css" />
     <Content Include="Content\logo.png" />
     <Content Include="Content\myStyles1.css" />
     <Content Include="Content\search.css" />
-    <Content Include="Content\myBackgrounds\white-clouds-background.jpg" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\AngulaJS\angular.js" />
-    <Content Include="Scripts\AngulaJS\navbarScript.js" />
+    <Content Include="Scripts\AngularJS\angular.js" />
+    <Content Include="Scripts\AngularJS\data.service.js" />
+    <Content Include="Scripts\AngularJS\dealCardsCtrl.ctrl.js" />
+    <Content Include="Scripts\AngularJS\form.js" />
+    <Content Include="Scripts\AngularJS\globalconst.service.js" />
+    <Content Include="Scripts\AngularJS\JS\script.js" />
+    <Content Include="Scripts\AngularJS\LoginAccountToggle.js" />
+    <Content Include="Scripts\AngularJS\myBootstrap.js" />
+    <Content Include="Scripts\AngularJS\service.service.js" />
+    <Content Include="Scripts\AngularJS\ui-bootstrap-tpls-3.0.6.min.js" />
     <Content Include="Scripts\bootstrap-iconpicker.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -354,16 +401,16 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\AngulaJS\data.service.js" />
     <Content Include="Scripts\dateFormat.js" />
-    <Content Include="Scripts\AngulaJS\dealCardsCtrl.ctrl.js" />
     <Content Include="Scripts\departures.js" />
     <Content Include="Scripts\dropdown.js" />
     <Content Include="Scripts\flying-bubbles.js" />
-    <Content Include="Scripts\AngulaJS\form.js" />
-    <Content Include="Scripts\AngulaJS\globalconst.service.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -371,10 +418,7 @@
     <Content Include="Scripts\js.js" />
     <Content Include="Scripts\landings.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\AngulaJS\myBootstrap.js" />
     <Content Include="Scripts\search.js" />
-    <Content Include="Scripts\AngulaJS\service.service.js" />
-    <Content Include="Scripts\AngulaJS\ui-bootstrap-tpls-3.0.6.min.js" />
     <Content Include="Views\Page\deals.html" />
     <Content Include="Views\Page\departures.html" />
     <Content Include="Views\Page\Error.html" />
@@ -390,7 +434,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
-    <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -415,18 +458,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap.min.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css.map" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

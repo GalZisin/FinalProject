@@ -5,12 +5,13 @@ using System.Web;
 
 namespace AirlineManagementWebApi.Models
 {
-    public class AccountParameters
+    public class CompanyAccount
     {
-        public string firstName { get; set; }
-        public string lastName { get; set; }
+        public string companyName { get; set; }
         public string userName { get; set; }
-        public string email { get; set; }
         public string password { get; set; }
+        public string email { get; set; }
+        public string country { get; set; }
+        public string isApproved { get; set; }
     }
 }

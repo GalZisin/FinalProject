@@ -18,5 +18,6 @@ namespace AirlineManagement
         Ticket GetTicketByCustomerId(long customerId);
         Ticket GetTicketByCustomerUserName(string customerUserName);
         string CheckIfTicketExist(Ticket t);
+        TicketView GetTicketByTicketId(long ticketId);
     }
 }

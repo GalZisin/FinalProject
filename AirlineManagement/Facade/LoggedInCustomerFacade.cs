@@ -230,9 +230,32 @@ namespace AirlineManagement
                 }
                 else
                 {
-                    throw new CustomerAlreadyExistException("Customer already exists");
+                    throw new CustomerAlreadyExistException("Customer already exist");
                 }
 
+            }
+        }
+        /// <summary>
+        /// Update ticket
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="ticket"></param>
+        public void UpdateTicketDetails(LoginToken<Customer> token, Ticket ticket)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                string res = _ticketDAO.CheckIfTicketExist(ticket);
+                if (res == "0")
+                {
+                    _ticketDAO.Update(ticket);
+
+                }
+                else
+                {
+                    throw new TicketAlreadyExistException("Ticket already exist");
+
+                }
             }
         }
         /// <summary>
@@ -270,12 +293,12 @@ namespace AirlineManagement
         /// <param name="token"></param>
         /// <param name="ticketId"></param>
         /// <returns></returns>
-        public Ticket GetTicketByTicketId(LoginToken<Customer> token, long ticketId)
+        public TicketView GetTicketByTicketId(LoginToken<Customer> token, long ticketId)
         {
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                return _ticketDAO.Get(ticketId);
+                return _ticketDAO.GetTicketByTicketId(ticketId);
             }
             return null;
         }

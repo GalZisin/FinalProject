@@ -13,11 +13,13 @@ namespace AirlineManagement.POCO.Views
            
         }
 
-        public AirlineCompanyView(long iD, string aIRLINE_NAME, string uSER_NAME, string pASSWORD, long cOUNTRY_CODE, string cOUNTRY_NAME) : base(iD, aIRLINE_NAME, uSER_NAME, pASSWORD, cOUNTRY_CODE)
+        public AirlineCompanyView(long iD, string aIRLINE_NAME, string uSER_NAME, string pASSWORD, long cOUNTRY_CODE, string cOUNTRY_NAME, string eMAIL) : base(iD, aIRLINE_NAME, uSER_NAME, pASSWORD, cOUNTRY_CODE)
         {
             COUNTRY_NAME = cOUNTRY_NAME;
+            EMAIL = eMAIL;
         }
 
         public string COUNTRY_NAME { get; set; }
+        public string EMAIL { get; set; }
     }
 }

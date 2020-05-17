@@ -11,8 +11,14 @@ namespace AirlineManagementWebApi.Models
     {
         public MyTicket[] Tickets { get; set; }
         public MyFlight[] Flights { get; set; }
+        public MyUser[] User { get; set; }
     }
-
+    public partial class MyUser
+    {
+        public string Address { get; set; }
+        public string PhoneNo { get; set; }
+        public string CreditCardNumber { get; set; }
+    }
     public partial class MyFlight
     {
         public long Id { get; set; }

@@ -37,6 +37,10 @@ namespace AirlineManagement
         IList<Administrator> GetAllAdministrators(LoginToken<Administrator> token);
         void RemoveAdministrator(LoginToken<Administrator> token, Administrator administrator);
         Ticket GetTicketByCustomerId(LoginToken<Administrator> token, long customerId);
+        IList<AirlineCompanyView> GetAllcompaniesToApprove(LoginToken<Administrator> token);
+        long AddApprovalAirlineCompany(LoginToken<Administrator> token, AirlineCompanyView company);
+        void RemoveFromApprovalTable(LoginToken<Administrator> token, string companyUsername);
+        AirlineCompanyView GetCompanyFromApprovalTableByUserName(LoginToken<Administrator> token, string companyUsername);
 
 
 

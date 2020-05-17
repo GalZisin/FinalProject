@@ -66,11 +66,19 @@ namespace AirlineManagement
             return _flightDAO.GetAllFlightsByVacancyAndScheduledTime();
         }
         /// <summary>
+        /// Get all flights by vacancy and scheduled time
+        /// </summary>
+        /// <returns></returns>
+        public IList<FlightView> GetAllFlightsByVacancyAndScheduledTime(string localCountryName)
+        {
+            return _flightDAO.GetAllFlightsByVacancyAndScheduledTime(localCountryName);
+        }
+        /// <summary>
         /// Return flight by flight ID.
         /// </summary>
         /// <param name="flightId"></param>
         /// <returns></returns>
-        public FlightView GetFlightById(long flightId)
+        public FlightView GetFlightByFlightId(long flightId)
         {
             return _flightDAO.Get(flightId);
         }
@@ -190,6 +198,21 @@ namespace AirlineManagement
             }
 
         }
-
+        public void AddNewCompanyToStandbyTable(AirlineCompanyView newCompany)
+        {
+            string res = _airlineDAO.CheckIfAirlineCompanyExist(newCompany);
+            if (res == "0")
+            {
+                _airlineDAO.AddAirlineCompanyToStandbyTable(newCompany);
+            }
+            else
+            {
+                throw new AirlineCompanyAlreadyExistException("Airline company already exists");
+            }
+        }
+        public IList<Flight> GetFlightsToFillCalendar(string o_countryName, string d_countryName, string companyName, string destinationDate, int monthsToAdd, int hoursToAdd)
+        {
+            return _flightDAO.GetFlightsToFillCalendar(o_countryName, d_countryName, companyName, destinationDate, monthsToAdd, hoursToAdd);
+        }
     }
 }

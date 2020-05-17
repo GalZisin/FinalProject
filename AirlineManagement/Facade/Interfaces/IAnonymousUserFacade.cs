@@ -12,7 +12,7 @@ namespace AirlineManagement
         IList<FlightView> GetAllFlights();
         IList<AirlineCompany> GetAllAirlineCompanies();
         Dictionary<FlightView, int> GetAllFlightsByVacancy();
-        FlightView GetFlightById(long flightId);
+        FlightView GetFlightByFlightId(long flightId);
         IList<FlightView> GetFlightsByOriginCountry(long countryCode);
         IList<FlightView> GetFlightsByDestinationCountry(long countryCode);
         IList<FlightView> GetFlightsByDepatrureDate(DateTime departureDate);
@@ -27,8 +27,11 @@ namespace AirlineManagement
         IList<long> GetFlightIdsByScheduledTime(string typeName);
         IList<AirlineCompany> GetAllAirlineCompaniesByScheduledTime(string typeName);
         IList<FlightView> GetAllFlightsByVacancyAndScheduledTime();
+        IList<FlightView> GetAllFlightsByVacancyAndScheduledTime(string localCountryName);
         long CreateNewCustomerFromRedis(Customer customer);
         IList<FlightView> GetAllGoingFlightsByVacancyAndScheduledTime(string flightNumber, string originCountry, string destinationCountry, string company, string departureDate);
         IList<FlightView> GetAllReturnFlightsByVacancyAndScheduledTime(string originCountry, string destinationCountry, string company, string returnDate);
+        void AddNewCompanyToStandbyTable(AirlineCompanyView newCompany);
+        IList<Flight> GetFlightsToFillCalendar(string o_countryName, string d_countryName, string companyName, string destinationDate, int monthsToAdd, int hoursToAdd);
     }
 }

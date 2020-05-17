@@ -15,10 +15,11 @@ namespace AirlineManagement
         IList<TicketView> GetAllTicketsByCustomerId(LoginToken<Customer> token, long customerId);
         IList<FlightView> GetAllFlights(LoginToken<Customer> token);
         Ticket GetTicketByCustomerUserName(LoginToken<Customer> token, string customerUserName);
-        Ticket GetTicketByTicketId(LoginToken<Customer> token, long ticketId);
+        TicketView GetTicketByTicketId(LoginToken<Customer> token, long ticketId);
         Customer GetCustomerByCustomerId(LoginToken<Customer> token, long customerId);
         void UpdateCustomerDetails(LoginToken<Customer> token, Customer customer);
         void DeleteCustomer(LoginToken<Customer> token, Customer customer);
         Ticket PurchaseTickets(LoginToken<Customer> token, Ticket[] tickets);
+        void UpdateTicketDetails(LoginToken<Customer> token, Ticket ticket);
     }
 }

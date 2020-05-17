@@ -1,4 +1,5 @@
 ﻿using AirlineManagement;
+using AirlineManagement.POCO.Views;
 using Newtonsoft.Json;
 using Prism.Commands;
 using System;
@@ -573,7 +574,7 @@ namespace AirlineManagementWPF
             int count1 = 0;
             IList<Country> countries = null;
             Country country = null;
-            AirlineCompany newAirlineCompany = null;
+            AirlineCompanyView newAirlineCompany = null;
             AirlineCompany airlineCompany = null;
             bool isAirlineCompanyInserted = false;
             int count2 = 0;
@@ -615,7 +616,7 @@ namespace AirlineManagementWPF
                 if (airlineCompany == null)
                 {
                     string randomString = "";
-                    newAirlineCompany = new AirlineCompany();
+                    newAirlineCompany = new AirlineCompanyView();
                     newAirlineCompany.AIRLINE_NAME = randomAirlineCompanyName;
                     newAirlineCompany.COUNTRY_CODE = country.ID;
                     count1 = 0;
@@ -776,9 +777,9 @@ namespace AirlineManagementWPF
         }
         public void InsertFlightsToDb(ILoggedInAdministratorFacade administratorFacade, LoginToken<Administrator> t)
         {
-            Flight newFlight = null;
+            FlightView newFlight = null;
             bool equalsOroginCountry = true;
-            IList<AirlineCompany> airlineCompaniesListFromDb = new List<AirlineCompany>();
+            IList<AirlineCompanyView> airlineCompaniesListFromDb = new List<AirlineCompanyView>();
             IList<Country> countries = new List<Country>();
             airlineCompaniesListFromDb = administratorFacade.GetAllAirlineCompanies(t);
             string[] airlineCompaniesArrayFromDb = new string[airlineCompaniesListFromDb.Count];
@@ -789,7 +790,7 @@ namespace AirlineManagementWPF
             random1 = new Random();
             index = random1.Next(0, airlineCompaniesArrayFromDb.Length);
             AirlineCompany airlineCompany = administratorFacade.GetAirlineCompanyByAirlineName(t, airlineCompaniesArrayFromDb[index]);
-            newFlight = new Flight();
+            newFlight = new FlightView();
             while (equalsOroginCountry)
             {
                 random1 = new Random();
@@ -846,7 +847,7 @@ namespace AirlineManagementWPF
             {
                 customerArray[i] = customerList[i];
             }
-            IList<Flight> flightsList = administratorFacade.GetAllFlights(t);
+            IList<FlightView> flightsList = administratorFacade.GetAllFlights(t);
             Flight[] flightsArray = new Flight[flightsList.Count];
             for (int i = 0; i < flightsArray.Length; i++)
             {

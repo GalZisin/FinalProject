@@ -283,7 +283,7 @@ namespace AirlineManagement
             CheckTokenValidity(token, out bool isTokenValid);
             if (isTokenValid)
             {
-                return _airlineDAO.GetGetAirlineCompanyById(airlineCompanyId);
+                return _airlineDAO.GetAirlineCompanyById(airlineCompanyId);
             }
             return null;
         }
@@ -497,6 +497,49 @@ namespace AirlineManagement
                 ticket.ID = ID;
                 _flightDAO.UpdateRemainingTickets(flightId);
             }
+        }
+        public IList<AirlineCompanyView> GetAllcompaniesToApprove(LoginToken<Administrator> token)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _airlineDAO.GetAllcompaniesToApprove();
+            }
+            return null;
+        }
+        public long AddApprovalAirlineCompany(LoginToken<Administrator> token, AirlineCompanyView company)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                string res = _airlineDAO.CheckIfAirlineCompanyExist(company);
+                if (res == "0")
+                {
+                    return _airlineDAO.AddApprovalAirlineCompany(company);
+                }
+                else
+                {
+                    throw new AdministratorAlreadyExistException("Airline company already exists");
+                }
+            }
+            return 0;
+        }
+        public void RemoveFromApprovalTable(LoginToken<Administrator> token, string companyUsername)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                _airlineDAO.RemoveFromApprovalTable(companyUsername);
+            }
+        }
+        public AirlineCompanyView GetCompanyFromApprovalTableByUserName(LoginToken<Administrator> token, string companyUsername)
+        {
+            CheckTokenValidity(token, out bool isTokenValid);
+            if (isTokenValid)
+            {
+                return _airlineDAO.GetCompanyFromApprovalTableByUserName(companyUsername);
+            }
+            return null;
         }
     }
 }

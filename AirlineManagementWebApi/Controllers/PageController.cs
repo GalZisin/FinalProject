@@ -35,7 +35,6 @@ namespace AirlineManagementWebApi.Controllers
         {
             return new FilePathResult("~/Views/Page/deals.html", "text/html");
         }
-
         public ActionResult ConfirmEmail()
         {
             string host = "localhost";
@@ -53,11 +52,11 @@ namespace AirlineManagementWebApi.Controllers
             }
             catch { }
 
-            if(jsonStringAccount == "")
+            if (jsonStringAccount == "")
                 return Content("Email NOT confirmed! watch out1!!!");
             AccountParameters objectAccount = Newtonsoft.Json.JsonConvert.DeserializeObject<AccountParameters>(jsonStringAccount);
-              FlyingCenterSystem fcs;
-      
+            FlyingCenterSystem fcs;
+
 
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
@@ -66,7 +65,7 @@ namespace AirlineManagementWebApi.Controllers
             customer.LAST_NAME = objectAccount.lastName;
             customer.USER_NAME = objectAccount.userName;
             customer.PASSWORD = objectAccount.password;
-            customer.PHONE_NO = objectAccount.phoneNumber;
+            //customer.PHONE_NO = objectAccount.phoneNumber;
             try
             {
                 anonymousFacade.CreateNewCustomerFromRedis(customer);
@@ -74,10 +73,26 @@ namespace AirlineManagementWebApi.Controllers
             }
             catch { return Content("Error in create customer"); }
 
-     
-            //if (guid == AnonymousFacadeController.myGuid)
-            return Content("Email confirmed");
-        
+   
+            string htmlString = "<!DOCTYPE html><html><head><style>" +
+          "div.card {" +
+          " width: 500px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  text-align: center; margin: auto" +
+          "}" +
+          "div.header {" +
+          " background-color: #4CAF50; color: white; padding: 10px; font-size: 36px; font-family: Book Antiqua;" +
+          "}" +
+          "</style>" +
+          "<body>" +
+          "<div class=\"card\">" +
+          "<div class=\"header\">" +
+          "<h5>Congratulations!</h5>" +
+          "<h5>You have successfully registered</h5>" +
+          "</div>" +
+          "</div>" +
+          "</body>" +
+          "</head>" +
+          "</html>";
+            return Content(htmlString, "text/html");
         }
 
 
@@ -94,7 +109,51 @@ namespace AirlineManagementWebApi.Controllers
             {
                 return redisClient.Remove(key);
             }
-           
+
         }
+
+
+
+
+        //< html >
+        //< head >
+        //    < style >
+        //        div.card {
+        //            width: 500px;
+        //            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        //        text-align: center;
+        //        }
+
+        //    div.header {
+        //            background-color: #4CAF50;
+        //            color: white;
+        //            padding: 10px;
+        //            font-size: 36px;
+        //            font-family: Book Antiqua;
+        //}
+
+        //div.container {
+        //            padding: 10px;
+        //        }
+        //    </style>
+        //</head>
+        //<body>
+
+        //    <h2>Cards</h2>
+
+        //    <p>The box-shadow property can be used to create paper-like cards:</p>
+
+        //    <div class="card" style="margin: auto;">
+        //        <div class="header">
+        //            <h5>Congratulations!</h5>
+        //        </div>
+
+        //        <div class="container">
+        //            <h4>You have successfully registered</h4>
+        //        </div>
+        //    </div>
+
+        //</body>
+        //</html>
     }
 }

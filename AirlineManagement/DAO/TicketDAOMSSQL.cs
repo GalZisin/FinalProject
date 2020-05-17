@@ -35,10 +35,9 @@ namespace AirlineManagement
             SQL = $"SELECT ID FROM Tickets WHERE FLIGHT_ID = {t.FLIGHT_ID} AND CUSTOMER_ID = {t.CUSTOMER_ID} AND FIRST_NAME = '{t.FIRST_NAME}' AND LAST_NAME = '{t.LAST_NAME}'";
             return Int64.Parse(DL.ExecuteSqlScalarStatement(SQL));
         }
-
         public Ticket Get(long id)
         {
-            Ticket t = null;
+            TicketView t = null;
             StringBuilder sb = new StringBuilder();
             sb.Append($"SELECT * FROM Tickets WHERE ID = {id}");
             string SQL = sb.ToString();
@@ -46,9 +45,48 @@ namespace AirlineManagement
             DataTable dt = DS.Tables[0];
             foreach (DataRow dr in dt.Rows)
             {
-                t = new Ticket();
+                t = new TicketView();
                 t.ID = (long)dr["ID"];
                 t.FLIGHT_ID = (long)dr["FLIGHT_ID"];
+                t.CUSTOMER_ID = (long)dr["CUSTOMER_ID"];
+            }
+            if (t != null)
+            {
+                return t;
+            }
+            return null;
+        }
+        public TicketView GetTicketByTicketId(long ticketId)
+        {
+            TicketView t = null;
+            StringBuilder sb = new StringBuilder();
+            //sb.Append($"SELECT * FROM Tickets WHERE ID = {id}");
+            sb.Append($"SELECT t.FIRST_NAME, t.LAST_NAME, (SELECT AIRLINE_NAME FROM AirlineCompanies WHERE ID = f.AIRLINECOMPANY_ID) as airlineName,");
+            sb.Append($" (SELECT COUNTRY_NAME FROM Countries WHERE ID = f.ORIGIN_COUNTRY_CODE) as originCountryName,");
+            sb.Append($" (SELECT COUNTRY_NAME FROM Countries WHERE ID = f.DESTINATION_COUNTRY_CODE) as destinationCountryName,");
+            sb.Append($" f.DEPARTURE_TIME, f.LANDING_TIME, t.ID as ticketId, f.FLIGHT_NUMBER, t.CUSTOMER_ID, f.ID as flightId");
+            sb.Append($" FROM Tickets t");
+            sb.Append($" INNER JOIN Flights f ON f.ID = t.FLIGHT_ID");
+            sb.Append($" WHERE t.ID = {ticketId}");
+            string SQL = sb.ToString();
+            DataSet DS = DL.GetSqlQueryDS(SQL, "Tickets");
+            DataTable dt = DS.Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                t = new TicketView();
+                //t.ID = (long)dr["ID"];
+                //t.FLIGHT_ID = (long)dr["FLIGHT_ID"];
+                //t.CUSTOMER_ID = (long)dr["CUSTOMER_ID"];
+                t.ID = (long)dr["ticketId"];
+                t.FLIGHT_ID = (long)dr["flightId"];
+                t.FIRST_NAME = (string)dr["FIRST_NAME"];
+                t.LAST_NAME = (string)dr["LAST_NAME"];
+                t.AIRLINE_NAME = (string)dr["airlineName"];
+                t.O_COUNTRY_NAME = (string)dr["originCountryName"];
+                t.D_COUNTRY_NAME = (string)dr["destinationCountryName"];
+                t.DEPARTURE_TIME = (DateTime)dr["DEPARTURE_TIME"];
+                t.LANDING_TIME = (DateTime)dr["LANDING_TIME"];
+                t.FLIGHT_NUMBER = (string)dr["FLIGHT_NUMBER"];
                 t.CUSTOMER_ID = (long)dr["CUSTOMER_ID"];
             }
             if (t != null)
@@ -229,7 +267,7 @@ namespace AirlineManagement
         public void Update(Ticket t)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"UPDATE Tickets SET FLIGHT_ID = {t.FLIGHT_ID}, CUSTOMER_ID = {t.CUSTOMER_ID},");
+            sb.Append($"UPDATE Tickets SET FLIGHT_ID = {t.FLIGHT_ID}, CUSTOMER_ID = {t.CUSTOMER_ID}, FIRST_NAME = '{t.FIRST_NAME}', LAST_NAME = '{t.LAST_NAME}'");
             sb.Append($" WHERE ID = {t.ID}");
             string SQL = sb.ToString();
             string res = DL.ExecuteSqlNonQuery(SQL);

@@ -9,6 +9,8 @@ using System.Web.Http.Description;
 using ServiceStack.Redis;
 using AirlineManagementWebApi.Models;
 using AirlineManagement.POCO.Views;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace AirlineManagementWebApi.Controllers
 {
@@ -130,7 +132,7 @@ namespace AirlineManagementWebApi.Controllers
             {
                 airlineCompanyId = administratorFacade.CreateNewAirline(adminLoginToken, airlineCompany);
                 airlineCompany = administratorFacade.GetAirlineCompanyById(adminLoginToken, airlineCompanyId);
-               return Ok("AirlineCompany account created succsesfully");
+                return Ok("AirlineCompany account created succsesfully");
                 //return CreatedAtRoute("createairlinecompany", new { id = airlineCompanyId }, airlineCompany);
             }
             catch (InvalidTokenException ex)
@@ -145,7 +147,7 @@ namespace AirlineManagementWebApi.Controllers
             {
                 return Ok($"AirlineCompany not created, {e1.Message}");
             }
-  
+
 
         }
         /// <summary>
@@ -248,7 +250,7 @@ namespace AirlineManagementWebApi.Controllers
         [ResponseType(typeof(string))]
         [Route("api/AdministratorFacade/deletecompany/{id}")]
         [HttpDelete]
-        public IHttpActionResult RemoveAirlineById([FromUri]long id)
+        public IHttpActionResult RemoveAirlineById([FromUri] long id)
         {
             AirlineCompany airlineCompany = null;
             IHttpActionResult res = null;
@@ -265,7 +267,7 @@ namespace AirlineManagementWebApi.Controllers
                 if (airlineCompany != null)
                 {
                     administratorFacade.RemoveAirline(adminLoginToken, airlineCompany);
-                    res = Ok($"Airline company with ID = {id} deleted succsesfully");
+                    res = Ok(id);
                 }
             }
             catch (InvalidTokenException ex)
@@ -647,5 +649,116 @@ namespace AirlineManagementWebApi.Controllers
             }
             return Ok(adminLoginToken.User.FIRST_NAME); ;
         }
+        [ResponseType(typeof(AirlineCompanyView))]
+        [Route("api/AdministratorFacade/getAllcompaniesToApprove")]
+        [HttpGet]
+        public IHttpActionResult GetAllcompaniesToApprove()
+        {
+            GetLoginToken();
+            if (adminLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
+            IList<AirlineCompanyView> companies = administratorFacade.GetAllcompaniesToApprove(adminLoginToken);
+
+            if (companies.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(companies);
+        }
+        [ResponseType(typeof(string))]
+        [Route("api/AdministratorFacade/acceptOrDeclineCompany")]
+        [HttpPost]
+        public IHttpActionResult AirlineApproval([FromBody] CompanyAccount newCompany)
+        {
+            AirlineCompany company = null;
+            AirlineCompanyView companyView = null;
+            AirlineCompanyView companyDeclined = null;
+            string content = "";
+            GetLoginToken();
+            if (adminLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            AirlineCompanyView myCompany = new AirlineCompanyView();
+            myCompany.COUNTRY_NAME = newCompany.country;
+            myCompany.USER_NAME = newCompany.userName;
+            myCompany.EMAIL = newCompany.email;
+            string result = "";
+            ILoggedInAdministratorFacade administratorFacade = FCS.GetFacade(adminLoginToken) as ILoggedInAdministratorFacade;
+            try
+            {
+                if (newCompany.isApproved == "1")
+                {
+                    long company_id = administratorFacade.AddApprovalAirlineCompany(adminLoginToken, myCompany);
+                    company = administratorFacade.GetAirlineCompanyById(adminLoginToken, company_id);
+                    if (company != null)
+                    {
+                        content = "<br>Congratulations!!! Your account was successfully created.<br>";
+                        Execute(myCompany.EMAIL, company.AIRLINE_NAME, content);
+                        administratorFacade.RemoveFromApprovalTable(adminLoginToken, myCompany.USER_NAME);
+                        companyView = administratorFacade.GetCompanyFromApprovalTableByUserName(adminLoginToken, myCompany.USER_NAME);
+                        if (companyView == null)
+                        {
+                            result = "Airline company account was successfully created";
+                        }
+                        else
+                        {
+                            result = "Problem with deleting company from approval table";
+                        }
+                    }
+                    else
+                    {
+                        result = "Airline company has not been added";
+                    }
+                }
+                else if (newCompany.isApproved == "0")
+                {
+                    content = "<br>Sorry your request was declined.<br>";
+                    companyDeclined = administratorFacade.GetCompanyFromApprovalTableByUserName(adminLoginToken, myCompany.USER_NAME);
+                    Execute(myCompany.EMAIL, companyDeclined.AIRLINE_NAME, content);
+                    administratorFacade.RemoveFromApprovalTable(adminLoginToken, myCompany.USER_NAME);
+                    companyView = administratorFacade.GetCompanyFromApprovalTableByUserName(adminLoginToken, myCompany.USER_NAME);
+                    if (companyView == null)
+                    {
+                        result = "Airline company was successfully removed from the list";
+                    }
+                    else
+                    {
+                        result = "Problem with deleting company from approval table";
+                    }
+                }
+              
+            }
+            catch (AirlineCompanyAlreadyExistException e1)
+            {
+                result = "Airline company already exist";
+            }
+            catch (Exception e1)
+            {
+                result = e1.Message;
+            }
+            return Ok(result);
+        }
+        private static void Execute(string email, string companyName, string content)
+        {
+            var apiKey = Environment.GetEnvironmentVariable("KeyForEmail", EnvironmentVariableTarget.Machine);
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("test@example.com", "Airline management");
+            var subject = "Sending with SendGrid is Fun";
+            var to = new EmailAddress(email, $"Example User ");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            //var token = TokenManager.GenerateToken(userName);
+            //myGuid = Guid.NewGuid().ToString();
+            //var htmlContent = "Hello" + " " + firstName + " " + lastName + "<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
+            var htmlContent = "Hello" + " " + companyName + " " + content;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = client.SendEmailAsync(msg).Result;
+        }
+
     }
 }

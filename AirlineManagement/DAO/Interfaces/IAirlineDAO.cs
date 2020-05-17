@@ -18,8 +18,13 @@ namespace AirlineManagement
         IList<AirlineCompany> GetAllAirlineCompaniesByScheduledTime(string typeName);
         string CheckIfAirlineCompanyExistById(AirlineCompany t);
         IList<AirlineCompanyView> GetAllAirlineCompanies();
-        AirlineCompanyView GetGetAirlineCompanyById(long id);
+        AirlineCompanyView GetAirlineCompanyById(long id);
         long AddAirlineCompany(AirlineCompanyView t);
         void UpdateAirlineCompany(AirlineCompanyView t);
+        void AddAirlineCompanyToStandbyTable(AirlineCompanyView t);
+        IList<AirlineCompanyView> GetAllcompaniesToApprove();
+        long AddApprovalAirlineCompany(AirlineCompanyView t);
+        void RemoveFromApprovalTable(string companyUsername);
+        AirlineCompanyView GetCompanyFromApprovalTableByUserName(string companyUsername);
     }
 }

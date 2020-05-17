@@ -161,8 +161,21 @@ namespace AirlineManagementWebApi.Controllers
             {
                 try
                 {
+                    Customer customer = customerFacade.GetCustomerByCustomerId(customerLoginToken, customerLoginToken.User.ID);
+                    foreach (MyUser c in orderedTickets.User)
+                    {
+                        customer.ADDRESS = c.Address;
+                        customer.PHONE_NO = c.PhoneNo;
+                        customer.CREDIT_CARD_NUMBER = c.CreditCardNumber;
+                    }
+
+                    customerFacade.UpdateCustomerDetails(customerLoginToken, customer);
                     customerFacade.PurchaseTickets(customerLoginToken, tickets);
                     result = "Tickets ordered succsesfully";
+                }
+                catch (CustomerUpdateErrorException e1)
+                {
+                    result = "Customer details update failed" + e1.Message;
                 }
                 catch (NoFlightException e1)
                 {
@@ -180,8 +193,9 @@ namespace AirlineManagementWebApi.Controllers
                 catch (Exception e1)
                 {
                     result = e1.Message;
+                    isBadRequest = true;
                 }
-           
+
             }
             if (isBadRequest)
             {
@@ -191,7 +205,7 @@ namespace AirlineManagementWebApi.Controllers
             {
                 return Ok(result);
             }
-       
+
         }
         [ResponseType(typeof(string))]
         [Route("api/CustomerFacade/deleteticket/{customerId}")]
@@ -263,13 +277,70 @@ namespace AirlineManagementWebApi.Controllers
                 {
                     return Ok($"Customer with ID = {updatedCustomer.ID} not updated, {ex.Message}");
                 }
-                catch (CustomerAlreadyExistException ex)
-                {
-                    return Ok($"Customer with ID = {updatedCustomer.ID} not updated, Customer already exist");
-                }
                 catch (Exception e1)
                 {
                     return Ok($"Customer with ID = {updatedCustomer.ID} not updated, {e1.Message}");
+                }
+            }
+
+        }
+        /// <summary>
+        /// Update ticket details
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        [ResponseType(typeof(string))]
+        [Route("api/CustomerFacade/updateticket")]
+        [HttpPut]
+        public IHttpActionResult UpdateTicketDetails([FromBody] TicketData updatedTicket)
+        {
+            GetLoginToken();
+            if (customerLoginToken == null)
+            {
+                return Unauthorized();
+            }
+            TicketView ticket = null;
+            FCS = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            ILoggedInCustomerFacade customerFacade = FCS.GetFacade(customerLoginToken) as ILoggedInCustomerFacade;
+            long ticketId = Convert.ToInt64(updatedTicket.ID);
+            long flightId = Convert.ToInt64(updatedTicket.FLIGHT_ID);
+            long customerId = Convert.ToInt64(updatedTicket.CUSTOMER_ID);
+            Ticket uTicket = new Ticket();
+            uTicket.ID = ticketId;
+            uTicket.CUSTOMER_ID = customerId;
+            uTicket.FLIGHT_ID = flightId;
+            uTicket.FIRST_NAME = updatedTicket.FIRST_NAME;
+            uTicket.LAST_NAME = updatedTicket.LAST_NAME;
+            ticket = customerFacade.GetTicketByTicketId(customerLoginToken, ticketId);
+            if (ticket == null)
+            {
+                return BadRequest("Id not found");
+            }
+            else
+            {
+                try
+                {
+                    customerFacade.UpdateTicketDetails(customerLoginToken, uTicket);
+                   
+
+                    return Ok($"Ticket  with ID = {ticketId} updated succsesfully");
+                }
+
+                catch (InvalidTokenException ex)
+                {
+                    return Ok($"Ticket with ID = {ticketId} not updated, authorization error");
+                }
+                catch (TicketUpdateErrorException ex)
+                {
+                    return Ok($"Ticket with ID = {ticketId} not updated, {ex.Message}");
+                }
+                catch (TicketAlreadyExistException ex)
+                {
+                    return Ok($"Ticket with ID = {ticketId} not updated, Ticket already exist");
+                }
+                catch (Exception e1)
+                {
+                    return Ok($"Ticket with ID = {ticketId} not updated, {e1.Message}");
                 }
             }
 
@@ -363,7 +434,7 @@ namespace AirlineManagementWebApi.Controllers
             ILoggedInCustomerFacade customerFacade = FCS.GetFacade(customerLoginToken) as ILoggedInCustomerFacade;
             try
             {
-                //ticket = customerFacade.GetTicketByTicketId(customerLoginToken, ticketId);
+                ticket = customerFacade.GetTicketByTicketId(customerLoginToken, ticketId);
                 if (ticket != null)
                 {
 

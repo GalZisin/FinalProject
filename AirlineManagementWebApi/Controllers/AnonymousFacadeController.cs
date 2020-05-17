@@ -1,6 +1,7 @@
 ﻿using AirlineManagement;
 using AirlineManagement.POCO.Views;
 using AirlineManagementWebApi.Models;
+using Newtonsoft.Json;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using ServiceStack.Redis;
@@ -37,6 +38,26 @@ namespace AirlineManagementWebApi.Controllers
                 return NotFound();
             }
             return Ok(flights);
+        }
+        [ResponseType(typeof(Flight))]
+        [Route("api/AnonymousFacade/getFlightsToFillCalendar/{flightId}")]
+        [HttpGet]
+        public IHttpActionResult GetFlightsToFillCalendar([FromUri] long flightId)
+        {
+
+            IList<Flight> departureFDates = null;
+            IList<Flight> returnFDates = null;
+            fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
+            FlightView Flight = anonymousFacade.GetFlightByFlightId(flightId);
+
+            departureFDates = anonymousFacade.GetFlightsToFillCalendar(Flight.O_COUNTRY_NAME, Flight.D_COUNTRY_NAME, Flight.AIRLINE_NAME, Flight.REAL_DEPARTURE_TIME.ToString(), 6, 12);
+            returnFDates = anonymousFacade.GetFlightsToFillCalendar(Flight.D_COUNTRY_NAME, Flight.O_COUNTRY_NAME, Flight.AIRLINE_NAME, Flight.REAL_DEPARTURE_TIME.ToString(), 6, 24);
+
+            CalendarData calendarData = new CalendarData { departureDates = departureFDates, returnDates = returnFDates,  DefaultDepartureDate = Flight.REAL_DEPARTURE_TIME, CompanyName = Flight.AIRLINE_NAME, DestinationCountry = Flight.D_COUNTRY_NAME};
+
+
+            return Ok(calendarData);
         }
         /// <summary>
         /// Get all airline companies
@@ -99,13 +120,13 @@ namespace AirlineManagementWebApi.Controllers
         /// </summary>
         /// <returns>IHttpActionResult</returns>
         [ResponseType(typeof(FlightView))]
-        [Route("api/AnonymousFacade/getflightsbyvacancy")]
+        [Route("api/AnonymousFacade/getflightsbyvacancy/{localCountryName}")]
         [HttpGet]
-        public IHttpActionResult GetAllFlightsByVacancyAndScheduledTime()
+        public IHttpActionResult GetAllFlightsByVacancyAndScheduledTime(string localCountryName)
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            IList<FlightView> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime();
+            IList<FlightView> flights = anonymousFacade.GetAllFlightsByVacancyAndScheduledTime(localCountryName);
             if (flights.Count == 0)
             {
 
@@ -170,13 +191,13 @@ namespace AirlineManagementWebApi.Controllers
         /// </summary>
         /// <returns>IHttpActionResult</returns>
         [ResponseType(typeof(Flight))]
-        [Route("api/AnonymousFacade/getbyid/{flightId}")]
+        [Route("api/AnonymousFacade/getFlightByFlightId/{flightId}")]
         [HttpGet]
-        public IHttpActionResult GetFlightById(int flightId)
+        public IHttpActionResult GetFlightByFlightId(int flightId)
         {
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
-            Flight flight = anonymousFacade.GetFlightById(flightId);
+            Flight flight = anonymousFacade.GetFlightByFlightId(flightId);
 
             if (flight == null)
             {
@@ -220,7 +241,7 @@ namespace AirlineManagementWebApi.Controllers
             DateTime rdt = DateTime.ParseExact(returnFormatedDate, "ddd MMM dd yyyy", null);
             returnFormatedDate = rdt.ToString("yyyy-MM-dd");
 
-            IList <RoundTripFlights> roundTripFlights = new List<RoundTripFlights>();
+            IList<RoundTripFlights> roundTripFlights = new List<RoundTripFlights>();
             IList<FlightView> flights1 = null;
             IList<FlightView> flights2 = null;
             fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
@@ -228,21 +249,21 @@ namespace AirlineManagementWebApi.Controllers
 
             flights1 = anonymousFacade.GetAllGoingFlightsByVacancyAndScheduledTime(flightNumber, originCountry, destinationCountry, company, departureFormatedDate);
 
-         
 
-            foreach(FlightView flight1 in flights1)
+
+            foreach (FlightView flight1 in flights1)
             {
                 flights2 = anonymousFacade.GetAllReturnFlightsByVacancyAndScheduledTime(flight1.O_COUNTRY_NAME, flight1.D_COUNTRY_NAME, company, returnFormatedDate);
                 foreach (FlightView flight2 in flights2)
                 {
-                    
+
                     //flight1.TIME_DIFF = flight1.REAL_LANDING_TIME - flight1.REAL_DEPARTURE_TIME;
                     //flight2.TIME_DIFF = flight2.REAL_LANDING_TIME - flight2.REAL_DEPARTURE_TIME;
                     roundTripFlights.Add(new RoundTripFlights { f1 = flight1, f2 = flight2 });
                 }
             }
 
-            if (flights1 == null && flights2 ==null)
+            if (flights1 == null && flights2 == null)
             {
                 return NotFound();
             }
@@ -572,9 +593,6 @@ namespace AirlineManagementWebApi.Controllers
             return Ok(flights);
         }
 
-
-
-
         [ResponseType(typeof(string))]
         [Route("api/AnonymousFacade/register", Name = "register")]
         [HttpPost]
@@ -587,7 +605,6 @@ namespace AirlineManagementWebApi.Controllers
             account.firstName = newAccount.firstName;
             account.lastName = newAccount.lastName;
             account.userName = newAccount.userName;
-            account.phoneNumber = newAccount.phoneNumber;
             account.password = newAccount.password;
 
             Execute(account.email, account.firstName, account.lastName, account.userName);
@@ -602,7 +619,7 @@ namespace AirlineManagementWebApi.Controllers
             bool success = Save(host, key, jsonStringAccount);
 
 
-            return Ok($"Email sent");
+            return Ok("Please confirm your email!");
         }
 
         //public static string myGuid = null;
@@ -616,7 +633,7 @@ namespace AirlineManagementWebApi.Controllers
             var plainTextContent = "and easy to do anywhere, even with C#";
             var token = TokenManager.GenerateToken(userName);
             //myGuid = Guid.NewGuid().ToString();
-            var htmlContent = "Hello"+" "+firstName+" "+lastName+"<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
+            var htmlContent = "Hello" + " " + firstName + " " + lastName + "<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = client.SendEmailAsync(msg).Result;
         }
@@ -641,6 +658,32 @@ namespace AirlineManagementWebApi.Controllers
         //        return redisClient.Get<string>(key);
         //    }
         //}
+        [ResponseType(typeof(string))]
+        [Route("api/AnonymousFacade/companyregister")]
+        [HttpPost]
+        public IHttpActionResult ConfirmCompanyAccount([FromBody] CompanyAccount newCompanyAccount)
+        {
+
+            fcs = FlyingCenterSystem.GetFlyingCenterSystemInstance();
+            IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
+            AirlineCompanyView account = new AirlineCompanyView();
+            account.AIRLINE_NAME = newCompanyAccount.companyName;
+            account.USER_NAME = newCompanyAccount.userName;
+            account.PASSWORD = newCompanyAccount.password;
+            account.EMAIL = newCompanyAccount.email;
+            account.COUNTRY_NAME = newCompanyAccount.country;
+            string result = "";
+            try
+            {
+                anonymousFacade.AddNewCompanyToStandbyTable(account);
+                result = "Your request has been successfully sent";
+            }
+            catch (AirlineCompanyAlreadyExistException e1)
+            {
+                result = "Airline Company already exist";
+            }
+            return Ok(result);
+        }
     }
 
 }

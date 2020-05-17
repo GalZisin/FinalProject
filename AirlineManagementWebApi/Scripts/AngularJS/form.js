@@ -1,33 +1,34 @@
-
 dataApp = module.controller("dealCardsCtrl", DealCardsCtrl);
-
 
 
 
 //////Post form data/////////////////////////////////////////////////
 
-dataApp.controller("MainCtrl", MainCtrlCtor);
+dataApp.controller("RegisterCtrl", RegisterCtrlCtor);
 
-function MainCtrlCtor($scope, $http) {
-	$scope.formModel = {};
-
-	$scope.onSubmit = function (valid) {
-		if (valid) {
-			console.log("Hey i'm submitted!");
-			console.log($scope.formModel);
-       $http.post('http://localhost/Flights/api/AnonymousFacade/sendEmail', $scope.formModel      //'Access-Control-Allow-Origin: *'
-       ).then(function (data) {   
-					console.log(":)")
-				},
-					function (data) {
-						console.log(":(")
-					});
-		}
-		else {
-			console.log("I'm not valid!");
-		}
-	};
+function RegisterCtrlCtor($scope, $http) {
+  $scope.formModel = {};
+  ////Register/////
+  $scope.onSubmit = function (valid) {
+    if (valid) {
+      console.log("Hey i'm submitted!");
+      console.log($scope.formModel);
+        $http.post('http://localhost:57588/api/AnonymousFacade/register', $scope.formModel      //'Access-Control-Allow-Origin: *'
+      ).then(function (data) {
+        console.log(":)")
+        $('#myCustomerModal').modal('hide');
+      },
+        function (data) {
+          console.log(":(")
+        });
+    }
+    else {
+      console.log("I'm not valid!");
+    }
+  };
 }
+
+
 
 
 
@@ -94,6 +95,70 @@ $(document).ready(function () {
     }
   });
 });
+
+
+//////Login/////////////////////////////////////////////////////////////
+// $('.form').find('input, textarea').on('keyup blur focus', function (e) {
+
+//   var $this = $(this),
+//       label = $this.prev('label');
+
+// 	  if (e.type === 'keyup') {
+// 			if ($this.val() === '') {
+//           label.removeClass('active highlight');
+//         } else {
+//           label.addClass('active highlight');
+//         }
+//     } else if (e.type === 'blur') {
+//     	if( $this.val() === '' ) {
+//     		label.removeClass('active highlight'); 
+// 			} else {
+// 		    label.removeClass('highlight');   
+// 			}   
+//     } else if (e.type === 'focus') {
+
+//       if( $this.val() === '' ) {
+//     		label.removeClass('highlight'); 
+// 			} 
+//       else if( $this.val() !== '' ) {
+// 		    label.addClass('highlight');
+// 			}
+//     }
+
+// });
+
+// $('.tab a').on('click', function (e) {
+
+//   e.preventDefault();
+
+//   $(this).parent().addClass('active');
+//   $(this).parent().siblings().removeClass('active');
+
+//   target = $(this).attr('href');
+
+//   $('.tab-content > div').not(target).hide();
+
+//   $(target).fadeIn(600);
+
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
