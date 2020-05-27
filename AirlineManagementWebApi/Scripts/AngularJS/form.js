@@ -13,7 +13,7 @@ function RegisterCtrlCtor($scope, $http) {
     if (valid) {
       console.log("Hey i'm submitted!");
       console.log($scope.formModel);
-        $http.post('http://localhost:57588/api/AnonymousFacade/register', $scope.formModel      //'Access-Control-Allow-Origin: *'
+        $http.post('/api/AnonymousFacade/register', $scope.formModel      //'Access-Control-Allow-Origin: *'
       ).then(function (data) {
         console.log(":)")
         $('#myCustomerModal').modal('hide');

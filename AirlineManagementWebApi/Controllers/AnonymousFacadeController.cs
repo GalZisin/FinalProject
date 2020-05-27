@@ -51,8 +51,8 @@ namespace AirlineManagementWebApi.Controllers
             IAnonymousUserFacade anonymousFacade = fcs.GetFacade(null) as IAnonymousUserFacade;
             FlightView Flight = anonymousFacade.GetFlightByFlightId(flightId);
 
-            departureFDates = anonymousFacade.GetFlightsToFillCalendar(Flight.O_COUNTRY_NAME, Flight.D_COUNTRY_NAME, Flight.AIRLINE_NAME, Flight.REAL_DEPARTURE_TIME.ToString(), 6, 12);
-            returnFDates = anonymousFacade.GetFlightsToFillCalendar(Flight.D_COUNTRY_NAME, Flight.O_COUNTRY_NAME, Flight.AIRLINE_NAME, Flight.REAL_DEPARTURE_TIME.ToString(), 6, 24);
+            departureFDates = anonymousFacade.GetFlightsToFillCalendar(Flight.O_COUNTRY_NAME, Flight.D_COUNTRY_NAME, Flight.AIRLINE_NAME, Flight.REAL_DEPARTURE_TIME.ToString("yyyy-MM-dd"), 6, 12);
+            returnFDates = anonymousFacade.GetFlightsToFillCalendar(Flight.D_COUNTRY_NAME, Flight.O_COUNTRY_NAME, Flight.AIRLINE_NAME, Flight.REAL_DEPARTURE_TIME.ToString("yyyy-MM-dd"), 6, 24);
 
             CalendarData calendarData = new CalendarData { departureDates = departureFDates, returnDates = returnFDates,  DefaultDepartureDate = Flight.REAL_DEPARTURE_TIME, CompanyName = Flight.AIRLINE_NAME, DestinationCountry = Flight.D_COUNTRY_NAME};
 
@@ -233,14 +233,16 @@ namespace AirlineManagementWebApi.Controllers
         [HttpGet]
         public IHttpActionResult SearchAllFlightsByVacancyAndScheduledTime(string flightNumber, string originCountry, string destinationCountry, string company, string departureDate, string returnDate)
         {
-            string departureFormatedDate = departureDate.Substring(0, 15);
-            DateTime ddt = DateTime.ParseExact(departureFormatedDate, "ddd MMM dd yyyy", null);
-            departureFormatedDate = ddt.ToString("yyyy-MM-dd");
+            //string departureFormatedDate = departureDate.Substring(0, 15);
+            //DateTime ddt = DateTime.ParseExact(departureFormatedDate, "ddd MMM dd yyyy", null);
+            //departureFormatedDate = ddt.ToString("yyyy-MM-dd");
 
-            string returnFormatedDate = returnDate.Substring(0, 15);
-            DateTime rdt = DateTime.ParseExact(returnFormatedDate, "ddd MMM dd yyyy", null);
-            returnFormatedDate = rdt.ToString("yyyy-MM-dd");
+            //string returnFormatedDate = returnDate.Substring(0, 15);
+            //DateTime rdt = DateTime.ParseExact(returnFormatedDate, "ddd MMM dd yyyy", null);
+            //returnFormatedDate = rdt.ToString("yyyy-MM-dd");
 
+            string departureFormatedDate = departureDate;
+            string returnFormatedDate = returnDate;
             IList<RoundTripFlights> roundTripFlights = new List<RoundTripFlights>();
             IList<FlightView> flights1 = null;
             IList<FlightView> flights2 = null;
@@ -633,7 +635,7 @@ namespace AirlineManagementWebApi.Controllers
             var plainTextContent = "and easy to do anywhere, even with C#";
             var token = TokenManager.GenerateToken(userName);
             //myGuid = Guid.NewGuid().ToString();
-            var htmlContent = "Hello" + " " + firstName + " " + lastName + "<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
+            var htmlContent = "Hello" + " " + firstName + " " + lastName + "<br>Click here to confirm your email<br>http://localhost:90/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = client.SendEmailAsync(msg).Result;
         }
@@ -685,5 +687,4 @@ namespace AirlineManagementWebApi.Controllers
             return Ok(result);
         }
     }
-
 }

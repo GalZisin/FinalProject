@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -276,6 +277,7 @@ namespace AirlineManagement
             sb.Append($" AND f.FLIGHT_NUMBER LIKE '{flightNumber}%'");
            //sb.Append(str1);
           string SQL = sb.ToString();
+            //AddToLogFile("GetAllGoingFlightsByVacancyAndScheduledTime: SQL: " + SQL);
             DataSet DS = DL.GetSqlQueryDS(SQL, "Flights");
             DL.ErrorMessage = "";
             DataTable dt = DS.Tables[0];
@@ -741,17 +743,29 @@ namespace AirlineManagement
             sb.Append($" WHERE MONTH(REAL_DEPARTURE_TIME) BETWEEN(SELECT MONTH(GETDATE())) AND (SELECT MONTH(DATEADD(month, {monthsToAdd}, '{destinationDate}')))");
             sb.Append($" AND REAL_DEPARTURE_TIME > (SELECT DATEADD(hour, {hoursToAdd}, GETDATE())) AND a.AIRLINE_NAME = '{companyName}' AND co.COUNTRY_NAME = '{d_countryName}' AND c.COUNTRY_NAME = '{o_countryName}'");
             string SQL = sb.ToString();
+            
+            AddToLogFile("SQL: " + SQL );
             DataSet DS = DL.GetSqlQueryDS(SQL, "Flights");
             DataTable dt = DS.Tables[0];
             foreach (DataRow dr in dt.Rows)
             {
                 FlightView flight = new FlightView();
-      
+                AddToLogFile("dr[realDepartureDate]: " + dr["realDepartureDate"].ToString());
                 flight.REAL_DEPARTURE_TIME = Convert.ToDateTime(dr["realDepartureDate"]);
       
                 flights.Add(flight);
             }
             return flights;
+        }
+        private void AddToLogFile(string str)
+        {
+            //DateTime dt = DateTime.Now;
+            //string ll = dt.Day.ToString() + dt.Month.ToString() + dt.Year.ToString();
+            //string path = @"C:\Projects\AirlineManagement\";
+            //path = path + "Log" + ll + ".txt";
+            //TextWriter writer = new StreamWriter(path, true);
+            //writer.WriteLine(str);
+            //writer.Close();
         }
     }
 }

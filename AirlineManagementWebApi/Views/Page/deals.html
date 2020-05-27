@@ -76,19 +76,19 @@
                         <button ng-click="onLogin2()" id="myButton" style="display: none;">click</button>
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#Home" data-toggle="collapse" data-target=".navbar-collapse.show">Home</a>
+                        <a class="nav-link" href="http://localhost:3000/">Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:57588/Page/GetDepartureFlights">Departures</a>
+                        <a class="nav-link" href="/Page/GetDepartureFlights">Departures</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:57588/Page/GetLandingFlights">Arrivals</a>
+                        <a class="nav-link" href="/Page/GetLandingFlights">Arrivals</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:57588/Page/SearchFlights">Search</a>
+                        <a class="nav-link" href="/Page/SearchFlights">Search</a>
                     </li>
                  
                 </ul>
@@ -100,9 +100,6 @@
 
             </div>
         </nav>
-
-
-
 
 
 
@@ -125,10 +122,12 @@
                         <div style="color:black" class="content">
                             <h2>{{flight.D_COUNTRY_NAME}}</h2>
                             <p>
-                     
+
                                 <img style="z-index: 1; width: 100px; height: 50px; margin-bottom:5px; margin-top:5px" ng-src="../../Content/AngularJsCSS/hot_deal.png" />
                             </p>
-                            <a style="background-color: #0073e6; width: 100px; height: 40px; border-radius: 4px;" href="http://localhost:3000/SelectDates/{{flight.ID}}">Select deal</a>
+                            <!--<a style="background-color: #0073e6; width: 100px; height: 40px; border-radius: 4px;" href="#" ng-click="selectDate(flight.ID)">Select deal</a>-->
+                            <!--<a style="background-color: #0073e6; width: 100px; height: 40px; border-radius: 4px;" href="http://localhost:3000/SelectDates/{{flight.ID}}">Select deal</a>-->
+                            <a style="background-color: #0073e6; width: 100px; height: 40px; border-radius: 4px;" href="/?flightId={{flight.ID}}">Select deal</a>
                         </div>
                     </div>
                 </div>

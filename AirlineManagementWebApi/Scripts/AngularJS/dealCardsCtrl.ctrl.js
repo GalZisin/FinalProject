@@ -1,7 +1,7 @@
 let dataApp = module.controller("dealCardsCtrl", DealCardsCtrl);
 let myuser;
 // DI dependency injection - IOC
-function DealCardsCtrl($rootScope, $scope, $http, dataService, globalConstService, apiService, $uibModal) {
+function DealCardsCtrl($window, $rootScope, $scope, $http, dataService, globalConstService, apiService, $uibModal) {
 
     //let token = '';
     $scope.firstName = '';
@@ -52,8 +52,7 @@ function DealCardsCtrl($rootScope, $scope, $http, dataService, globalConstServic
         else {
             return;
         }
-
-        var path = "http://localhost:57588" + url;
+        var path = url;
         console.log("path: " + path)
         // $http.defaults.headers.common.Authorization = 'Bearer ' + token;
         return $http({
@@ -164,7 +163,7 @@ function DealCardsCtrl($rootScope, $scope, $http, dataService, globalConstServic
             console.log("Hey i'm submitted!");
             console.log($scope.formModelLogin);
             let obj = {};
-            $http.post('http://localhost:57588/api/Login/UserLogin', $scope.formModelLogin)     //'Access-Control-Allow-Origin: *'
+            $http.post('/api/Login/UserLogin', $scope.formModelLogin)     //'Access-Control-Allow-Origin: *'
                 .then(function (res) {
                     console.log("res data: " + res);
                     obj = JSON.parse(JSON.stringify(res.data));

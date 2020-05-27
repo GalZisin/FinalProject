@@ -39,7 +39,7 @@ LoadDropboxes(); //Load drop boxes first time
 function LoadDropboxes() {
     $.ajax({
         type: 'GET',
-        url: `http://localhost:57588/api/AnonymousFacade/allairlinecompanies/search?typeName=Departures`
+        url: `/api/AnonymousFacade/allairlinecompanies/search?typeName=Departures`
 
     }).then((data) => {
 
@@ -64,7 +64,7 @@ function LoadDropboxes() {
     //Get origin countries to drop down box
     $.ajax({
 
-        url: `http://localhost:57588/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=Departures`
+        url: `/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=Departures`
 
     }).then((data) => {
 
@@ -89,7 +89,7 @@ function LoadDropboxes() {
     //Get flight Ids to drop down box
     $.ajax({
 
-        url: `http://localhost:57588/api/AnonymousFacade/allFlightIdsByScheduledTime/search?typeName=Departures`
+        url: `/api/AnonymousFacade/allFlightIdsByScheduledTime/search?typeName=Departures`
 
     }).then((data) => {
 
@@ -125,7 +125,7 @@ function fetchdata() {
     $.ajax({
         type: 'GET',
      
-        url: `http://localhost:57588/api/AnonymousFacade/SearchFlightByConditions/search?typeName=Departures&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
+        url: `/api/AnonymousFacade/SearchFlightByConditions/search?typeName=Departures&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
 
     }).then((data) => {
         let number = 1;
@@ -188,7 +188,7 @@ function getFlightsJQ(bState, typeName) {
 
     $.ajax({
 
-        url: `http://localhost:57588/api/AnonymousFacade/SearchFlightByConditions/search?typeName=${typeName}&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
+        url: `/api/AnonymousFacade/SearchFlightByConditions/search?typeName=${typeName}&flightId=${flightId}&country=${originCountry}&company=${airlineCompany}`
 
     }).then((data) => {
         const event = new Date();

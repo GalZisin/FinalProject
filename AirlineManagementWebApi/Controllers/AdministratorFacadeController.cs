@@ -752,13 +752,9 @@ namespace AirlineManagementWebApi.Controllers
             var subject = "Sending with SendGrid is Fun";
             var to = new EmailAddress(email, $"Example User ");
             var plainTextContent = "and easy to do anywhere, even with C#";
-            //var token = TokenManager.GenerateToken(userName);
-            //myGuid = Guid.NewGuid().ToString();
-            //var htmlContent = "Hello" + " " + firstName + " " + lastName + "<br>Click here to confirm your email<br>http://localhost:57588/Page/ConfirmEmail?guid=" + token;  //"<strong>and easy to do anywhere, even with C#</strong>";
             var htmlContent = "Hello" + " " + companyName + " " + content;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = client.SendEmailAsync(msg).Result;
         }
-
     }
 }

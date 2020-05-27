@@ -35,6 +35,10 @@ namespace AirlineManagementWebApi.Controllers
         {
             return new FilePathResult("~/Views/Page/deals.html", "text/html");
         }
+        public ActionResult FlightHome()
+        {
+            return new FilePathResult("~/index.html", "text/html");
+        }
         public ActionResult ConfirmEmail()
         {
             string host = "localhost";
@@ -65,7 +69,6 @@ namespace AirlineManagementWebApi.Controllers
             customer.LAST_NAME = objectAccount.lastName;
             customer.USER_NAME = objectAccount.userName;
             customer.PASSWORD = objectAccount.password;
-            //customer.PHONE_NO = objectAccount.phoneNumber;
             try
             {
                 anonymousFacade.CreateNewCustomerFromRedis(customer);
@@ -94,8 +97,6 @@ namespace AirlineManagementWebApi.Controllers
           "</html>";
             return Content(htmlString, "text/html");
         }
-
-
         private string Get(string host, string key)
         {
             using (RedisClient redisClient = new RedisClient(host))
@@ -111,49 +112,5 @@ namespace AirlineManagementWebApi.Controllers
             }
 
         }
-
-
-
-
-        //< html >
-        //< head >
-        //    < style >
-        //        div.card {
-        //            width: 500px;
-        //            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        //        text-align: center;
-        //        }
-
-        //    div.header {
-        //            background-color: #4CAF50;
-        //            color: white;
-        //            padding: 10px;
-        //            font-size: 36px;
-        //            font-family: Book Antiqua;
-        //}
-
-        //div.container {
-        //            padding: 10px;
-        //        }
-        //    </style>
-        //</head>
-        //<body>
-
-        //    <h2>Cards</h2>
-
-        //    <p>The box-shadow property can be used to create paper-like cards:</p>
-
-        //    <div class="card" style="margin: auto;">
-        //        <div class="header">
-        //            <h5>Congratulations!</h5>
-        //        </div>
-
-        //        <div class="container">
-        //            <h4>You have successfully registered</h4>
-        //        </div>
-        //    </div>
-
-        //</body>
-        //</html>
     }
 }

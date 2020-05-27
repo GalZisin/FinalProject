@@ -110,7 +110,7 @@ function FillDropBox(typeName) {
 //Get airline companies to drop down box
 $.ajax({
 
-    url: `http://localhost:57588/api/AnonymousFacade/allairlinecompanies/search?typeName=${typeName}`
+    url: `/api/AnonymousFacade/allairlinecompanies/search?typeName=${typeName}`
 
 }).then((data) => {
 
@@ -135,7 +135,7 @@ $.ajax({
 //Get origin countries to drop down box
 $.ajax({
 
-    url: `http://localhost:57588/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=${typeName}`
+    url: `/api/AnonymousFacade/allCountriesByScheduledTime/search?typeName=${typeName}`
 
 }).then((data) => {
     
@@ -163,7 +163,7 @@ $.ajax({
 //Get flight Ids to drop down box
 $.ajax({
 
-    url: `http://localhost:57588/api/AnonymousFacade/allFlightIdsByScheduledTime/search?typeName=${typeName}`
+    url: `/api/AnonymousFacade/allFlightIdsByScheduledTime/search?typeName=${typeName}`
 
 }).then((data) => {
 
@@ -196,7 +196,7 @@ FillDropBox("");
 function getFlightsJQ() {
    
   
-    let url_web_api = `http://localhost:57588/api/AnonymousFacade/searchbydata`
+    let url_web_api = `/api/AnonymousFacade/searchbydata`
 
     let flightId = $('#multiSelectFieldFlightIds option:selected').text();
     let originCountry = $('#multiSelectFieldCountries option:selected').text();
