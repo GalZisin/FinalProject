@@ -272,7 +272,7 @@ namespace AirlineManagement
             sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
             sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
             sb.Append($" WHERE (REAL_DEPARTURE_TIME BETWEEN DATEADD(hour, 12, GETDATE()) AND CONVERT(datetime, '2021-01-25 23:59:59'))");
-            sb.Append($" AND REMANING_TICKETS > 0 AND REMANING_TICKETS < TOTAL_TICKETS");
+            sb.Append($" AND REMANING_TICKETS > 0");
             sb.Append($" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{originCountry}%' AND co.COUNTRY_NAME LIKE '{destinationCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{departureDate}'");
             sb.Append($" AND f.FLIGHT_NUMBER LIKE '{flightNumber}%'");
            //sb.Append(str1);
@@ -318,7 +318,7 @@ namespace AirlineManagement
             sb.Append($" INNER JOIN Countries as c on f.ORIGIN_COUNTRY_CODE = c.ID");
             sb.Append($" INNER JOIN Countries as co on f.DESTINATION_COUNTRY_CODE = co.ID");
             sb.Append($" WHERE (REAL_DEPARTURE_TIME BETWEEN DATEADD(hour, 12, GETDATE()) AND CONVERT(datetime, '2021-01-25 23:59:59'))");
-            sb.Append($" AND REMANING_TICKETS > 0 AND REMANING_TICKETS < TOTAL_TICKETS");
+            sb.Append($" AND REMANING_TICKETS > 0");
             sb.Append($" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}'");
            //sb.Append(str1);
            string SQL = sb.ToString();
