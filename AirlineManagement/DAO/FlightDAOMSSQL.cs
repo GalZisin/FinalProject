@@ -258,14 +258,7 @@ namespace AirlineManagement
             string str1 = "";
             IList<FlightView> flights = new List<FlightView>();
             StringBuilder sb = new StringBuilder();
-            //if (flightNumber == null || flightNumber == "" || flightNumber == "Select Flight Number")
-            //{
-            //    str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{originCountry}%' AND co.COUNTRY_NAME LIKE '{destinationCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{departureDate}'";
-            //}
-            //else
-            //{
-            //    str1 = $" AND f.FLIGHT_NUMBER LIKE '{flightNumber}%'";
-            //}
+     
                 sb.Append($"SELECT f.ID, a.AIRLINE_NAME, c.COUNTRY_NAME as 'Coming from', co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as 'Departure time', REAL_DEPARTURE_TIME, f.LANDING_TIME as 'Landing time', REAL_LANDING_TIME, REMANING_TICKETS, TOTAL_TICKETS, FLIGHT_NUMBER");
             sb.Append($" FROM Flights as f");
             sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID");
@@ -304,14 +297,7 @@ namespace AirlineManagement
             string str1 = "";
             IList<FlightView> flights = new List<FlightView>();
             StringBuilder sb = new StringBuilder();
-            //if (flightId == null || flightId == "")
-            //{
-            //    str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}'";
-            //}
-            //else
-            //{
-            //    str1 = $" AND AIRLINE_NAME LIKE '{company}%' AND c.COUNTRY_NAME LIKE '{destinationCountry}%' AND co.COUNTRY_NAME LIKE '{originCountry}%' AND CONVERT(date, REAL_DEPARTURE_TIME) = '{returnDate}' AND f.ID = '{flightId}'";
-            //}
+   
             sb.Append($"SELECT f.ID, a.AIRLINE_NAME, c.COUNTRY_NAME as 'Coming from', co.COUNTRY_NAME as Destination, f.DEPARTURE_TIME as 'Departure time', REAL_DEPARTURE_TIME, f.LANDING_TIME as 'Landing time', REAL_LANDING_TIME, REMANING_TICKETS, TOTAL_TICKETS, FLIGHT_NUMBER");
             sb.Append($" FROM Flights as f");
             sb.Append($" INNER JOIN AirlineCompanies as a on f.AIRLINECOMPANY_ID = a.ID");
